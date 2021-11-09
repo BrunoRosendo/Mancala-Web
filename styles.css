@@ -37,43 +37,49 @@ header {
 
 #gameboard {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr 1fr;
  
   border: 1px solid black;
   background-color:saddlebrown;
-  margin: 2em 0 2em 0
+  margin: 2em 0 2em 0;
+
+  margin: 1em 20em 0 20em;
+  padding: 0 1em 0 1em;
 }
 
-#gameboard div {
-  position: relative;
-  border-radius: 4em;
+.middleBoard {
+  display: flex;
+  flex-direction: row;
+}
+
+.cell, .storage {
+  border-radius: 3em;
   background-color: gray;
-  margin: 1.5em;
+  margin: 1em;
 }
 
-#gameboard .cell {
-  width: 10em;
-  height: 15em;
+.cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 6.5em;
+  height: 12em;
 }
 
-#gameboard .storage {
+.storage {
   grid-row-end: span 2;
 }
 
-#gameboard .storage:last-of-type {
-  grid-column-start: 8;
-  grid-column-end: 9;
+.seedRow {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .seed {
-  display: inline-block;
-  position: absolute;
-  top: 1em;
-  left: 1em;
-
-  width: 2em;
-  height: 2em;
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
   background-color: red;
 }
