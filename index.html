@@ -1,17 +1,46 @@
 <!DOCTYPE html>
-<!-- A declaração DOCTYPE declara a versão do HTML usado no documento -->
 <html lang="pt">
 
-<head>
-    <meta charset="UTF-8" />
-    <!-- para caracteres acentuados   -->
-    <title>Projeto 1</title>
-    <!-- texto na decoração da janela -->
-    <link rel="stylesheet" href="styles.css" />
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Mancala</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
 
-<body>
-    <h1>Projeto</h1>
-</body>
+    <body>
+        <header>
+            <h1 id="logo">Mancala</h1>
+            <form id="auth">
+                <label for="usernameInput" class="authLabel">Username</label>
+                <input type="text" name="username" id="usernameInput">
+                <label for="passwordInput" class="authLabel">Password</label>
+                <input type="password" name="pass" id="passwordInput">
+                <input type="submit" value="Login">
+            </form>
+        </header>
+
+        <section id="game">
+            <div id="gameboard">
+                <div class="storage"></div>
+                <div class="cell">
+                    <span class="seed"></span>
+                </div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="storage"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
+
+        </section>
+
+    </body>
 
 </html>

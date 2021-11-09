@@ -1,0 +1,79 @@
+body {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+ /* header */
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  background-color: hotpink;
+  padding: 10px;
+}
+
+.authLabel {
+  margin-left: 2em;
+}
+
+#logo {
+  font-size: 2.5em;
+  padding-left: 10em;
+}
+
+#auth {
+  color: black;
+  padding-top: 1em;
+}
+
+/* Game board */
+
+#game {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#gameboard {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr 1fr;
+ 
+  border: 1px solid black;
+  background-color:saddlebrown;
+  margin: 2em 0 2em 0
+}
+
+#gameboard div {
+  position: relative;
+  border-radius: 4em;
+  background-color: gray;
+  margin: 1.5em;
+}
+
+#gameboard .cell {
+  width: 10em;
+  height: 15em;
+}
+
+#gameboard .storage {
+  grid-row-end: span 2;
+}
+
+#gameboard .storage:last-of-type {
+  grid-column-start: 8;
+  grid-column-end: 9;
+}
+
+.seed {
+  display: inline-block;
+  position: absolute;
+  top: 1em;
+  left: 1em;
+
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background-color: red;
+}
