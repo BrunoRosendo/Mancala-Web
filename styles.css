@@ -89,3 +89,9 @@ header {
   background: radial-gradient(closest-side, rgba(255, 255, 255, 0.55), transparent), rgb(180, 0, 0);
   transform: rotate(-30deg);
 }
+
+/* Instructions */
+
+#instructions ul {
+  padding-left: 7em;
+}
