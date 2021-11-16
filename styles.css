@@ -45,7 +45,8 @@ header {
 #gameboard {
     display: grid;
     width: 80%;
-    grid-template-columns: repeat(3, 1fr);
+    height: 26em;
+    grid-template-columns: 1fr 6fr 1fr;
     grid-template-rows: 1fr 1fr;
     background: url('wood.jpg');
     margin: 0 10% 0 10%;
@@ -54,8 +55,7 @@ header {
 .middleBoard {
     display: flex;
     flex-direction: row;
-    width: 55em;
-    height: 13em
+    width: 100%;
 }
 
 .cell,
@@ -76,7 +76,7 @@ header {
 
 .storage {
     grid-row-end: span 2;
-    width: 75%;
+    width: 80%;
     justify-self: center;
 }
 
