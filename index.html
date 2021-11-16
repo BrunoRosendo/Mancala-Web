@@ -1,91 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt">
 
-    <head>
-        <meta charset="UTF-8" />
-        <title>Mancala</title>
-        <link rel="stylesheet" href="styles.css" />
-    </head>
+<head>
+    <meta charset="UTF-8" />
+    <title>Mancala</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
 
-    <body>
-        <header>
-            <h1 id="logo">Mancala</h1>
-            <form id="auth">
-                <label for="usernameInput" class="authLabel">Username</label>
-                <input type="text" name="username" id="usernameInput">
-                <label for="passwordInput" class="authLabel">Password</label>
-                <input type="password" name="pass" id="passwordInput">
-                <input type="submit" value="Login">
-            </form>
-        </header>
+<body>
+    <header>
+        <h1 id="logo">Mancala</h1>
+        <form id="auth">
+            <label for="usernameInput" class="authLabel">Username</label>
+            <input type="text" name="username" id="usernameInput">
+            <label for="passwordInput" class="authLabel">Password</label>
+            <input type="password" name="pass" id="passwordInput">
+            <input type="submit" value="Login">
+        </form>
+    </header>
 
-        <section id="instructions">
-            <h1>How to play</h1>
-            <p>The gameboard is made of two sets of houses sided by two storages. Each player controls the cavities on their side.</p>
-            <p>In the start of the game, the seeds are evenly placed between all houses. From then on, the players sow their seeds alternately, from one of their houses. According to the place of their last sowed seed, they can either play again or take some of the opponent's seeds. The game ends when one of the players is out of seeds</p>
-            <p>In order to sow, the player must choose one of his houses and collect all the N seeds on it. After that, he puts 1 seed on each of the following N houses or owned storage (you can't sow in your opponent's storage), anti-clockwise. </p>
-            <p>If the last seed was sowed in that player's storage, he can play again. Otherwise, if it was sowed in an owned empty house, he transfers, to their storage, the seeds:</p>
-            <ul>
-                <li>on the opposite house, from his opponent</li>
-                <li>that same sowed seed</li>
-            </ul>
-            <p>The game ends when one of players <b>can't</b> play (because all of their houses are empty). In that case, the other player collects all his seeds and puts them in his storage.</p>
-            <p>The player whose storage has the most seeds wins!</p>
-        </section>
+    <section id="instructions">
+        <h1>How to play</h1>
+        <p>The gameboard is made of two sets of houses sided by two storages. Each player controls the cavities on their side.</p>
+        <p>In the start of the game, the seeds are evenly placed between all houses. From then on, the players sow their seeds alternately, from one of their houses. According to the place of their last sowed seed, they can either play again or take some
+            of the opponent's seeds. The game ends when one of the players is out of seeds</p>
+        <p>In order to sow, the player must choose one of his houses and collect all the N seeds on it. After that, he puts 1 seed on each of the following N houses or owned storage (you can't sow in your opponent's storage), anti-clockwise. </p>
+        <p>If the last seed was sowed in that player's storage, he can play again. Otherwise, if it was sowed in an owned empty house, he transfers, to their storage, the seeds:</p>
+        <ul>
+            <li>on the opposite house, from his opponent</li>
+            <li>that same sowed seed</li>
+        </ul>
+        <p>The game ends when one of players <b>can't</b> play (because all of their houses are empty). In that case, the other player collects all his seeds and puts them in his storage.</p>
+        <p>The player whose storage has the most seeds wins!</p>
+    </section>
 
-        <section id="game">
-            <h1>Let's play!</h1>
-            <div id="gameboard">
-                <div class="storage"></div>
-                <div class="middleBoard">
-                    <div class="cell">
-                        <div class="seedRow">
-                            <span class="seed"></span>
-                            <span class="seed"></span>
-                            <span class="seed"></span>
-                        </div>
-                        <div class="seedRow">
-                            <span class="seed"></span>
-                            <span class="seed"></span>
-                            <span class="seed"></span>
-                        </div>
-                        <div class="seedRow">
-                            <span class="seed"></span>
-                            <span class="seed"></span>
-                            <span class="seed"></span>
-                        </div>
+    <section id="game">
+        <h1>Let's play!</h1>
+        <div id="gameboard">
+            <div class="storage"></div>
+            <div class="middleBoard">
+                <div class="cell">
+                    <div class="seedRow">
+                        <span class="seed"></span>
+                        <span class="seed"></span>
+                        <span class="seed"></span>
                     </div>
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                    <div class="cell"></div>
+                    <div class="seedRow">
+                        <span class="seed"></span>
+                        <span class="seed"></span>
+                        <span class="seed"></span>
+                    </div>
+                    <div class="seedRow">
+                        <span class="seed"></span>
+                        <span class="seed"></span>
+                        <span class="seed"></span>
+                    </div>
                 </div>
-                <div class="storage"></div>
-                <div class="middleBoard">
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                </div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
             </div>
+            <div class="storage"></div>
+            <div class="middleBoard">
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
+        </div>
 
-        </section>
+    </section>
 
-        <section id="configuration">
+    <section id="configuration">
 
-        </section>
+    </section>
 
-        <section id="classification">
+    <section id="classification">
 
-        </section>
+    </section>
 
-        <section id="messages">
+    <section id="messages">
 
-        </section>
+    </section>
 
-    </body>
+</body>
 
 </html>
