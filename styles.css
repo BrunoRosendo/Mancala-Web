@@ -3,12 +3,13 @@ body {
     background-color: moccasin;
 }
 
-h1 {
-    padding-left: 2em;
+section {
+    padding-left: 5em;
+    padding-right: 5em;
 }
 
 p {
-    padding-left: 4em;
+    padding-left: 2em;
 }
 
 
@@ -98,4 +99,9 @@ header {
 
 #instructions ul {
     padding-left: 7em;
+}
+
+/* Commands */
+#commands {
+  margin-top: 1em;
 }
