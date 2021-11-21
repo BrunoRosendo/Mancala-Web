@@ -20,6 +20,45 @@
     </header>
 
     <section id="configuration">
+        <h1>Configuration</h1>
+        <form>
+            <div class="formRow">
+                <div>
+                    <label for="numHouses">Nº of Houses</label>
+                    <input type="range" value="6" min="2" max="10" step="1" name="numHousesRange">
+                    <output for="numHousesRange">6</output>
+                </div>
+                <div>
+                    <label for="numSeeds">Nº of Seeds</label>
+                    <input type="range" value="6" min="2" max="10" step="1" name="numSeedsRange">
+                    <output for="numSeedsRange">4</output>
+                </div>
+            </div>
+            <div class="formRow">
+                <div style="justify-content: center; align-content: center;">
+                    <label for="multiplayer">Multiplayer</label>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div>
+                    <label for="playOrder">Play first</label>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div>
+                    <label for="aiLevel">AI level</label>
+                    <select name="AiLevel">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+        </form>
 
     </section>
 
