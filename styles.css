@@ -21,6 +21,7 @@ header {
     justify-content: space-between;
     background-color: #966F3C;
     padding: 10px;
+    margin-bottom: 2em;
 }
 
 .authLabel {
@@ -98,4 +99,68 @@ header {
 
 #instructions ul {
     padding-left: 7em;
+}
+
+
+/* Configuration */
+
+#configuration form {
+    padding-top: 5vh;
+}
+
+#configuration .formRow {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 5vh;
+}
+
+
+/* The switch - the box around the slider */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 3.5em;
+    height: 1.5em;
+}
+
+
+/* Hide default HTML checkbox */
+
+.switch input {
+    opacity: 0;
+}
+
+
+/* The slider */
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 5em;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.1em;
+    width: 1.1em;
+    left: 0.4em;
+    top: 0.2em;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:checked+.slider:before {
+    transform: translateX(1.5em);
 }
