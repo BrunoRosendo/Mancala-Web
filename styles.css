@@ -24,7 +24,9 @@ button, .button {
     border: 0.1em solid rgb(180, 0, 0);
     border-radius: 0.6em;
     padding: 0.4em;
-    margin: 0 1em 0 1em
+    margin: 0 1em 0 1em;
+
+    cursor: pointer;
 }
 
 button:hover,
@@ -44,7 +46,7 @@ button:active,
 header {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     background-color: #966F3C;
     padding: 0.5em;
@@ -63,16 +65,30 @@ header {
 }
 
 #auth {
-    color: black;
-    padding-top: 1em;
     padding-right: 5em;
 }
 
+input[type=text], input[type=password] {
+    padding: 0.3em 0;
+    border: 1px solid black;
+    border-radius: 1em;
+    background-color: rgb(253, 214, 146);
+}
+
+#auth label {
+    font-size: 1.2em;
+    color: black;
+    font-weight: bold;
+    text-shadow: 0 1px 3px rgb(199, 60, 60);
+}
+
 .submitButton {
-    font: 1.1em 'Courier New', Courier, monospace;
+    font: 1.2em 'Courier New', Courier, monospace;
+    font-weight: 700;
     text-shadow: 0 2px 2px #966F3C;
 
     background-color: rgb(253, 214, 146);
+    border-color: black;
 
     padding: 0.2em 0.6em 0.2em 0.6em;
     margin-left: 1em;
