@@ -12,20 +12,18 @@ p {
     padding-left: 2em;
 }
 
-button, .button {
+button,
+.button {
     color: rgb(180, 0, 0);
     font: 1.5em 'Courier New', Courier, monospace;
     font-weight: bold;
     text-shadow: 0 1px 2px moccasin;
-
     background-color: #b6894e;
     box-shadow: inset 0 1px 0 moccasin;
-
     border: 0.1em solid rgb(180, 0, 0);
     border-radius: 0.6em;
     padding: 0.4em;
     margin: 0 1em 0 1em;
-
     cursor: pointer;
 }
 
@@ -68,7 +66,8 @@ header {
     padding-right: 5em;
 }
 
-input[type=text], input[type=password] {
+input[type=text],
+input[type=password] {
     padding: 0.3em 0;
     border: 1px solid black;
     border-radius: 1em;
@@ -86,10 +85,8 @@ input[type=text], input[type=password] {
     font: 1.2em 'Courier New', Courier, monospace;
     font-weight: 700;
     text-shadow: 0 2px 2px #966F3C;
-
     background-color: rgb(253, 214, 146);
     border-color: black;
-
     padding: 0.2em 0.6em 0.2em 0.6em;
     margin-left: 1em;
 }
@@ -223,4 +220,29 @@ input:checked+.slider:before {
     display: flex;
     justify-content: center;
     margin-top: 1em;
+}
+
+
+/* Scoreboard */
+
+#scoreboard table,
+#scoreboard td,
+#scoreboard th {
+    border: 1px solid black;
+}
+
+#scoreboard table {
+    border-collapse: collapse;
+    width: 60%;
+    margin: auto
+}
+
+#scoreboard td {
+    text-align: center;
+}
+
+#messages .messageContainer {
+    height: 15vh;
+    border-radius: 5vh;
+    background-color: lightblue;
 }
