@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <title>Mancala</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
 </head>
 
 <body>
@@ -65,8 +66,8 @@
     <section id="commands">
         <button>Start game</button>
         <button>Concede</button>
-        <button>How to play</button>
-        <button>Show ranking</button>
+        <button onclick=toggleInstructions()>How to play</button>
+        <button onclick=toggleRanking()>Show ranking</button>
     </section>
 
     <section id="instructions">
