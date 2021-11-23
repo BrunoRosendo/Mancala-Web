@@ -6,6 +6,7 @@ body {
 section {
     padding-left: 5em;
     padding-right: 5em;
+    padding-bottom: 1em;
 }
 
 p {
@@ -219,7 +220,6 @@ input:checked+.slider:before {
 #commands {
     display: flex;
     justify-content: center;
-    margin-top: 1em;
 }
 
 
