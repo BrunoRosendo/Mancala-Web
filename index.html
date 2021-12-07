@@ -71,7 +71,7 @@
         <button onclick=toggleInstructions()>How to play</button>
         <button onclick=toggleScoreboard()>Show scoreboard</button>
     </section>
-    
+
     <section id="instructions">
         <h2>How to play</h2>
         <p>The gameboard is made of two sets of houses sided by two storages. Each player controls the cavities on their side.</p>
@@ -106,8 +106,16 @@
     </section>
 
     <section id="game">
-        <h2>Let's play!</h2>
-        <div id="gameboard"></div>
+        <h1>Let's play!</h1>
+        <div class="flexContainer">
+            <div class="flexElem playerInfoContainer">
+                <h3>Player 1</h3>
+                <h3>Score:</h3>
+            </div>
+            <div id="gameboard"></div>
+            <div class="flexElem playerInfoContainer"></div>
+        </div>
+
     </section>
 
     <section id="messages">

@@ -4,8 +4,8 @@ body {
 }
 
 section {
-    padding-left: 5em;
-    padding-right: 5em;
+    padding-left: 2em;
+    padding-right: 2em;
     padding-bottom: 1em;
 }
 
@@ -97,12 +97,12 @@ input[type=password] {
 
 #gameboard {
     display: grid;
-    width: 80%;
+    flex: 8;
     height: 60vh;
     grid-template-columns: 1fr 5fr 1fr;
     grid-template-rows: 1fr 1fr;
     background: url('img/wood.jpg');
-    margin: 0 10% 0 10%;
+    margin: auto;
 }
 
 .middleBoard {
@@ -140,6 +140,13 @@ input[type=password] {
     height: 2.2vh;
     border-radius: 50%;
     background: radial-gradient(closest-side, rgba(255, 255, 255, 0.55), transparent), rgb(180, 0, 0);
+}
+
+.playerInfoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: gray
 }
 
 
@@ -246,4 +253,12 @@ input:checked+.slider:before {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.flexContainer {
+    display: flex;
+}
+
+.flexElem {
+    flex: 1;
 }
