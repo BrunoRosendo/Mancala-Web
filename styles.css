@@ -110,14 +110,15 @@ input[type=password] {
     flex-direction: row;
 }
 
-.cell,
+.house,
 .storage {
     border-radius: 7vh;
     background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent 80%), url('img/darkwood.jpg');
     margin: 1em;
 }
 
-.cell {
+.house {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -126,24 +127,19 @@ input[type=password] {
 }
 
 .storage {
+    position: relative;
     grid-row-end: span 2;
     width: 80%;
     justify-self: center;
 }
 
-.seedRow {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 100%
-}
-
 .seed {
-    width: 27%;
-    height: 25%;
+    position: absolute;
+    top: 0;
+    width: 3.2vh;
+    height: 2.2vh;
     border-radius: 50%;
     background: radial-gradient(closest-side, rgba(255, 255, 255, 0.55), transparent), rgb(180, 0, 0);
-    transform: rotate(-30deg);
 }
 
 

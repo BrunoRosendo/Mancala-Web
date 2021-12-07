@@ -1,7 +1,7 @@
-const $ = (selector) => document.querySelector(selector);
+let gameBoard;
 
-$("#instructions").style.display = "none";
-$("#scoreboard").style.display = "none";
+$('#instructions').style.display = "none";
+$('#scoreboard').style.display = "none";
 
 const hideElem = (elem) => {
   $(elem).style.display = "none";
@@ -10,22 +10,28 @@ const hideElem = (elem) => {
 const toggleBlockElem = (elem) => {
   prevDisplay = $(elem).style.display;
 
-  if (prevDisplay === "none") $(elem).style.display = "block";
-  else hideElem(elem);
+  if (prevDisplay === "none")
+    $(elem).style.display = "block";
+  else
+    hideElem(elem);
 };
 
 const toggleInstructions = () => toggleBlockElem("#instructions");
 const toggleScoreboard = () => toggleBlockElem("#scoreboard");
 const toggleConfig = () => toggleBlockElem("#configuration");
 
-const numHouses = $("input[name=numHousesRange]");
-numHouses.addEventListener("change", () => {
-  $("output[for=numHousesRange]").value = numHouses.value;
+const numHousesInput = $("input[id=numHousesRange]");
+numHousesInput.addEventListener('change', (e) => {
+  const numHouses = e.target.value;
+  $('output[for=numHousesRange]').value = numHouses;
+  gameBoard.resetBoard(null, numHouses);
 });
 
-const numSeeds = $("input[name=numSeedsRange]");
-numSeeds.addEventListener("change", () => {
-  $("output[for=numSeedsRange]").value = numSeeds.value;
+const numSeedsInput = $("input[id=numSeedsRange]");
+numSeedsInput.addEventListener('change', (e) => {
+  const numSeeds = e.target.value;
+  $('output[for=numSeedsRange]').value = numSeeds;
+  gameBoard.resetBoard(numSeeds);
 });
 
 const enableButton = (button) => {
@@ -60,3 +66,15 @@ const concede = () => {
   disableButton(concedeButton);
   toggleConfig();
 };
+
+const load = () => {
+  const initialHouses = numHousesInput.value;
+  const initialSeeds = numSeedsInput.value;
+
+  gameBoard = new Gameboard("#gameboard", initialHouses, initialSeeds);
+
+  $('output[for=numHousesRange]').value = initialHouses;
+  $('output[for=numSeedsRange]').value = initialSeeds;
+};
+
+load();
