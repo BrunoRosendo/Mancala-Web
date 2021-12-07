@@ -28,18 +28,35 @@ numSeeds.addEventListener("change", () => {
   $("output[for=numSeedsRange]").value = numSeeds.value;
 });
 
+const enableButton = (button) => {
+  button.style.display = "block";
+  button.disabled = false;
+};
+
+const disableButton = (button) => {
+  button.style.display = "none";
+  button.disabled = true;
+};
+
 const startGame = () => {
   const concedeButton = $("button[id=concedeButton]");
   const startButton = $("button[id=startButton]");
-  concedeButton.disabled = false;
-  startButton.disabled = true;
+  enableButton(concedeButton);
+  disableButton(startButton);
   toggleConfig();
+
+  const gameElem = $("#game");
+  gameElem.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+    inline: "nearest",
+  });
 };
 
 const concede = () => {
   const concedeButton = $("button[id=concedeButton]");
   const startButton = $("button[id=startButton]");
-  concedeButton.disabled = true;
-  startButton.disabled = false;
+  enableButton(startButton);
+  disableButton(concedeButton);
   toggleConfig();
 };
