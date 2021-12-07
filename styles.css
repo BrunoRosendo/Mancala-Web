@@ -222,6 +222,10 @@ input:checked+.slider:before {
     justify-content: center;
 }
 
+#commands #concedeButton {
+    display: none;
+}
+
 
 /* Scoreboard */
 
