@@ -237,8 +237,13 @@ input:checked+.slider:before {
     text-align: center;
 }
 
-#messages .messageContainer {
+.messageContainer {
     height: 15vh;
+    width: 90%;
+    margin: auto;
     border-radius: 5vh;
     background-color: lightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
