@@ -2,6 +2,7 @@ let gameBoard;
 
 $('#instructions').style.display = "none";
 $('#scoreboard').style.display = "none";
+$('#concedeButton').style.display = "none";
 
 const hideElem = (elem) => {
   $(elem).style.display = "none";
@@ -34,21 +35,11 @@ numSeedsInput.addEventListener('change', (e) => {
   gameBoard.resetBoard(numSeeds);
 });
 
-const enableButton = (button) => {
-  button.style.display = "block";
-  button.disabled = false;
-};
-
-const disableButton = (button) => {
-  button.style.display = "none";
-  button.disabled = true;
-};
-
 const startGame = () => {
   const concedeButton = $("button[id=concedeButton]");
   const startButton = $("button[id=startButton]");
-  enableButton(concedeButton);
-  disableButton(startButton);
+  toggleBlockElem("button[id=concedeButton]");
+  toggleBlockElem("button[id=startButton]");
   toggleConfig();
 
   const gameElem = $("#game");
@@ -62,8 +53,8 @@ const startGame = () => {
 const concede = () => {
   const concedeButton = $("button[id=concedeButton]");
   const startButton = $("button[id=startButton]");
-  enableButton(startButton);
-  disableButton(concedeButton);
+  toggleBlockElem("button[id=startButton]");
+  toggleBlockElem("button[id=concedeButton]");
   toggleConfig();
 };
 
