@@ -5,7 +5,9 @@
     <meta charset="UTF-8" />
     <title>Mancala</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="script.js" defer></script>
+    <script type="text/javascript" src="scripts/utils.js"></script>
+    <script type="text/javascript" src="scripts/Gameboard.js"></script>
+    <script src="scripts/script.js" defer></script>
 </head>
 
 <body>
@@ -21,17 +23,17 @@
     </header>
 
     <section id="configuration">
-        <h1>Configuration</h1>
+        <h2>Configuration</h2>
         <form>
             <div class="formRow">
                 <div>
-                    <label for="numHouses">Nº of Houses</label>
-                    <input type="range" value="6" min="2" max="10" step="1" name="numHousesRange">
-                    <output for="numHousesRange">6</output>
+                    <label for="numHousesRange">Nº of Houses</label>
+                    <input type="range" value="5" min="2" max="10" step="1" id="numHousesRange">
+                    <output for="numHousesRange">5</output>
                 </div>
                 <div>
-                    <label for="numSeeds">Nº of Seeds</label>
-                    <input type="range" value="6" min="2" max="10" step="1" name="numSeedsRange">
+                    <label for="numSeedsRange">Nº of Seeds</label>
+                    <input type="range" value="6" min="2" max="10" step="1" id="numSeedsRange">
                     <output for="numSeedsRange">4</output>
                 </div>
             </div>
@@ -39,20 +41,20 @@
                 <div style="justify-content: center; align-content: center;">
                     <label for="multiplayer">Multiplayer</label>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="multiplayer">
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div>
                     <label for="playOrder">Play first</label>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="playOrder">
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div>
                     <label for="aiLevel">AI level</label>
-                    <select name="AiLevel">
+                    <select id="aiLevel">
                         <option value="easy">Easy</option>
                         <option value="medium">Medium</option>
                         <option value="hard">Hard</option>
@@ -65,13 +67,13 @@
 
     <section id="commands">
         <button id="startButton" onclick="startGame()"> Start game</button>
-        <button id="concedeButton" onclick="concede()" disabled>Concede</button>
+        <button id="concedeButton" onclick="concede()">Concede</button>
         <button onclick=toggleInstructions()>How to play</button>
         <button onclick=toggleScoreboard()>Show scoreboard</button>
     </section>
-
+    
     <section id="instructions">
-        <h1>How to play</h1>
+        <h2>How to play</h2>
         <p>The gameboard is made of two sets of houses sided by two storages. Each player controls the cavities on their side.</p>
         <p>In the start of the game, the seeds are evenly placed between all houses. From then on, the players sow their seeds alternately, from one of their houses. According to the place of their last sowed seed, they can either play again or take some
             of the opponent's seeds. The game ends when one of the players is out of seeds</p>
@@ -86,7 +88,7 @@
     </section>
 
     <section id="scoreboard">
-        <h1>Scoreboard</h1>
+        <h2>Scoreboard</h2>
         <table>
             <tr>
                 <th scope="col">Name</th>
@@ -104,47 +106,12 @@
     </section>
 
     <section id="game">
-        <h1>Let's play!</h1>
-        <div id="gameboard">
-            <div class="storage"></div>
-            <div class="middleBoard">
-                <div class="cell">
-                    <div class="seedRow">
-                        <span class="seed"></span>
-                        <span class="seed"></span>
-                        <span class="seed"></span>
-                    </div>
-                    <div class="seedRow">
-                        <span class="seed"></span>
-                        <span class="seed"></span>
-                        <span class="seed"></span>
-                    </div>
-                    <div class="seedRow">
-                        <span class="seed"></span>
-                        <span class="seed"></span>
-                        <span class="seed"></span>
-                    </div>
-                </div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-            </div>
-            <div class="storage"></div>
-            <div class="middleBoard">
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-            </div>
-        </div>
+        <h2>Let's play!</h2>
+        <div id="gameboard"></div>
     </section>
 
     <section id="messages">
-        <h1>Messages</h1>
+        <h2>Messages</h2>
         <div class="messageContainer">
 
         </div>
