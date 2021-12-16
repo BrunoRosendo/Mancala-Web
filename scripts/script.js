@@ -1,4 +1,4 @@
-let gameBoard;
+let game;
 
 $('#instructions').style.display = "none";
 $('#scoreboard').style.display = "none";
@@ -25,19 +25,17 @@ const numHousesInput = $("input[id=numHousesRange]");
 numHousesInput.addEventListener('change', (e) => {
   const numHouses = e.target.value;
   $('output[for=numHousesRange]').value = numHouses;
-  gameBoard.resetBoard(null, numHouses);
+  game.resetBoard(null, numHouses);
 });
 
 const numSeedsInput = $("input[id=numSeedsRange]");
 numSeedsInput.addEventListener('change', (e) => {
   const numSeeds = e.target.value;
   $('output[for=numSeedsRange]').value = numSeeds;
-  gameBoard.resetBoard(numSeeds);
+  game.resetBoard(numSeeds);
 });
 
 const startGame = () => {
-  const concedeButton = $("button[id=concedeButton]");
-  const startButton = $("button[id=startButton]");
   toggleBlockElem("button[id=concedeButton]");
   toggleBlockElem("button[id=startButton]");
   toggleConfig();
@@ -48,11 +46,11 @@ const startGame = () => {
     block: "start",
     inline: "nearest",
   });
+
+  game.play();
 };
 
 const concede = () => {
-  const concedeButton = $("button[id=concedeButton]");
-  const startButton = $("button[id=startButton]");
   toggleBlockElem("button[id=startButton]");
   toggleBlockElem("button[id=concedeButton]");
   toggleConfig();
@@ -62,10 +60,10 @@ const load = () => {
   const initialHouses = numHousesInput.value;
   const initialSeeds = numSeedsInput.value;
 
-  gameBoard = new Gameboard("#gameboard", initialHouses, initialSeeds);
-
   $('output[for=numHousesRange]').value = initialHouses;
   $('output[for=numSeedsRange]').value = initialSeeds;
+
+  game = new Game(initialHouses, initialSeeds);
 };
 
 load();
