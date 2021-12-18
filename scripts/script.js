@@ -47,13 +47,22 @@ const startGame = () => {
     inline: "nearest",
   });
 
-  game.play();
+  const playFirst = $("#playOrder").checked;
+  const multiplayer = $("#multiplayer").checked;
+  const aiLevel = $("#aiLevel").value;
+
+  game.play(playFirst, multiplayer, aiLevel);
 };
 
-const concede = () => {
+const endGame = () => {
+  game.resetBoard();
   toggleBlockElem("button[id=startButton]");
   toggleBlockElem("button[id=concedeButton]");
   toggleConfig();
+}
+
+const concede = () => {
+  endGame();
 };
 
 const load = () => {
@@ -63,7 +72,17 @@ const load = () => {
   $('output[for=numHousesRange]').value = initialHouses;
   $('output[for=numSeedsRange]').value = initialSeeds;
 
-  game = new Game(initialHouses, initialSeeds);
+  game = new Game(initialSeeds, initialHouses);
 };
 
 load();
+
+/*
+TODO LIST:
+- Atualizar score e mensagens enquanto se joga
+- Dar reset a tudo quando acaba o jogo (depois de confirmar o vencedor, com um butao ou assim)
+- Fazer os diferentes niveis de AI
+- Estado do jogo
+- Mudar a board para nao depender de vh
+- Por delay nas jogadas do bot
+*/
