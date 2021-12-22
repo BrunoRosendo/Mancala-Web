@@ -3,6 +3,7 @@ let game;
 $("#instructions").style.display = "none";
 $("#scoreboard").style.display = "none";
 $("#concedeButton").style.display = "none";
+$("#endGameButton").style.display = "none";
 
 const hideElem = (elem) => {
   $(elem).style.display = "none";
@@ -56,6 +57,7 @@ const endGame = () => {
   game.resetBoard();
   toggleBlockElem("button[id=startButton]");
   toggleBlockElem("button[id=concedeButton]");
+  hideElem("button[id=endGameButton]");
   toggleConfig();
 };
 

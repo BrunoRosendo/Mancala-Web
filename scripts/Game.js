@@ -60,11 +60,14 @@ class Game {
     const playerOneScore = this.boardController.getScore(1);
     const playerTwoScore = this.boardController.getScore(2);
 
-    if (playerOneScore > playerTwoScore) alert("Player one won!");
-    else if (playerTwoScore > playerOneScore) alert("Player two won!");
-    else alert("It's a tie!");
+    if (playerOneScore > playerTwoScore) this.sendMessage("Player one won!");
+    else if (playerTwoScore > playerOneScore)
+      this.sendMessage("Player two won!");
+    else this.sendMessage("It's a tie!");
 
-    endGame(); // This should be called after clicking okay upon winning
+    toggleBlockElem("button[id=endGameButton]");
+
+    // endGame(); // This should be called after clicking okay upon winning
   }
 
   enablePlay() {
@@ -97,5 +100,13 @@ class Game {
   updateScores = (player) => {
     $(`#player${player}-score`).innerHTML =
       this.boardController.getScore(player);
+  };
+
+  /**
+   * Sends a new message to the UI
+   * @param {*} text
+   */
+  sendMessage = (text) => {
+    $("#currMsg").innerHTML = text;
   };
 }
