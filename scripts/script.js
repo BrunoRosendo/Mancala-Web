@@ -1,8 +1,8 @@
 let game;
 
-$('#instructions').style.display = "none";
-$('#scoreboard').style.display = "none";
-$('#concedeButton').style.display = "none";
+$("#instructions").style.display = "none";
+$("#scoreboard").style.display = "none";
+$("#concedeButton").style.display = "none";
 
 const hideElem = (elem) => {
   $(elem).style.display = "none";
@@ -11,10 +11,8 @@ const hideElem = (elem) => {
 const toggleBlockElem = (elem) => {
   prevDisplay = $(elem).style.display;
 
-  if (prevDisplay === "none")
-    $(elem).style.display = "block";
-  else
-    hideElem(elem);
+  if (prevDisplay === "none") $(elem).style.display = "block";
+  else hideElem(elem);
 };
 
 const toggleInstructions = () => toggleBlockElem("#instructions");
@@ -22,16 +20,16 @@ const toggleScoreboard = () => toggleBlockElem("#scoreboard");
 const toggleConfig = () => toggleBlockElem("#configuration");
 
 const numHousesInput = $("input[id=numHousesRange]");
-numHousesInput.addEventListener('change', (e) => {
+numHousesInput.addEventListener("change", (e) => {
   const numHouses = e.target.value;
-  $('output[for=numHousesRange]').value = numHouses;
+  $("output[for=numHousesRange]").value = numHouses;
   game.resetBoard(null, numHouses);
 });
 
 const numSeedsInput = $("input[id=numSeedsRange]");
-numSeedsInput.addEventListener('change', (e) => {
+numSeedsInput.addEventListener("change", (e) => {
   const numSeeds = e.target.value;
-  $('output[for=numSeedsRange]').value = numSeeds;
+  $("output[for=numSeedsRange]").value = numSeeds;
   game.resetBoard(numSeeds);
 });
 
@@ -59,7 +57,7 @@ const endGame = () => {
   toggleBlockElem("button[id=startButton]");
   toggleBlockElem("button[id=concedeButton]");
   toggleConfig();
-}
+};
 
 const concede = () => {
   endGame();
@@ -69,8 +67,8 @@ const load = () => {
   const initialHouses = numHousesInput.value;
   const initialSeeds = numSeedsInput.value;
 
-  $('output[for=numHousesRange]').value = initialHouses;
-  $('output[for=numSeedsRange]').value = initialSeeds;
+  $("output[for=numHousesRange]").value = initialHouses;
+  $("output[for=numSeedsRange]").value = initialSeeds;
 
   game = new Game(initialSeeds, initialHouses);
 };
