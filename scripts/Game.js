@@ -77,6 +77,7 @@ class Game {
       playerOneHouses[i].onclick = () => this.playerTurn(i);
       playerOneHouses[i].className = "house onHover";
     }
+    this.sendMessage("It's your turn!");
   }
 
   disablePlay() {
@@ -107,6 +108,7 @@ class Game {
    * @param {*} text
    */
   sendMessage = (text) => {
+    $("#prevMsg").innerHTML = $("#currMsg").innerHTML;
     $("#currMsg").innerHTML = text;
   };
 }

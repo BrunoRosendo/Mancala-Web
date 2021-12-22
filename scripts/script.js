@@ -58,6 +58,8 @@ const endGame = () => {
   toggleBlockElem("button[id=startButton]");
   toggleBlockElem("button[id=concedeButton]");
   hideElem("button[id=endGameButton]");
+  game.sendMessage(""); // send twice since we display the last 2 messages
+  game.sendMessage("");
   toggleConfig();
 };
 
