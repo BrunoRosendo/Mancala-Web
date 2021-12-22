@@ -166,7 +166,6 @@ class Gameboard {
     for (let i = start; i < start + this.houseRange; ++i)
       if (this.board[i] > 0) return false;
 
-    console.log("player board empty");
     return true;
   }
 

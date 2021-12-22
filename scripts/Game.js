@@ -64,7 +64,7 @@ class Game {
     else if (playerTwoScore > playerOneScore) alert("Player two won!");
     else alert("It's a tie!");
 
-    this.resetBoard(); // This should be called after clicking okay upon winning
+    endGame(); // This should be called after clicking okay upon winning
   }
 
   enablePlay() {
