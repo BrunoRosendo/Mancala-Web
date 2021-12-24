@@ -147,30 +147,30 @@ class Gameboard {
   /**
    * @returns True if the player can play again. False otherwise
    */
-  turn(houseIdx, player) {
+  turn(houseIdx, player, board = this.board) {
     if (player === 2) houseIdx += this.houseRange + 1;
-    let numSeeds = this.board[houseIdx];
+    let numSeeds = board[houseIdx];
 
     const [ownStorage, enemyStorage] =
       player === 1
-        ? [this.houseRange, this.board.length - 1]
-        : [this.board.length - 1, this.houseRange];
+        ? [this.houseRange, board.length - 1]
+        : [board.length - 1, this.houseRange];
 
-    this.board[houseIdx] = 0;
+    board[houseIdx] = 0;
 
     let idx = houseIdx;
     for (; numSeeds > 0; --numSeeds) {
-      idx = ++idx % this.board.length;
+      idx = ++idx % board.length;
       if (idx === enemyStorage) {
         ++numSeeds;
         continue;
       }
 
-      this.board[idx]++;
+      board[idx]++;
     }
 
     if (idx === ownStorage) return true;
-    if (!this.onPlayerHouse(idx, player) || this.board[idx] > 1) return false;
+    if (!this.onPlayerHouse(idx, player) || board[idx] > 1) return false;
 
     const distFromMiddle = Math.abs(this.houseRange - idx);
     const middleStorageIdx = this.houseRange;
@@ -179,18 +179,21 @@ class Gameboard {
         ? middleStorageIdx + distFromMiddle
         : middleStorageIdx - distFromMiddle;
 
-    this.board[ownStorage] += this.board[oppositeIdx] + this.board[idx];
-    this.board[oppositeIdx] = 0;
-    this.board[idx] = 0;
+    board[ownStorage] += board[oppositeIdx] + board[idx];
+    board[oppositeIdx] = 0;
+    board[idx] = 0;
 
     return false;
   }
 
-  isPlayerBoardEmpty(player) {
-    const start = player === 1 ? 0 : this.houseRange + 1;
+  isCellEmpty(idx, player) {
+    const offset = player === 1 ? 0 : this.houseRange + 1;
+    return this.board[idx + offset] <= 0;
+  }
 
-    for (let i = start; i < start + this.houseRange; ++i)
-      if (this.board[i] > 0) return false;
+  isPlayerBoardEmpty(player) {
+    for (let i = 0; i < this.houseRange; ++i)
+      if (!this.isCellEmpty(i, player)) return false;
 
     return true;
   }
@@ -208,14 +211,29 @@ class Gameboard {
     }
   }
 
+  getPossiblePlays(player) {
+    const possiblePlays = [];
+
+    for (let i = 0; i < this.houseRange; ++i) {
+      if (!this.isCellEmpty(i, player))
+        possiblePlays.push(i);
+    }
+
+    return possiblePlays
+  }
+
   /**
    *
    * @param {*} player 1 or 2
    * @returns Score of a player
    */
-  getScore(player) {
+  getScore(player, board = this.board) {
     return player === 1
-      ? this.board[this.houseRange]
-      : this.board[this.board.length - 1];
+      ? board[this.houseRange]
+      : board[board.length - 1];
+  }
+
+  copy() {
+    return [...this.board];
   }
 }
