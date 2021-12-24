@@ -64,7 +64,7 @@ const endGame = () => {
 };
 
 const concede = () => {
-  game.sendMessage("Player two won!"); // For now only P1 can concede (singleplayer)
+  game.sendMessage("Player 1 conceded. Player 2 won!"); // For now only P1 can concede (singleplayer)
   toggleBlockElem("button[id=endGameButton]");
   hideElem("button[id=concedeButton]");
 };

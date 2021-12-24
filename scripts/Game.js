@@ -36,7 +36,13 @@ class Game {
   playerTurn(houseIdx) {
     const oldBoard = [...this.boardController.board];
     const playAgain = this.boardController.turn(houseIdx, 1);
-    this.boardController.updateSeeds(oldBoard);
+    const scoreDiff = this.boardController.updateSeeds(oldBoard);
+    this.sendMessage(
+      `You scored ${scoreDiff} ${
+        scoreDiff != 1 ? "points" : "point"
+      } this round!`
+    );
+
     this.updateScores(1);
 
     if (playAgain) return;
@@ -60,9 +66,8 @@ class Game {
     const playerOneScore = this.boardController.getScore(1);
     const playerTwoScore = this.boardController.getScore(2);
 
-    if (playerOneScore > playerTwoScore) this.sendMessage("Player one won!");
-    else if (playerTwoScore > playerOneScore)
-      this.sendMessage("Player two won!");
+    if (playerOneScore > playerTwoScore) this.sendMessage("Player 1 won!");
+    else if (playerTwoScore > playerOneScore) this.sendMessage("Player 2 won!");
     else this.sendMessage("It's a tie!");
 
     toggleBlockElem("button[id=endGameButton]");
