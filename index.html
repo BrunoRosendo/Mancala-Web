@@ -111,10 +111,19 @@
         <div class="flexContainer">
             <div class="flexElem playerInfoContainer">
                 <h3>Player 1</h3>
-                <h3>Score:</h3>
+                <div class="flexContainer">
+                    <h3>Score:</h3>
+                    <h3 id="player1-score"></h3>
+                </div>
             </div>
             <div id="gameboard"></div>
-            <div class="flexElem playerInfoContainer"></div>
+            <div class="flexElem playerInfoContainer">
+                <h3>Player 2</h3>
+                <div class="flexContainer">
+                    <h3>Score:</h3>
+                    <h3 id="player2-score"></h3>
+                </div>
+            </div>
         </div>
 
     </section>
@@ -122,7 +131,11 @@
     <section id="messages">
         <h2>Messages</h2>
         <div class="messageContainer">
-            <h3>It's your turn!</h3>
+            <div class="currentMsgContainer">
+                <h3 id="currMsg"></h3>
+                <button id="endGameButton" onclick="endGame()">OK</button>
+            </div>
+            <h3 id="prevMsg"></h3>
         </div>
     </section>
 </body>

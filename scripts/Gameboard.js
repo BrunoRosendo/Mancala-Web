@@ -1,5 +1,4 @@
 class Gameboard {
-
   constructor(parent, seedRange, houseRange) {
     this.parent = $(parent);
     this.seedRange = parseInt(seedRange);
@@ -70,17 +69,29 @@ class Gameboard {
     const containers = this.parent.children;
 
     // Player2's storage
-    this.updateCellSeeds(containers[0], oldBoard[this.board.length - 1], this.board[this.board.length - 1]);
-  
+    this.updateCellSeeds(
+      containers[0],
+      oldBoard[this.board.length - 1],
+      this.board[this.board.length - 1]
+    );
+
     // Second player (top row)
     const fstMiddle = containers[1].children;
     for (let i = 1; i <= fstMiddle.length; i++) {
       const house = fstMiddle[fstMiddle.length - i]; // reverse order in HTML
-      this.updateCellSeeds(house, oldBoard[i + this.houseRange], this.board[i + this.houseRange]);
+      this.updateCellSeeds(
+        house,
+        oldBoard[i + this.houseRange],
+        this.board[i + this.houseRange]
+      );
     }
 
     // Player1's storage
-    this.updateCellSeeds(containers[2], oldBoard[this.houseRange], this.board[this.houseRange]);
+    this.updateCellSeeds(
+      containers[2],
+      oldBoard[this.houseRange],
+      this.board[this.houseRange]
+    );
 
     // First player (bottom row)
     const sndMiddle = containers[3].children;
@@ -102,10 +113,9 @@ class Gameboard {
   }
 
   onPlayerHouse(idx, player) {
-    return player == 1 ?
-      idx >= 0 && idx < this.houseRange
-    :
-      idx > this.houseRange && idx < this.board.length - 1;
+    return player == 1
+      ? idx >= 0 && idx < this.houseRange
+      : idx > this.houseRange && idx < this.board.length - 1;
   }
 
   /**
@@ -115,16 +125,16 @@ class Gameboard {
     if (player === 2) houseIdx += this.houseRange + 1;
     let numSeeds = this.board[houseIdx];
 
-    const [ownStorage, enemyStorage] = player === 1 ?
-      [this.houseRange, this.board.length - 1]
-    :
-      [this.board.length - 1, this.houseRange];
+    const [ownStorage, enemyStorage] =
+      player === 1
+        ? [this.houseRange, this.board.length - 1]
+        : [this.board.length - 1, this.houseRange];
 
     this.board[houseIdx] = 0;
 
     let idx = houseIdx;
     for (; numSeeds > 0; --numSeeds) {
-      idx = (++idx) % this.board.length;
+      idx = ++idx % this.board.length;
       if (idx === enemyStorage) {
         ++numSeeds;
         continue;
@@ -134,16 +144,15 @@ class Gameboard {
     }
 
     if (idx === ownStorage) return true;
-    if (!this.onPlayerHouse(idx, player) || this.board[idx] > 1)
-      return false;
+    if (!this.onPlayerHouse(idx, player) || this.board[idx] > 1) return false;
 
     const distFromMiddle = Math.abs(this.houseRange - idx);
     const middleStorageIdx = this.houseRange;
-    const oppositeIdx = player === 1 ?
-        middleStorageIdx + distFromMiddle
-      :
-        middleStorageIdx - distFromMiddle;
-  
+    const oppositeIdx =
+      player === 1
+        ? middleStorageIdx + distFromMiddle
+        : middleStorageIdx - distFromMiddle;
+
     this.board[ownStorage] += this.board[oppositeIdx] + this.board[idx];
     this.board[oppositeIdx] = 0;
     this.board[idx] = 0;
@@ -163,16 +172,24 @@ class Gameboard {
   collectAllSeeds(player) {
     const storage = player === 1 ? this.houseRange : this.board.length - 1;
 
-    for (let i = 0; i < this.houseRange; ++i)
+    for (let i = 0; i < this.houseRange; ++i) {
       this.board[storage] += this.board[i];
-    for (let i = this.houseRange + 1; i < this.board.length; ++i)
+      this.board[i] = 0;
+    }
+    for (let i = this.houseRange + 1; i < this.board.length - 1; ++i) {
       this.board[storage] += this.board[i];
+      this.board[i] = 0;
+    }
   }
 
+  /**
+   *
+   * @param {*} player 1 or 2
+   * @returns Score of a player
+   */
   getScore(player) {
-    return player === 1 ?
-      this.board[this.houseRange]
-    :
-      this.board[this.board.length - 1];
+    return player === 1
+      ? this.board[this.houseRange]
+      : this.board[this.board.length - 1];
   }
 }
