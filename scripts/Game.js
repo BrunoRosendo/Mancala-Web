@@ -14,7 +14,10 @@ class Game {
     else this.aiTurn();
   }
 
-  aiTurn() {
+  async aiTurn() {
+    const oldScore = this.boardController.getScore(2);
+    await sleep(1000);
+
     const playAgain = this.bot.turn();
 
     const newScore = this.boardController.getScore(2);
@@ -28,7 +31,7 @@ class Game {
 
     if (playAgain) {
       if (this.isGameOver()) this.declareWinner();
-      else this.aiTurn();
+      else await this.aiTurn();
       return; // Need to return here to avoid executing the next lines twice
     }
 
