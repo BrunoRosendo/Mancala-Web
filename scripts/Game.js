@@ -66,6 +66,7 @@ class Game {
     else this.sendMessage("It's a tie!");
 
     toggleBlockElem("button[id=endGameButton]");
+    hideElem("button[id=concedeButton]");
 
     // endGame(); // This should be called after clicking okay upon winning
   }
