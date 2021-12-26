@@ -31,6 +31,8 @@ class Gameboard {
     const storage = document.createElement("div");
     storage.className = "storage";
 
+    storage.appendChild(this.createHouseScore(0));
+
     return storage;
   }
 
@@ -41,13 +43,27 @@ class Gameboard {
     for (let i = 0; i < this.houseRange; ++i) {
       const house = document.createElement("div");
       house.className = "house";
+
       for (let j = 0; j < this.seedRange; ++j)
         house.appendChild(this.createSeed());
 
+      house.appendChild(this.createHouseScore(this.seedRange));
       middleBoard.appendChild(house);
     }
 
     return middleBoard;
+  }
+
+  /**
+   * Creates a score elemnt with a given score
+   * @param {*} numSeeds
+   * @returns h3 with given score
+   */
+  createHouseScore(numSeeds) {
+    const houseScore = document.createElement("h3");
+    houseScore.innerHTML = numSeeds;
+    houseScore.className = "houseScore";
+    return houseScore;
   }
 
   createSeed() {
@@ -55,6 +71,7 @@ class Gameboard {
     const randLeft = Math.floor(20 + Math.random() * 50);
 
     const seed = document.createElement("div");
+
     seed.className = "seed";
     seed.style.top = randTop + "%";
     seed.style.left = randLeft + "%";
@@ -111,12 +128,17 @@ class Gameboard {
   updateCellSeeds(elem, oldNumSeeds, newNumSeeds) {
     let diff = newNumSeeds - oldNumSeeds;
 
+    // Remove Previous score element
+    elem.removeChild(elem.lastChild);
+
     if (diff < 0) {
       while (diff++ < 0) elem.removeChild(elem.firstChild);
-      return;
+    } else {
+      while (diff-- > 0) elem.appendChild(this.createSeed());
     }
 
-    while (diff-- > 0) elem.appendChild(this.createSeed());
+    // Append the New Score element
+    elem.appendChild(this.createHouseScore(newNumSeeds));
   }
 
   onPlayerHouse(idx, player) {
