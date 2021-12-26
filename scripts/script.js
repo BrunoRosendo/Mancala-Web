@@ -56,7 +56,7 @@ const startGame = () => {
 const endGame = () => {
   game.resetBoard();
   toggleBlockElem("button[id=startButton]");
-  toggleBlockElem("button[id=concedeButton]");
+  hideElem("button[id=concedeButton]");
   hideElem("button[id=endGameButton]");
   game.sendMessage(""); // send twice since we display the last 2 messages
   game.sendMessage("");
@@ -64,7 +64,9 @@ const endGame = () => {
 };
 
 const concede = () => {
-  endGame();
+  game.sendMessage("Player 1 conceded. Player 2 won!"); // For now only P1 can concede (singleplayer)
+  toggleBlockElem("button[id=endGameButton]");
+  hideElem("button[id=concedeButton]");
 };
 
 const load = () => {

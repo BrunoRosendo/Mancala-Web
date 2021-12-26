@@ -18,9 +18,19 @@ class Game {
       Math.random() * this.boardController.houseRange
     );
     const oldBoard = [...this.boardController.board];
+    const oldScore = this.boardController.getScore(2);
 
     const playAgain = this.boardController.turn(houseIdx, 2);
     this.boardController.updateSeeds(oldBoard);
+
+    const newScore = this.boardController.getScore(2);
+    const scoreDiff = newScore - oldScore;
+    this.sendMessage(
+      `The Opponent scored ${scoreDiff} ${
+        scoreDiff != 1 ? "points" : "point"
+      } this round!`
+    );
+
     this.updateScores(2);
 
     if (playAgain) {
@@ -35,8 +45,19 @@ class Game {
 
   playerTurn(houseIdx) {
     const oldBoard = [...this.boardController.board];
+    const oldScore = this.boardController.getScore(1);
+
     const playAgain = this.boardController.turn(houseIdx, 1);
     this.boardController.updateSeeds(oldBoard);
+
+    const newScore = this.boardController.getScore(1);
+    const scoreDiff = newScore - oldScore;
+    this.sendMessage(
+      `You scored ${scoreDiff} ${
+        scoreDiff != 1 ? "points" : "point"
+      } this round!`
+    );
+
     this.updateScores(1);
 
     if (playAgain) return;
@@ -60,14 +81,12 @@ class Game {
     const playerOneScore = this.boardController.getScore(1);
     const playerTwoScore = this.boardController.getScore(2);
 
-    if (playerOneScore > playerTwoScore) this.sendMessage("Player one won!");
-    else if (playerTwoScore > playerOneScore)
-      this.sendMessage("Player two won!");
+    if (playerOneScore > playerTwoScore) this.sendMessage("Player 1 won!");
+    else if (playerTwoScore > playerOneScore) this.sendMessage("Player 2 won!");
     else this.sendMessage("It's a tie!");
 
     toggleBlockElem("button[id=endGameButton]");
-
-    // endGame(); // This should be called after clicking okay upon winning
+    hideElem("button[id=concedeButton]");
   }
 
   enablePlay() {

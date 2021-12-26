@@ -130,6 +130,12 @@ input[type=password] {
     cursor: pointer
 }
 
+.houseScore {
+    position: absolute;
+    right: 1em;
+    bottom: 0.5em;
+}
+
 .storage {
     position: relative;
     grid-row-end: span 2;
