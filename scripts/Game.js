@@ -6,22 +6,19 @@ class Game {
   play(playFirst, multiplayer, aiLevel) {
     this.currentPlayer = playFirst ? 1 : 2;
     this.multiplayer = multiplayer;
-    this.aiLevel = aiLevel;
+
+    if (!multiplayer)
+      this.bot = new Bot(aiLevel, this.boardController);
 
     if (playFirst) this.enablePlay();
     else this.aiTurn();
   }
 
-  aiTurn() {
-    // TODO: Check if the house is empty before selecting
-    const houseIdx = Math.floor(
-      Math.random() * this.boardController.houseRange
-    );
-    const oldBoard = [...this.boardController.board];
+  async aiTurn() {
     const oldScore = this.boardController.getScore(2);
+    await sleep(1000);
 
-    const playAgain = this.boardController.turn(houseIdx, 2);
-    this.boardController.updateSeeds(oldBoard);
+    const playAgain = this.bot.turn();
 
     const newScore = this.boardController.getScore(2);
     const scoreDiff = newScore - oldScore;
@@ -30,12 +27,12 @@ class Game {
         scoreDiff != 1 ? "points" : "point"
       } this round!`
     );
-
     this.updateScores(2);
 
     if (playAgain) {
-      this.aiTurn();
-      return; // Need to return here to avoid executing the next lines twice?
+      if (this.isGameOver()) this.declareWinner();
+      else await this.aiTurn();
+      return; // Need to return here to avoid executing the next lines twice
     }
 
     this.currentPlayer = 1;
@@ -44,7 +41,7 @@ class Game {
   }
 
   playerTurn(houseIdx) {
-    const oldBoard = [...this.boardController.board];
+    const oldBoard = this.boardController.copy();
     const oldScore = this.boardController.getScore(1);
 
     const playAgain = this.boardController.turn(houseIdx, 1);
@@ -60,9 +57,14 @@ class Game {
 
     this.updateScores(1);
 
-    if (playAgain) return;
-
     this.disablePlay();
+
+    if (playAgain) {
+      if (this.isGameOver()) this.declareWinner();
+      else this.enablePlay(); // Playable seeds must be updated
+      return;
+    }
+
     this.currentPlayer = 2;
     if (this.isGameOver()) this.declareWinner();
     else this.aiTurn();
@@ -73,11 +75,13 @@ class Game {
   }
 
   declareWinner() {
-    const oldBoard = [...this.boardController.board];
+    const oldBoard = this.boardController.copy();
     this.boardController.collectAllSeeds(this.currentPlayer === 1 ? 2 : 1);
     this.boardController.updateSeeds(oldBoard);
+
     this.updateScores(1);
     this.updateScores(2);
+
     const playerOneScore = this.boardController.getScore(1);
     const playerTwoScore = this.boardController.getScore(2);
 
