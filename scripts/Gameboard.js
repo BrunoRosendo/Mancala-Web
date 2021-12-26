@@ -85,7 +85,6 @@ class Gameboard {
   /**
    * Updates the board taking into account the oldBoard
    * @param {*} oldBoard
-   * @returns Number of seeds added to P1's storage
    */
   updateSeeds(oldBoard) {
     const containers = this.parent.children;
@@ -121,8 +120,6 @@ class Gameboard {
       const house = sndMiddle[i]; // reverse order in HTML
       this.updateCellSeeds(house, oldBoard[i], this.board[i]);
     }
-
-    return this.board[this.houseRange] - oldBoard[this.houseRange];
   }
 
   updateCellSeeds(elem, oldNumSeeds, newNumSeeds) {

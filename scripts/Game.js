@@ -18,9 +18,19 @@ class Game {
       Math.random() * this.boardController.houseRange
     );
     const oldBoard = [...this.boardController.board];
+    const oldScore = this.boardController.getScore(2);
 
     const playAgain = this.boardController.turn(houseIdx, 2);
     this.boardController.updateSeeds(oldBoard);
+
+    const newScore = this.boardController.getScore(2);
+    const scoreDiff = newScore - oldScore;
+    this.sendMessage(
+      `The Opponent scored ${scoreDiff} ${
+        scoreDiff != 1 ? "points" : "point"
+      } this round!`
+    );
+
     this.updateScores(2);
 
     if (playAgain) {
@@ -35,8 +45,13 @@ class Game {
 
   playerTurn(houseIdx) {
     const oldBoard = [...this.boardController.board];
+    const oldScore = this.boardController.getScore(1);
+
     const playAgain = this.boardController.turn(houseIdx, 1);
-    const scoreDiff = this.boardController.updateSeeds(oldBoard);
+    this.boardController.updateSeeds(oldBoard);
+
+    const newScore = this.boardController.getScore(1);
+    const scoreDiff = newScore - oldScore;
     this.sendMessage(
       `You scored ${scoreDiff} ${
         scoreDiff != 1 ? "points" : "point"
@@ -72,8 +87,6 @@ class Game {
 
     toggleBlockElem("button[id=endGameButton]");
     hideElem("button[id=concedeButton]");
-
-    // endGame(); // This should be called after clicking okay upon winning
   }
 
   enablePlay() {
