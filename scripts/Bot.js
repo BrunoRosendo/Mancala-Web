@@ -2,7 +2,7 @@ const INFINITY = Number.MAX_SAFE_INTEGER;
 const MINUS_INFINITY = Number.MIN_SAFE_INTEGER;
 
 const HARD_DEPTH = 2;
-const EXTREME_DEPTH = 7;
+const EXTREME_DEPTH = 6;
 
 class Bot {
   constructor(level, boardController) {
@@ -105,7 +105,8 @@ class Bot {
     return this.minimax(board, EXTREME_DEPTH, 2).bestPlay;
   }
 
-  minimax(board, depth, player) {
+  // Watch this for clarification: https://www.youtube.com/watch?v=l-hh51ncgDI
+  minimax(board, depth, player, alpha = MINUS_INFINITY, beta = INFINITY) {
     if (depth === 0 || this.boardController.isPlayerBoardEmpty(player, board))
       return { score: this.minimaxEval(board, player) };
 
@@ -124,6 +125,9 @@ class Bot {
           maxEval = evaluation;
           bestPlay = play;
         }
+
+        alpha = Math.max(alpha, evaluation);
+        if (beta <= alpha) break; // Prune the tree, this branch doesn't have better results
       }
       return { score: maxEval, bestPlay };
 
@@ -139,6 +143,9 @@ class Bot {
           minEval = evaluation;
           bestPlay = play;
         }
+
+        beta = Math.min(beta, evaluation);
+        if (beta <= alpha) break; // Prune the tree, this branch doesn't have better results
       }
       return { score: minEval, bestPlay };
     }
