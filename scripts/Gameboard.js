@@ -207,16 +207,16 @@ class Gameboard {
     return true;
   }
 
-  collectAllSeeds(player) {
-    const storage = player === 1 ? this.houseRange : this.board.length - 1;
+  collectAllSeeds(player, board = this.board) {
+    const storage = player === 1 ? this.houseRange : board.length - 1;
 
     for (let i = 0; i < this.houseRange; ++i) {
-      this.board[storage] += this.board[i];
-      this.board[i] = 0;
+      board[storage] += board[i];
+      board[i] = 0;
     }
-    for (let i = this.houseRange + 1; i < this.board.length - 1; ++i) {
-      this.board[storage] += this.board[i];
-      this.board[i] = 0;
+    for (let i = this.houseRange + 1; i < board.length - 1; ++i) {
+      board[storage] += board[i];
+      board[i] = 0;
     }
   }
 
