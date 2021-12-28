@@ -2,6 +2,7 @@ const INFINITY = Number.MAX_SAFE_INTEGER;
 const MINUS_INFINITY = Number.MIN_SAFE_INTEGER;
 
 const HARD_DEPTH = 2;
+const EXTREME_DEPTH = 7;
 
 class Bot {
   constructor(level, boardController) {
@@ -22,6 +23,9 @@ class Bot {
         break;
       case 'hard':
         houseIdx = this.hardTurn();
+        break;
+      case 'extreme':
+        houseIdx = this.extremeTurn();
         break;
       default:
         console.log("Invalid AI Level");
@@ -91,6 +95,14 @@ class Bot {
   hardTurn() {
     const board = this.boardController.copy();
     return this.minimax(board, HARD_DEPTH, 2).bestPlay;
+  }
+
+  /**
+   * Uses minimax with EXTREME_DEPTH
+   */
+   extremeTurn() {
+    const board = this.boardController.copy();
+    return this.minimax(board, EXTREME_DEPTH, 2).bestPlay;
   }
 
   minimax(board, depth, player) {
