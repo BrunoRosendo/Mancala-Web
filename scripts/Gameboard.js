@@ -195,14 +195,14 @@ class Gameboard {
     return false;
   }
 
-  isCellEmpty(idx, player) {
+  isCellEmpty(idx, player, board = this.board) {
     const offset = player === 1 ? 0 : this.houseRange + 1;
-    return this.board[idx + offset] <= 0;
+    return board[idx + offset] <= 0;
   }
 
-  isPlayerBoardEmpty(player) {
+  isPlayerBoardEmpty(player, board) {
     for (let i = 0; i < this.houseRange; ++i)
-      if (!this.isCellEmpty(i, player)) return false;
+      if (!this.isCellEmpty(i, player, board)) return false;
 
     return true;
   }
@@ -220,11 +220,12 @@ class Gameboard {
     }
   }
 
-  getPossiblePlays(player) {
+  getPossiblePlays(player, board) {
     const possiblePlays = [];
 
     for (let i = 0; i < this.houseRange; ++i) {
-      if (!this.isCellEmpty(i, player)) possiblePlays.push(i);
+      if (!this.isCellEmpty(i, player, board))
+        possiblePlays.push(i);
     }
 
     return possiblePlays;
