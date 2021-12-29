@@ -1,9 +1,10 @@
-let game;
+let game, user;
 
 $("#instructions").style.display = "none";
 $("#scoreboard").style.display = "none";
 $("#concedeButton").style.display = "none";
 $("#endGameButton").style.display = "none";
+$("#auth #userInfo").style.display = "none";
 
 const hideElem = (elem) => {
   $(elem).style.display = "none";
@@ -77,6 +78,39 @@ const load = () => {
   $("output[for=numSeedsRange]").value = initialSeeds;
 
   game = new Game(initialSeeds, initialHouses);
+};
+
+const register = () => {
+  const usernameInput = $("#usernameInput");
+  const passInput = $("#passwordInput");
+  const username = usernameInput.value;
+  const pass = passInput.value;
+  console.log(username, pass);
+
+  /* 
+  UNCOMMENT THIS!
+  usernameInput.value = "";
+  passInput.value = ""; */
+
+  fetch("http://twserver.alunos.dcc.fc.up.pt:8008/register", {
+    method: "POST",
+    body: JSON.stringify({
+      nick: username,
+      password: pass,
+    }),
+  })
+    .then((data) => data.json())
+    .then((res) => {
+      if (res?.error) {
+        console.log("Couldn't Log in!");
+      } else {
+        console.log("Logged in!");
+        user = new User(username, pass);
+        $("#auth #authForm").style.display = "none";
+        $("#auth #userInfo").style.display = "block";
+        $("#auth #userInfo #username").innerHTML = username;
+      }
+    });
 };
 
 load();

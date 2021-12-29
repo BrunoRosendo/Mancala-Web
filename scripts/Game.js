@@ -7,8 +7,7 @@ class Game {
     this.currentPlayer = playFirst ? 1 : 2;
     this.multiplayer = multiplayer;
 
-    if (!multiplayer)
-      this.bot = new Bot(aiLevel, this.boardController);
+    if (!multiplayer) this.bot = new Bot(aiLevel, this.boardController);
 
     if (playFirst) this.enablePlay();
     else this.aiTurn();

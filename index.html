@@ -9,20 +9,25 @@
     <script type="text/javascript" src="scripts/Gameboard.js"></script>
     <script type="text/javascript" src="scripts/Bot.js"></script>
     <script type="text/javascript" src="scripts/Game.js"></script>
-    <script type="text/javascript" src="scripts/auth.js"></script>
+    <script type="text/javascript" src="scripts/User.js"></script>
     <script src="scripts/script.js" defer></script>
 </head>
 
 <body>
     <header>
         <h1 id="logo">Mancala</h1>
-        <form id="auth">
-            <label for="usernameInput" class="authLabel">Username</label>
-            <input type="text" name="username" id="usernameInput">
-            <label for="passwordInput" class="authLabel">Password</label>
-            <input type="password" name="pass" id="passwordInput">
-            <input type="submit" value="Login" class="submitButton button" onclick='register()'>
-        </form>
+        <div id="auth">
+            <div id="authForm">
+                <label for="usernameInput" class="authLabel">Username</label>
+                <input type="text" name="username" id="usernameInput">
+                <label for="passwordInput" class="authLabel">Password</label>
+                <input type="password" name="pass" id="passwordInput">
+                <button class="submitButton button" onclick='register()'>Login</button>
+            </div>
+            <div id="userInfo">
+                <h3 id="username">hey</h3>
+            </div>
+        </div>
     </header>
 
     <section id="configuration">
