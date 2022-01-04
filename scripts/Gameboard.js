@@ -215,11 +215,10 @@ class Gameboard {
     const possiblePlays = [];
 
     for (let i = 0; i < this.houseRange; ++i) {
-      if (!this.isCellEmpty(i, player))
-        possiblePlays.push(i);
+      if (!this.isCellEmpty(i, player)) possiblePlays.push(i);
     }
 
-    return possiblePlays
+    return possiblePlays;
   }
 
   /**
@@ -228,12 +227,21 @@ class Gameboard {
    * @returns Score of a player
    */
   getScore(player, board = this.board) {
-    return player === 1
-      ? board[this.houseRange]
-      : board[board.length - 1];
+    return player === 1 ? board[this.houseRange] : board[board.length - 1];
   }
 
   copy() {
     return [...this.board];
   }
+
+  /**
+   * Updates a board cell with the new number of seeds
+   * @param {*} houseIdx
+   * @param {*} player
+   * @param {*} newSeeds
+   */
+  updateCell = (houseIdx, player, newSeeds) => {
+    if (player === 2) houseIdx += this.houseRange + 1;
+    this.board[houseIdx] = newSeeds;
+  };
 }

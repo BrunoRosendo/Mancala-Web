@@ -30,15 +30,34 @@ class Game {
   handleSSE = (event) => {
     const data = JSON.parse(event?.data);
     // console.log("data from SSE:", data);
-    this.updateGame(data.board);
+    if (data.board) this.updateGame(data.board);
   };
 
   updateGame = (board) => {
-    for (const [key, value] of Object.entries(board.sides)) {
-      console.log(key, ":", value);
+    const oldBoard = this.boardController.copy();
+    for (const [username, boardContainers] of Object.entries(board.sides)) {
+      console.log(username, ":", boardContainers);
+      const player = username == user.username ? 1 : 2;
+
+      for (const [type, value] of Object.entries(boardContainers)) {
+        if (type == "store")
+          this.boardController.updateCell(
+            this.boardController.houseRange,
+            player,
+            value
+          );
+        else {
+          for (const [houseIdx, numSeeds] of Object.entries(value)) {
+            this.boardController.updateCell(houseIdx, player, numSeeds);
+          }
+        }
+      }
     }
 
-    const isPlayerTurn = (board.turn = user.username);
+    this.boardController.updateSeeds(oldBoard);
+
+    const isPlayerTurn = board.turn == user.username;
+    if (isPlayerTurn) console.log("It's your turn");
   };
 
   async aiTurn() {
