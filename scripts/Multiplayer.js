@@ -90,6 +90,25 @@ class Multiplayer {
       });
   };
 
+  leave = () => {
+    fetch("http://twserver.alunos.dcc.fc.up.pt:8008/leave", {
+      method: "POST",
+      body: JSON.stringify({
+        nick: this.user1.username,
+        password: this.user1.password,
+        game: this.game,
+      }),
+    })
+      .then((data) => data.json())
+      .then((res) => {
+        if (res?.error) {
+          console.log("Error leaving game.", res.error);
+        } else {
+          console.log("Left the game successfully.");
+        }
+      });
+  };
+
   /**
    * Returns player number
    * @param {*} username

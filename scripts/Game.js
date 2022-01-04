@@ -12,10 +12,11 @@ class Game {
         .join(game.boardController.houseRange, game.boardController.seedRange)
         .then((res) => {
           if (res > 0) {
-            const eventSource = new EventSource(
+            this.eventSource = new EventSource(
               `http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=${multiplayerController.user1.username}&game=${multiplayerController.game}`
             );
-            eventSource.onmessage = this.updateMultiplayerGame;
+            this.eventSource.onmessage = this.updateMultiplayerGame;
+            showBlockElem($("#loading"));
           } else {
             // SHOW error joining...
           }
@@ -36,6 +37,7 @@ class Game {
     console.log("data from SSE:", data);
     const board = data.board;
 
+    hideElem($("#loading"));
     if (board) {
       const oldBoard = this.boardController.copy();
       const oldScore = this.boardController.getScore(
@@ -82,17 +84,21 @@ class Game {
       );
 
       this.updateScores(multiplayerController.turn);
-      multiplayerController.turn = nextPlayer;
-
       this.disablePlay();
 
-      if (nextPlayer == 1) this.enablePlay();
+      if (data.hasOwnProperty("winner"))
+        this.declareMultiplayerWinner(
+          data.winner,
+          multiplayerController.getPlayerNumber(nextPlayer)
+        );
+      else {
+        multiplayerController.turn = nextPlayer;
+        if (nextPlayer == 1) this.enablePlay();
+      }
+    } else if (data.hasOwnProperty("winner")) {
+      // Leaving queue
+      endGame();
     }
-    if (data.hasOwnProperty("winner"))
-      this.declareMultiplayerWinner(
-        data.winner,
-        multiplayerController.getPlayerNumber(board.turn)
-      );
   };
 
   async aiTurn() {
@@ -182,8 +188,8 @@ class Game {
     else if (playerTwoScore > playerOneScore) this.sendMessage("Player 2 won!");
     else this.sendMessage("It's a tie!");
 
-    toggleBlockElem("button[id=endGameButton]");
-    hideElem("button[id=concedeButton]");
+    toggleBlockElem($("button[id=endGameButton]"));
+    hideElem($("button[id=concedeButton]"));
   }
 
   declareMultiplayerWinner = (player, collectingPlayer) => {
@@ -198,8 +204,8 @@ class Game {
       this.sendMessage(`${multiplayerController.user2.username} won!`);
     }
 
-    toggleBlockElem("button[id=endGameButton]");
-    hideElem("button[id=concedeButton]");
+    toggleBlockElem($("button[id=endGameButton]"));
+    hideElem($("button[id=concedeButton]"));
   };
 
   enablePlay() {
@@ -225,6 +231,7 @@ class Game {
     multiplayerController.reset();
     this.updateScores(1);
     this.updateScores(2);
+    this.eventSource?.close();
   }
 
   /**
@@ -243,5 +250,14 @@ class Game {
   sendMessage = (text) => {
     $("#prevMsg").innerHTML = $("#currMsg").innerHTML;
     $("#currMsg").innerHTML = text;
+  };
+
+  concede = () => {
+    if (this.multiplayer) multiplayerController.leave();
+    else {
+      this.sendMessage("Player 1 conceded. Player 2 won!"); // For now only P1 can concede (singleplayer)
+      toggleBlockElem($("button[id=endGameButton]"));
+      hideElem($("button[id=concedeButton]"));
+    }
   };
 }
