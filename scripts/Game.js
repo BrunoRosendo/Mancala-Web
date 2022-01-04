@@ -15,7 +15,7 @@ class Game {
             const eventSource = new EventSource(
               `http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=${multiplayerController.user1.username}&game=${multiplayerController.game}`
             );
-            eventSource.onmessage = this.handleSSE;
+            eventSource.onmessage = this.updateMultiplayerGame;
           } else {
             // SHOW error joining...
           }
@@ -28,59 +28,71 @@ class Game {
   }
 
   /**
-   * Handles SSE messages
+   * Updates the game after receiving SSE
    * @param {*} event
    */
-  handleSSE = (event) => {
+  updateMultiplayerGame = (event) => {
     const data = JSON.parse(event?.data);
-    // console.log("data from SSE:", data);
-    if (data.board) this.updateGame(data.board);
-  };
+    console.log("data from SSE:", data);
+    const board = data.board;
 
-  updateGame = (board) => {
-    console.log(board);
-    const oldBoard = this.boardController.copy();
-    const oldScore = this.boardController.getScore(multiplayerController.turn);
-    const nextPlayer = multiplayerController.getPlayerNumber(board.turn);
+    if (board) {
+      const oldBoard = this.boardController.copy();
+      const oldScore = this.boardController.getScore(
+        multiplayerController.turn
+      );
+      const nextPlayer = multiplayerController.getPlayerNumber(board.turn);
 
-    for (const [username, boardContainers] of Object.entries(board.sides)) {
-      const player = multiplayerController.getPlayerNumber(username);
+      for (const [username, boardContainers] of Object.entries(board.sides)) {
+        const player = multiplayerController.getPlayerNumber(username);
+        if (multiplayerController.user2 == null && player == 2)
+          multiplayerController.user2 = new User(username, null);
 
-      for (const [type, value] of Object.entries(boardContainers)) {
-        if (type == "store")
-          this.boardController.updateCell(
-            this.boardController.houseRange,
-            player,
-            parseInt(value)
-          );
-        else {
-          for (const [houseIdx, numSeeds] of Object.entries(value)) {
+        for (const [type, value] of Object.entries(boardContainers)) {
+          if (type == "store")
             this.boardController.updateCell(
-              parseInt(houseIdx),
+              this.boardController.houseRange,
               player,
-              parseInt(numSeeds)
+              parseInt(value)
             );
+          else {
+            for (const [houseIdx, numSeeds] of Object.entries(value)) {
+              this.boardController.updateCell(
+                parseInt(houseIdx),
+                player,
+                parseInt(numSeeds)
+              );
+            }
           }
         }
       }
+
+      this.boardController.updateSeeds(oldBoard);
+
+      const newScore = this.boardController.getScore(
+        multiplayerController.turn
+      );
+      const scoreDiff = newScore - oldScore;
+      this.sendMessage(
+        `${
+          multiplayerController.turn == 1 ? "You" : "Your Opponent"
+        } scored ${scoreDiff} ${
+          scoreDiff != 1 ? "points" : "point"
+        } this round!`
+      );
+
+      this.updateScores(multiplayerController.turn);
+      multiplayerController.turn = nextPlayer;
+
+      this.disablePlay();
+
+      if (nextPlayer == 1) this.enablePlay();
     }
-
-    this.boardController.updateSeeds(oldBoard);
-
-    const newScore = this.boardController.getScore(multiplayerController.turn);
-    const scoreDiff = newScore - oldScore;
-    this.sendMessage(
-      `${
-        multiplayerController.turn == 1 ? "You" : "Your Opponent"
-      } scored ${scoreDiff} ${scoreDiff != 1 ? "points" : "point"} this round!`
-    );
-
-    this.updateScores(multiplayerController.turn);
-    multiplayerController.turn = nextPlayer;
-
-    this.disablePlay();
-
-    if (nextPlayer == 1) this.enablePlay();
+    if (data.hasOwnProperty("winner"))
+      this.declareMultiplayerWinner(
+        data.winner,
+        multiplayerController.getPlayerNumber(board.turn)
+      );
   };
 
   async aiTurn() {
@@ -147,13 +159,21 @@ class Game {
     return this.boardController.isPlayerBoardEmpty(this.currentPlayer);
   }
 
-  declareWinner() {
+  /**
+   * This method is needed because the board in the final play does not contain the collected seeds after running out of moves
+   * @param {*} player
+   */
+  collectRemainingSeeds = (player) => {
     const oldBoard = this.boardController.copy();
-    this.boardController.collectAllSeeds(this.currentPlayer === 1 ? 2 : 1);
+    this.boardController.collectAllSeeds(player);
     this.boardController.updateSeeds(oldBoard);
 
     this.updateScores(1);
     this.updateScores(2);
+  };
+
+  declareWinner() {
+    this.collectRemainingSeeds(this.currentPlayer === 1 ? 2 : 1);
 
     const playerOneScore = this.boardController.getScore(1);
     const playerTwoScore = this.boardController.getScore(2);
@@ -165,6 +185,22 @@ class Game {
     toggleBlockElem("button[id=endGameButton]");
     hideElem("button[id=concedeButton]");
   }
+
+  declareMultiplayerWinner = (player, collectingPlayer) => {
+    this.disablePlay();
+    this.collectRemainingSeeds(collectingPlayer); // THIS IS NEEDED BECAUSE SERVER DOES NOT RETURN FINISHED BOARD. IN PART 3 WE COULD IMPLEMENT THIS ON SERVER
+
+    if (player == null) {
+      this.sendMessage("It's a tie!");
+    } else if (multiplayerController.getPlayerNumber(player) == 1) {
+      this.sendMessage(`You won!`);
+    } else {
+      this.sendMessage(`${multiplayerController.user2.username} won!`);
+    }
+
+    toggleBlockElem("button[id=endGameButton]");
+    hideElem("button[id=concedeButton]");
+  };
 
   enablePlay() {
     const playerOneHouses = $("#gameboard").lastChild.children;
@@ -186,6 +222,7 @@ class Game {
 
   resetBoard(numSeeds, numHouses) {
     this.boardController.reset(numSeeds, numHouses);
+    multiplayerController.reset();
     this.updateScores(1);
     this.updateScores(2);
   }

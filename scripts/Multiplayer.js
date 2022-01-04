@@ -96,6 +96,12 @@ class Multiplayer {
    * @returns 1 if own, 2 if opponent
    */
   getPlayerNumber = (username) => (username == this.user1.username ? 1 : 2);
+
+  reset = () => {
+    this.turn = 1;
+    this.game = null;
+    this.user2 = null;
+  };
 }
 
 class User {
