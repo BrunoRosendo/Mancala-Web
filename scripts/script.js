@@ -51,7 +51,11 @@ const startGame = () => {
   const multiplayer = $("#multiplayer").checked;
   const aiLevel = $("#aiLevel").value;
 
-  game.play(playFirst, multiplayer, aiLevel);
+  if (multiplayer) {
+    user.join(game.boardController.houseRange, game.boardController.seedRange);
+  } else {
+    game.play(playFirst, multiplayer, aiLevel);
+  }
 };
 
 const endGame = () => {
@@ -85,12 +89,10 @@ const register = () => {
   const passInput = $("#passwordInput");
   const username = usernameInput.value;
   const pass = passInput.value;
-  console.log(username, pass);
+  // console.log(username, pass);
 
-  /* 
-  UNCOMMENT THIS!
   usernameInput.value = "";
-  passInput.value = ""; */
+  passInput.value = "";
 
   fetch("http://twserver.alunos.dcc.fc.up.pt:8008/register", {
     method: "POST",
@@ -106,8 +108,8 @@ const register = () => {
       } else {
         console.log("Logged in!");
         user = new User(username, pass);
-        $("#auth #authForm").style.display = "none";
-        $("#auth #userInfo").style.display = "block";
+        toggleBlockElem("#auth #authForm");
+        toggleBlockElem("#auth #userInfo");
         $("#auth #userInfo #username").innerHTML = username;
       }
     });
