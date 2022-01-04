@@ -51,11 +51,7 @@ const startGame = () => {
   const multiplayer = $("#multiplayer").checked;
   const aiLevel = $("#aiLevel").value;
 
-  if (multiplayer) {
-    user.join(game.boardController.houseRange, game.boardController.seedRange);
-  } else {
-    game.play(playFirst, multiplayer, aiLevel);
-  }
+  game.play(playFirst, multiplayer, aiLevel);
 };
 
 const endGame = () => {

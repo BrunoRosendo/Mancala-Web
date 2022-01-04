@@ -12,8 +12,8 @@ class User {
    * @param {*} initial Nº seeds
    * @returns
    */
-  join = (size, initial) => {
-    fetch("http://twserver.alunos.dcc.fc.up.pt:8008/join", {
+  join = async (size, initial) => {
+    await fetch("http://twserver.alunos.dcc.fc.up.pt:8008/join", {
       method: "POST",
       body: JSON.stringify({
         group: defaultGroup,

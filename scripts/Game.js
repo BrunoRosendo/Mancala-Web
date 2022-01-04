@@ -7,11 +7,39 @@ class Game {
     this.currentPlayer = playFirst ? 1 : 2;
     this.multiplayer = multiplayer;
 
-    if (!multiplayer) this.bot = new Bot(aiLevel, this.boardController);
-
-    if (playFirst) this.enablePlay();
-    else this.aiTurn();
+    if (multiplayer) {
+      user
+        .join(game.boardController.houseRange, game.boardController.seedRange)
+        .then(() => {
+          const eventSource = new EventSource(
+            `http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=${user.username}&game=${user.game}`
+          );
+          eventSource.onmessage = this.handleSSE;
+        });
+    } else {
+      this.bot = new Bot(aiLevel, this.boardController);
+      if (playFirst) this.enablePlay();
+      else this.aiTurn();
+    }
   }
+
+  /**
+   * Handles SSE messages
+   * @param {*} event
+   */
+  handleSSE = (event) => {
+    const data = JSON.parse(event?.data);
+    // console.log("data from SSE:", data);
+    this.updateGame(data.board);
+  };
+
+  updateGame = (board) => {
+    for (const [key, value] of Object.entries(board.sides)) {
+      console.log(key, ":", value);
+    }
+
+    const isPlayerTurn = (board.turn = user.username);
+  };
 
   async aiTurn() {
     const oldScore = this.boardController.getScore(2);
