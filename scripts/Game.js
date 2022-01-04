@@ -232,6 +232,7 @@ class Game {
     this.updateScores(1);
     this.updateScores(2);
     this.eventSource?.close();
+    hideElem($("#loading"));
   }
 
   /**
