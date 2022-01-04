@@ -242,6 +242,7 @@ class Gameboard {
    */
   updateCell = (houseIdx, player, newSeeds) => {
     if (player === 2) houseIdx += this.houseRange + 1;
+    console.log("updating cell with idx:", houseIdx);
     this.board[houseIdx] = newSeeds;
   };
 }

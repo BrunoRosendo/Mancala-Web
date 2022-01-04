@@ -1,4 +1,4 @@
-let game, user;
+let game, multiplayerController;
 
 $("#instructions").style.display = "none";
 $("#scoreboard").style.display = "none";
@@ -78,47 +78,30 @@ const load = () => {
   $("output[for=numSeedsRange]").value = initialSeeds;
 
   game = new Game(initialSeeds, initialHouses);
+  multiplayerController = new Multiplayer();
 };
 
+/**
+ * Currently it doesn't save credentials because most browsers only ask to save if the page redirects
+ */
 const register = () => {
   const usernameInput = $("#usernameInput");
   const passInput = $("#passwordInput");
   const username = usernameInput.value;
   const pass = passInput.value;
-  // console.log(username, pass);
 
   usernameInput.value = "";
   passInput.value = "";
 
-  fetch("http://twserver.alunos.dcc.fc.up.pt:8008/register", {
-    method: "POST",
-    body: JSON.stringify({
-      nick: username,
-      password: pass,
-    }),
-  })
-    .then((data) => data.json())
-    .then((res) => {
-      if (res?.error) {
-        console.log("Couldn't Log in!");
-      } else {
-        console.log("Logged in!");
-        user = new User(username, pass);
-        toggleBlockElem("#auth #authForm");
-        toggleBlockElem("#auth #userInfo");
-        $("#auth #userInfo #username").innerHTML = username;
-      }
-    });
+  multiplayerController.register(username, pass).then((res) => {
+    if (res > 0) {
+      toggleBlockElem("#auth #authForm");
+      toggleBlockElem("#auth #userInfo");
+      $("#auth #userInfo #username").innerHTML = username;
+    } else {
+      // SHOW failed login
+    }
+  });
 };
 
 load();
-
-/*
-TODO LIST:
-- Atualizar score e mensagens enquanto se joga
-- Dar reset a tudo quando acaba o jogo (depois de confirmar o vencedor, com um butao ou assim)
-- Fazer os diferentes niveis de AI
-- Estado do jogo
-- Mudar a board para nao depender de vh
-- Por delay nas jogadas do bot
-*/

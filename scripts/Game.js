@@ -8,13 +8,17 @@ class Game {
     this.multiplayer = multiplayer;
 
     if (multiplayer) {
-      user
+      multiplayerController
         .join(game.boardController.houseRange, game.boardController.seedRange)
-        .then(() => {
-          const eventSource = new EventSource(
-            `http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=${user.username}&game=${user.game}`
-          );
-          eventSource.onmessage = this.handleSSE;
+        .then((res) => {
+          if (res > 0) {
+            const eventSource = new EventSource(
+              `http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=${multiplayerController.user1.username}&game=${multiplayerController.game}`
+            );
+            eventSource.onmessage = this.handleSSE;
+          } else {
+            // SHOW error joining...
+          }
         });
     } else {
       this.bot = new Bot(aiLevel, this.boardController);
@@ -34,21 +38,28 @@ class Game {
   };
 
   updateGame = (board) => {
+    console.log(board);
     const oldBoard = this.boardController.copy();
+    const oldScore = this.boardController.getScore(multiplayerController.turn);
+    const nextPlayer = multiplayerController.getPlayerNumber(board.turn);
+
     for (const [username, boardContainers] of Object.entries(board.sides)) {
-      console.log(username, ":", boardContainers);
-      const player = username == user.username ? 1 : 2;
+      const player = multiplayerController.getPlayerNumber(username);
 
       for (const [type, value] of Object.entries(boardContainers)) {
         if (type == "store")
           this.boardController.updateCell(
             this.boardController.houseRange,
             player,
-            value
+            parseInt(value)
           );
         else {
           for (const [houseIdx, numSeeds] of Object.entries(value)) {
-            this.boardController.updateCell(houseIdx, player, numSeeds);
+            this.boardController.updateCell(
+              parseInt(houseIdx),
+              player,
+              parseInt(numSeeds)
+            );
           }
         }
       }
@@ -56,8 +67,20 @@ class Game {
 
     this.boardController.updateSeeds(oldBoard);
 
-    const isPlayerTurn = board.turn == user.username;
-    if (isPlayerTurn) console.log("It's your turn");
+    const newScore = this.boardController.getScore(multiplayerController.turn);
+    const scoreDiff = newScore - oldScore;
+    this.sendMessage(
+      `${
+        multiplayerController.turn == 1 ? "You" : "Your Opponent"
+      } scored ${scoreDiff} ${scoreDiff != 1 ? "points" : "point"} this round!`
+    );
+
+    this.updateScores(multiplayerController.turn);
+    multiplayerController.turn = nextPlayer;
+
+    this.disablePlay();
+
+    if (nextPlayer == 1) this.enablePlay();
   };
 
   async aiTurn() {
@@ -87,33 +110,37 @@ class Game {
   }
 
   playerTurn(houseIdx) {
-    const oldBoard = this.boardController.copy();
-    const oldScore = this.boardController.getScore(1);
+    if (this.multiplayer) {
+      multiplayerController.notify(houseIdx);
+    } else {
+      const oldBoard = this.boardController.copy();
+      const oldScore = this.boardController.getScore(1);
 
-    const playAgain = this.boardController.turn(houseIdx, 1);
-    this.boardController.updateSeeds(oldBoard);
+      const playAgain = this.boardController.turn(houseIdx, 1);
+      this.boardController.updateSeeds(oldBoard);
 
-    const newScore = this.boardController.getScore(1);
-    const scoreDiff = newScore - oldScore;
-    this.sendMessage(
-      `You scored ${scoreDiff} ${
-        scoreDiff != 1 ? "points" : "point"
-      } this round!`
-    );
+      const newScore = this.boardController.getScore(1);
+      const scoreDiff = newScore - oldScore;
+      this.sendMessage(
+        `You scored ${scoreDiff} ${
+          scoreDiff != 1 ? "points" : "point"
+        } this round!`
+      );
 
-    this.updateScores(1);
+      this.updateScores(1);
 
-    this.disablePlay();
+      this.disablePlay();
 
-    if (playAgain) {
+      if (playAgain) {
+        if (this.isGameOver()) this.declareWinner();
+        else this.enablePlay(); // Playable seeds must be updated
+        return;
+      }
+
+      this.currentPlayer = 2;
       if (this.isGameOver()) this.declareWinner();
-      else this.enablePlay(); // Playable seeds must be updated
-      return;
+      else this.aiTurn();
     }
-
-    this.currentPlayer = 2;
-    if (this.isGameOver()) this.declareWinner();
-    else this.aiTurn();
   }
 
   isGameOver() {
@@ -167,7 +194,7 @@ class Game {
    * Updates the Score of a player in the UI
    * @param {*} player 1 or 2
    */
-  updateScores = (player) => {
+  updateScores = (player = 1) => {
     $(`#player${player}-score`).innerHTML =
       this.boardController.getScore(player);
   };
