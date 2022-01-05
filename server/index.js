@@ -1,9 +1,9 @@
 const config = require("./config/env");
 const http = require("http");
-const db = require("./loaders/db");
+const handleRequest = require("./api");
 
 const server = http.createServer(async (req, res) => {
-  res.write("Hello World\n");
+  handleRequest(req, res);
   res.end();
 });
 
