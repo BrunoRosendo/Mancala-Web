@@ -4,6 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "prestart": "mongod --port 27018 --dbpath /data/ltw &",
+    "start": "nodemon app.js",
+    "prod": "NODE_ENV=production node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +20,10 @@
   },
   "homepage": "https://github.com/BrunoRosendo/FEUP-LTW#readme",
   "dependencies": {
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "mongodb": "^4.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
