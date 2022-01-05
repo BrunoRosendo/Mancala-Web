@@ -3,7 +3,7 @@ const http = require("http");
 const handleRequest = require("./api");
 
 const server = http.createServer(async (req, res) => {
-  handleRequest(req, res);
+  await handleRequest(req, res);
   res.end();
 });
 

@@ -4,6 +4,14 @@ module.exports = Object.freeze({
   },
 
   POST: {
+
+  },
+
+  PUT: {
+
+  },
+
+  DELETE: {
     
   }
 });
