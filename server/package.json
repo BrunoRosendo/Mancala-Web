@@ -2,11 +2,11 @@
   "name": "mancala-server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "prestart": "mongod --port 27018 --dbpath /data/ltw &",
-    "start": "nodemon app.js",
-    "prod": "NODE_ENV=production node app.js",
+    "start": "nodemon index.js",
+    "prod": "NODE_ENV=production node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
