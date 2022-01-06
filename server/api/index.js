@@ -1,27 +1,28 @@
 const { StatusCodes } = require("http-status-codes");
 const routes = require("./routes");
 const { getRequestBody, getUrlParams, getEndpoint } = require("../utils/parser");
+const { asyncEvery } = require("../utils/algebra");
 
 module.exports = async (req, res) => {
   try {
     const parsedRequest = {
       endpoint: getEndpoint(req.url),
       params: getUrlParams(req.url),
-      body: getRequestBody(req),
+      body: await getRequestBody(req),
       rawRequest: req,
     }
 
-    const { middlewares, controller } = routes[req.method][parsedRequest.endpoint] || {};
+    const { middlewares, controller } = routes[req.method]?.[parsedRequest.endpoint];
 
     if (!controller) {
       res.writeHead(StatusCodes.NOT_FOUND, { "Content-Type": "application/json" });
       res.end(JSON.stringify({
-        error: `unknown ${res.method} request`
+        error: `Unknown ${res.method} request`
       }));
       return;
     }
 
-    if (middlewares && !middlewares.every((mid) => mid(parsedRequest, res))) {
+    if (middlewares && !await asyncEvery(middlewares)(parsedRequest, res)) {
       res.end();
       return;
     }
@@ -34,7 +35,7 @@ module.exports = async (req, res) => {
 
       res.writeHead(StatusCodes.INTERNAL_SERVER_ERROR, { "Content-Type": "application/json" });
       res.end(JSON.stringify({
-        error: "unexpected error"
+        error: "Unexpected error"
       }));
   }
 }
