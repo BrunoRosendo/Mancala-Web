@@ -4,7 +4,7 @@ const validators = require("./middleware/validators");
 
 module.exports = Object.freeze({
   GET: {
-    '/user': {
+    '/': {
       controller: (req, res) => res.write("E que oh maninho"), 
     }
   },

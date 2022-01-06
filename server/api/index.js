@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
       rawRequest: req,
     }
 
-    const { middlewares, controller } = routes[req.method]?.[parsedRequest.endpoint];
+    const { middlewares, controller } = routes[req.method]?.[parsedRequest.endpoint] || {};
 
     if (!controller) {
       res.writeHead(StatusCodes.NOT_FOUND, { "Content-Type": "application/json" });
