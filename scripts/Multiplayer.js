@@ -121,6 +121,12 @@ class Multiplayer {
     this.game = null;
     this.user2 = null;
   };
+
+  /**
+   *
+   * @returns True if user is logged, false otherwise
+   */
+  isLoggedIn = () => this.user1 != null;
 }
 
 class User {

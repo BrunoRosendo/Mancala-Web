@@ -41,7 +41,13 @@ const startGame = () => {
   const aiLevel = $("#aiLevel").value;
 
   const concedeButton = $("button[id=concedeButton]");
-  if (multiplayer) concedeButton.innerText = "Leave Queue";
+  if (multiplayer) {
+    if (!multiplayerController.isLoggedIn()) {
+      alert("You need to log in to play Multiplayer!");
+      return;
+    }
+    concedeButton.innerText = "Leave Queue";
+  }
   toggleBlockElem(concedeButton);
   toggleBlockElem($("button[id=startButton]"));
   toggleConfig();
