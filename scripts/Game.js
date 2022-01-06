@@ -12,11 +12,12 @@ class Game {
         .join(game.boardController.houseRange, game.boardController.seedRange)
         .then((res) => {
           if (res > 0) {
+            showBlockElem($("#loading"));
+
             this.eventSource = new EventSource(
               `http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=${multiplayerController.user1.username}&game=${multiplayerController.game}`
             );
             this.eventSource.onmessage = this.updateMultiplayerGame;
-            showBlockElem($("#loading"));
           } else {
             // SHOW error joining...
           }
@@ -37,7 +38,12 @@ class Game {
     console.log("data from SSE:", data);
     const board = data.board;
 
-    hideElem($("#loading"));
+    // 1st update received
+    if (!multiplayerController.user2) {
+      hideElem($("#loading"));
+      $("button[id=concedeButton]").innerText = "Concede";
+    }
+
     if (board) {
       const oldBoard = this.boardController.copy();
       const oldScore = this.boardController.getScore(
@@ -86,18 +92,23 @@ class Game {
       this.updateScores(multiplayerController.turn);
       this.disablePlay();
 
-      if (data.hasOwnProperty("winner"))
+      if (data.hasOwnProperty("winner")) {
         this.declareMultiplayerWinner(
           data.winner,
           multiplayerController.getPlayerNumber(nextPlayer)
         );
-      else {
+      } else {
         multiplayerController.turn = nextPlayer;
         if (nextPlayer == 1) this.enablePlay();
       }
     } else if (data.hasOwnProperty("winner")) {
-      // Leaving queue
-      endGame();
+      if (data.winner != null) {
+        // Won because opponent conceded
+        this.declareMultiplayerWinner(data.winner, data.winner);
+      } else {
+        // Leaving queue
+        endGame();
+      }
     }
   };
 
