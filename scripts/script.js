@@ -67,6 +67,11 @@ const endGame = () => {
   game.sendMessage(""); // send twice since we display the last 2 messages
   game.sendMessage("");
   toggleConfig();
+  $("#headerContainer").scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+    inline: "nearest",
+  });
 };
 
 const concede = () => game.concede();
