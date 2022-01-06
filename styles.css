@@ -293,6 +293,14 @@ input:checked+.slider:before {
 }
 
 
+/* Logged In User */
+
+#userInfoInside {
+    display: flex;
+    align-items: center;
+}
+
+
 /* Loader */
 
 #loaderContainer {

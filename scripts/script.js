@@ -116,4 +116,19 @@ const register = () => {
   });
 };
 
+/**
+ * Logs out of current user
+ */
+const logout = () => {
+  $("#usernameInput").value = "";
+  $("#passwordInput").value = "";
+
+  multiplayerController.reset();
+  console.log("Logged out.");
+
+  toggleBlockElem($("#auth #authForm"));
+  toggleBlockElem($("#auth #userInfo"));
+  $("#auth #userInfo #username").innerHTML = "";
+};
+
 load();
