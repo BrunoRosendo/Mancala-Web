@@ -135,13 +135,8 @@ handleScoreboard = async () => {
   const rankingData = await multiplayerController.ranking();
 
   // console.log("rankingData:", rankingData);
-  const table = $("#scoreTable");
-
-  // Delete Table Rows except header
-  const rowCount = table.rows.length;
-  for (let i = rowCount - 1; i > 0; i--) {
-    table.deleteRow(i);
-  }
+  const table = $("#scoreBody");
+  destroyChildren(table);
 
   for (const rank of rankingData.ranking) {
     // console.log(rank);

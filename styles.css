@@ -242,12 +242,21 @@ input:checked+.slider:before {
 #scoreboard td,
 #scoreboard th {
     border: 1px solid black;
+    padding: 0.5em;
 }
 
 #scoreboard table {
     border-collapse: collapse;
     width: 60%;
-    margin: auto
+    margin: auto;
+    background-color: aliceblue;
+    font-size: large;
+}
+
+#scoreboard thead {
+    background-color: black;
+    color: white;
+    font-size: 100%;
 }
 
 #scoreboard td {
