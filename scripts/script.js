@@ -123,14 +123,20 @@ const logout = async () => {
   $("#usernameInput").value = "";
   $("#passwordInput").value = "";
 
-  if (game.inGame) {
+  // If there's an active multiplayer game
+  if (multiplayerController.isPlaying()) {
+    console.log("Leaving Multiplayer Game...");
     await concede();
     $("#game").scrollIntoView({
       behavior: "smooth",
       block: "start",
       inline: "nearest",
     });
+  } else if (multiplayerController.isSearching()) {
+    console.log("Leaving Queue...");
+    await concede();
   }
+
   multiplayerController.logout();
   console.log("Logged out.");
 

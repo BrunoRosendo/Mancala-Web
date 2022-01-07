@@ -1,7 +1,6 @@
 class Game {
   constructor(seedRange, houseRange) {
     this.boardController = new Gameboard("#gameboard", seedRange, houseRange);
-    this.inGame = false;
   }
 
   /**
@@ -14,7 +13,6 @@ class Game {
     this.currentPlayer = playFirst ? 1 : 2;
     this.multiplayer = multiplayer;
 
-    this.inGame = true;
     if (multiplayer) {
       multiplayerController
         .join(game.boardController.houseRange, game.boardController.seedRange)
@@ -220,7 +218,6 @@ class Game {
       else this.sendMessage("It's a tie!");
     }
 
-    this.inGame = false;
     updateLocalRank(scoreIncrement);
 
     toggleBlockElem($("button[id=endGameButton]"));
@@ -238,8 +235,6 @@ class Game {
     } else {
       this.sendMessage(`${multiplayerController.user2.username} won!`);
     }
-
-    this.inGame = false;
 
     toggleBlockElem($("button[id=endGameButton]"));
     hideElem($("button[id=concedeButton]"));
@@ -291,7 +286,8 @@ class Game {
   };
 
   concede = async () => {
-    if (this.multiplayer) await multiplayerController.leave();
-    else this.declareWinner(true);
+    if (this.multiplayer) {
+      await multiplayerController.leave();
+    } else this.declareWinner(true);
   };
 }

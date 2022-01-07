@@ -153,6 +153,18 @@ class Multiplayer {
    * @returns True if user is logged, false otherwise
    */
   isLoggedIn = () => this.user1 != null;
+
+  /**
+   *
+   * @returns true if there is an active multiplayer game
+   */
+  isPlaying = () => this.user2 != null;
+
+  /**
+   *
+   * @returns true if the user is searching for a game
+   */
+  isSearching = () => this.game != null && !this.isPlaying();
 }
 
 class User {
