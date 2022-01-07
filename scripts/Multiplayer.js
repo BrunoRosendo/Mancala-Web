@@ -90,8 +90,8 @@ class Multiplayer {
       });
   };
 
-  leave = () => {
-    fetch("http://twserver.alunos.dcc.fc.up.pt:8008/leave", {
+  leave = async () => {
+    await fetch("http://twserver.alunos.dcc.fc.up.pt:8008/leave", {
       method: "POST",
       body: JSON.stringify({
         nick: this.user1.username,

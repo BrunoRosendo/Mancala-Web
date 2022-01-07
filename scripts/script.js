@@ -80,7 +80,7 @@ const endGame = () => {
   });
 };
 
-const concede = () => game.concede();
+const concede = async () => await game.concede();
 
 const load = () => {
   const initialHouses = numHousesInput.value;
@@ -119,10 +119,18 @@ const register = () => {
 /**
  * Logs out of current user
  */
-const logout = () => {
+const logout = async () => {
   $("#usernameInput").value = "";
   $("#passwordInput").value = "";
 
+  if (game.inGame) {
+    await concede();
+    $("#game").scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest",
+    });
+  }
   multiplayerController.logout();
   console.log("Logged out.");
 
