@@ -11,9 +11,14 @@ module.exports = Object.freeze({
 
   POST: {
     '/register': {
-      controller: (req, res) => res.write(JSON.stringify({ msg: "success" })),
-      middlewares: [validators.register]
-    }
+      controller: controllers.register,
+      middlewares: [
+        validators.register,
+        middlewares.auth.register
+      ]
+    },
+
+
   },
 
   PUT: {

@@ -16,25 +16,22 @@ module.exports = async (req, res) => {
 
     if (!controller) {
       res.writeHead(StatusCodes.NOT_FOUND, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({
+      res.write(JSON.stringify({
         error: `Unknown ${res.method} request`
       }));
       return;
     }
 
-    if (middlewares && !await asyncEvery(middlewares)(parsedRequest, res)) {
-      res.end();
+    if (middlewares && !await asyncEvery(middlewares)(parsedRequest, res))
       return;
-    }
 
-    controller(parsedRequest, res);
-    res.end();
+    await controller(parsedRequest, res);
 
   } catch(err) {
       console.error("Unexpected error while processing request", err);
 
       res.writeHead(StatusCodes.INTERNAL_SERVER_ERROR, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({
+      res.write(JSON.stringify({
         error: "Unexpected error"
       }));
   }
