@@ -23,6 +23,22 @@ const register = async (req, res) => {
   res.write(JSON.stringify({}));
 }
 
+const ranking = async (req, res) => {
+  const db = await require("../../loaders/db");
+
+  const sql = `
+    SELECT * FROM ranking
+    ORDER BY victories DESC
+    LIMIT 10`;
+
+  const table = await db.all(sql);
+
+  res.write(JSON.stringify({
+    "ranking": table
+  }));
+}
+
 module.exports = {
   register,
+  ranking
 }

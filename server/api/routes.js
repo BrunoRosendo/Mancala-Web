@@ -18,7 +18,9 @@ module.exports = Object.freeze({
       ]
     },
 
-
+    '/ranking': {
+      controller: controllers.ranking
+    }
   },
 
   PUT: {

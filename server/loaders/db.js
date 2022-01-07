@@ -43,7 +43,7 @@ const createTables = async () => {
   );
 
   await db.exec(`CREATE TABLE IF NOT EXISTS ranking(
-    player TEXT PRIMARY KEY,
+    nick TEXT PRIMARY KEY,
     victories INTEGER DEFAULT 0,
     games INTEGER DEFAULT 0)`
   );
