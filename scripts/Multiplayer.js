@@ -109,6 +109,27 @@ class Multiplayer {
       });
   };
 
+  ranking = async () => {
+    const result = await fetch(
+      "http://twserver.alunos.dcc.fc.up.pt:8008/ranking",
+      {
+        method: "POST",
+        body: JSON.stringify({}),
+      }
+    )
+      .then((data) => data.json())
+      .then((res) => {
+        if (res?.error) {
+          console.log("Error retrieving scoreboard.", res.error);
+        } else {
+          console.log("Successfully retrieved scoreboard.");
+          return res;
+        }
+      });
+
+    return result;
+  };
+
   /**
    * Returns player number
    * @param {*} username
@@ -120,6 +141,11 @@ class Multiplayer {
     this.turn = 1;
     this.game = null;
     this.user2 = null;
+  };
+
+  logout = () => {
+    this.reset();
+    this.user1 = null;
   };
 
   /**

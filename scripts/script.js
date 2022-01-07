@@ -123,12 +123,38 @@ const logout = () => {
   $("#usernameInput").value = "";
   $("#passwordInput").value = "";
 
-  multiplayerController.reset();
+  multiplayerController.logout();
   console.log("Logged out.");
 
   toggleBlockElem($("#auth #authForm"));
   toggleBlockElem($("#auth #userInfo"));
   $("#auth #userInfo #username").innerHTML = "";
+};
+
+handleScoreboard = async () => {
+  const rankingData = await multiplayerController.ranking();
+
+  // console.log("rankingData:", rankingData);
+  const table = $("#scoreTable");
+
+  // Delete Table Rows except header
+  const rowCount = table.rows.length;
+  for (let i = rowCount - 1; i > 0; i--) {
+    table.deleteRow(i);
+  }
+
+  for (const rank of rankingData.ranking) {
+    // console.log(rank);
+    const row = table.insertRow();
+    const nameCell = row.insertCell();
+    const victoriesCell = row.insertCell();
+    const numGamesCel = row.insertCell();
+    nameCell.appendChild(document.createTextNode(rank.nick));
+    victoriesCell.appendChild(document.createTextNode(rank.victories));
+    numGamesCel.appendChild(document.createTextNode(rank.games));
+  }
+
+  toggleScoreboard();
 };
 
 load();

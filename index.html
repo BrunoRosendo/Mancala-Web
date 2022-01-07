@@ -80,7 +80,7 @@
         <button id="startButton" onclick="startGame()">Start game</button>
         <button id="concedeButton" onclick="concede()">Concede</button>
         <button onclick=toggleInstructions()>How to play</button>
-        <button onclick=toggleScoreboard()>Show scoreboard</button>
+        <button onclick=handleScoreboard()>Show scoreboard</button>
     </section>
 
     <section id="instructions">
@@ -100,19 +100,14 @@
 
     <section id="scoreboard">
         <h2>Scoreboard</h2>
-        <table>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Score</th>
-            </tr>
-            <tr>
-                <td>Player</td>
-                <td>123</td>
-            </tr>
-            <tr>
-                <td>Nabo</td>
-                <td>0</td>
-            </tr>
+        <table id="scoreTable">
+            <thead>
+                <tr>
+                    <td scope="col">Name</td>
+                    <td scope="col">Wins</td>
+                    <td scope="col">Games</td>
+                </tr>
+            </thead>
         </table>
     </section>
 
