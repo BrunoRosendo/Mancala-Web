@@ -1,13 +1,27 @@
 const { StatusCodes } = require("http-status-codes");
 const crypto = require("crypto");
 
-const register = async (req, res) => {
+const canRegisterOrLogin = async (req, res) => {
   const db = await require("../../loaders/db");
 
   if (!await canRegister(req, db) && !await canLogin(req, db)) {
     res.writeHead(StatusCodes.BAD_REQUEST, { "Content-Type": "application/json" });
     res.write(JSON.stringify({
       error: "User registered with a different password"
+    }));
+    return false;
+  }
+
+  return true;
+}
+
+const isAuthenticated = async (req, res) => {
+  const db = await require("../../loaders/db");
+
+  if (!await canLogin(req, db)) {
+    res.writeHead(StatusCodes.BAD_REQUEST, { "Content-Type": "application/json" });
+    res.write(JSON.stringify({
+      error: "The credentials provided are incorrect"
     }));
     return false;
   }
@@ -38,5 +52,6 @@ const canLogin = async (req, db) => {
 }
 
 module.exports = {
-  register,
+  canRegisterOrLogin,
+  isAuthenticated
 }

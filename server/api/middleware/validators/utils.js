@@ -4,8 +4,11 @@ const useManyValidators = (...validators) => (req, res) => {
   return [...validators].every((validator) => validator(req, res));
 }
 
-const requiredField = (fieldName) => (req, res) => {
-  const field = req?.params?.[fieldName] || req?.body?.[fieldName];
+const requiredField = (fieldName, place) => (req, res) => {
+  const field = place ?
+    req?.[place]?.[fieldName]
+  :
+    req?.params?.[fieldName] || req?.body?.[fieldName];
 
   if (!field) {
     res.writeHead(StatusCodes.BAD_REQUEST, { "Content-Type": "application/json" });
@@ -33,8 +36,23 @@ const isOfType = (fieldName, type) => (req, res) => {
   return true;
 }
 
+const isGreaterThan = (fieldName, lowerBound) => (req, res) => {
+  const num = req?.params?.[fieldName] || req?.body?.[fieldName];
+
+  if (num <= lowerBound) {
+    res.writeHead(StatusCodes.BAD_REQUEST, { "Content-Type": "application/json" });
+    res.write(JSON.stringify({
+      error: `${fieldName} must be greater than ${lowerBound}`
+    }));
+    return false;
+  }
+
+  return true;
+}
+
 module.exports = {
   useManyValidators,
   requiredField,
   isOfType,
+  isGreaterThan,
 }

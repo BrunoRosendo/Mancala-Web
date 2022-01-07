@@ -27,7 +27,7 @@ const getUrlParams = (url) => {
 
   const params = {};
   const query = urlArray[1];
-  query[1].split('&').forEach((param) => {
+  query.split('&').forEach((param) => {
     const [key, value = ''] = param.split('=');
     params[key] = value;
   });

@@ -5,7 +5,7 @@ const validators = require("./middleware/validators");
 module.exports = Object.freeze({
   GET: {
     '/': {
-      controller: (req, res) => res.write("E que oh maninho"), 
+      controller: (req, res) => res.write(JSON.stringify(req.params)), 
     }
   },
 
@@ -14,13 +14,21 @@ module.exports = Object.freeze({
       controller: controllers.register,
       middlewares: [
         validators.register,
-        middlewares.auth.register
+        middlewares.auth.canRegisterOrLogin
       ]
     },
 
     '/ranking': {
       controller: controllers.ranking
-    }
+    },
+
+    '/join': {
+      controller: controllers.join,
+      middlewares: [
+        validators.join,
+        middlewares.auth.isAuthenticated
+      ]
+    },
   },
 
   PUT: {

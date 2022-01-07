@@ -35,10 +35,13 @@ const createTables = async () => {
   */
   await db.exec(`CREATE TABLE IF NOT EXISTS game(
     id TEXT PRIMARY KEY,
+    isPending INTEGER DEFAULT 1,
+    numPits INTEGER NOT NULL,
+    initialSeeds INTEGER NOT NULL,
     playerOne TEXT NOT NULL,
-    playerTwo TEXT NOT NULL,
+    playerTwo TEXT,
     turn TEXT,
-    playerOneSide TEXT
+    playerOneSide TEXT,
     playerTwoSide TEXT)`
   );
 

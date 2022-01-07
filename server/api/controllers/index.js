@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const { join } = require("./game");
 
 const register = async (req, res) => {
   const db = await require("../../loaders/db");
@@ -13,8 +14,8 @@ const register = async (req, res) => {
   }
 
   const password = req.body.password || req.params.password;
-  const hash = crypto.
-    createHash('md5')
+  const hash = crypto
+    .createHash('md5')
     .update(password)
     .digest('hex');
 
@@ -40,5 +41,6 @@ const ranking = async (req, res) => {
 
 module.exports = {
   register,
-  ranking
+  ranking,
+  join
 }
