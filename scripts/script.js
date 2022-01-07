@@ -132,11 +132,29 @@ const logout = () => {
 };
 
 handleScoreboard = async () => {
+  // GET server Rankings
   const rankingData = await multiplayerController.ranking();
+
+  // Get Local Ranking
+  let localRank = null;
+  if (typeof Storage != "undefined") {
+    localRank = JSON.parse(localStorage.getItem("score"));
+  }
 
   // console.log("rankingData:", rankingData);
   const table = $("#scoreBody");
   destroyChildren(table);
+
+  if (localRank != null) {
+    const row = table.insertRow();
+    row.classList.add("singleplayerRow");
+    const nameCell = row.insertCell();
+    const victoriesCell = row.insertCell();
+    const numGamesCel = row.insertCell();
+    nameCell.appendChild(document.createTextNode(localRank.nick));
+    victoriesCell.appendChild(document.createTextNode(localRank.victories));
+    numGamesCel.appendChild(document.createTextNode(localRank.games));
+  }
 
   for (const rank of rankingData.ranking) {
     // console.log(rank);

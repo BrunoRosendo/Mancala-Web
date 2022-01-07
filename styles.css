@@ -242,7 +242,7 @@ input:checked+.slider:before {
 #scoreboard td,
 #scoreboard th {
     border: 1px solid black;
-    padding: 0.5em;
+    padding: 0.7em;
 }
 
 #scoreboard table {
@@ -254,13 +254,16 @@ input:checked+.slider:before {
 }
 
 #scoreboard thead {
-    background-color: black;
-    color: white;
-    font-size: 100%;
+    background-color: #b6894e;
+    font-weight: bold;
 }
 
 #scoreboard td {
     text-align: center;
+}
+
+#scoreboard .singleplayerRow {
+    background-color: lightblue;
 }
 
 

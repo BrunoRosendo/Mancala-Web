@@ -189,15 +189,30 @@ class Game {
     this.updateScores(2);
   };
 
-  declareWinner() {
-    this.collectRemainingSeeds(this.currentPlayer === 1 ? 2 : 1);
+  /**
+   * Declares who won the game
+   * @param {*} conceded Whether the local user has conceded
+   */
+  declareWinner(conceded = false) {
+    let scoreIncrement = 0;
+    if (conceded) {
+      this.collectRemainingSeeds(2);
+      this.sendMessage("Player 2 won!");
+    } else {
+      this.collectRemainingSeeds(this.currentPlayer === 1 ? 2 : 1);
 
-    const playerOneScore = this.boardController.getScore(1);
-    const playerTwoScore = this.boardController.getScore(2);
+      const playerOneScore = this.boardController.getScore(1);
+      const playerTwoScore = this.boardController.getScore(2);
 
-    if (playerOneScore > playerTwoScore) this.sendMessage("Player 1 won!");
-    else if (playerTwoScore > playerOneScore) this.sendMessage("Player 2 won!");
-    else this.sendMessage("It's a tie!");
+      if (playerOneScore > playerTwoScore) {
+        this.sendMessage("Player 1 won!");
+        scoreIncrement = 1;
+      } else if (playerTwoScore > playerOneScore)
+        this.sendMessage("Player 2 won!");
+      else this.sendMessage("It's a tie!");
+    }
+
+    updateLocalRank(scoreIncrement);
 
     toggleBlockElem($("button[id=endGameButton]"));
     hideElem($("button[id=concedeButton]"));
@@ -266,10 +281,6 @@ class Game {
 
   concede = () => {
     if (this.multiplayer) multiplayerController.leave();
-    else {
-      this.sendMessage("Player 1 conceded. Player 2 won!"); // For now only P1 can concede (singleplayer)
-      toggleBlockElem($("button[id=endGameButton]"));
-      hideElem($("button[id=concedeButton]"));
-    }
+    else this.declareWinner(true);
   };
 }
