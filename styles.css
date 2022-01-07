@@ -57,14 +57,14 @@ header {
 }
 
 #logo {
-    padding-left: 9em;
+    padding-left: 7em;
     font-size: 2.5em;
     letter-spacing: 0.3em;
     text-shadow: 1px 1px 2px black, 0 5px 10px rgb(180, 0, 0), 0 0 30px white;
 }
 
 #auth {
-    padding-right: 5em;
+    padding-right: 7.5em;
 }
 
 input[type=text],
