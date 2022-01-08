@@ -25,3 +25,14 @@ const updateLocalRank = (winsIncrement) => {
     localStorage.setItem("score", JSON.stringify(localRank));
   }
 };
+
+const showSnackbar = (text) => {
+  const snackbar = $("#snackbar");
+  snackbar.innerHTML = text;
+  snackbar.className = "show";
+
+  setTimeout(() => {
+    snackbar.className = snackbar.className.replace("show", "");
+    snackbar.innerHTML = "";
+  }, 3000);
+};

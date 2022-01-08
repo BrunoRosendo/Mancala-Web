@@ -340,3 +340,75 @@ input:checked+.slider:before {
         transform: rotate(360deg);
     }
 }
+
+
+/* Snackbar */
+
+#snackbar {
+    visibility: hidden;
+    /*hidden */
+    min-width: 20em;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 0.5em;
+    padding: 2em;
+    position: fixed;
+    z-index: 1;
+    left: 10%;
+    top: 2em;
+}
+
+#snackbar.show {
+    visibility: visible;
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar. However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+
+/* Animations to fade the snackbar in and out */
+
+@-webkit-keyframes fadein {
+    from {
+        top: 0;
+        opacity: 0;
+    }
+    to {
+        top: 2em;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        top: 0;
+        opacity: 0;
+    }
+    to {
+        top: 2em;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        top: 2em;
+        opacity: 1;
+    }
+    to {
+        top: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        top: 2em;
+        opacity: 1;
+    }
+    to {
+        top: 0;
+        opacity: 0;
+    }
+}

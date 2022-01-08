@@ -84,6 +84,7 @@ class Multiplayer {
       .then((res) => {
         if (res?.error) {
           console.log("Error notifying player's move.", res.error);
+          showSnackbar(res.error);
         } else {
           console.log("Notification Successful!");
         }

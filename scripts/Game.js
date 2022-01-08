@@ -59,8 +59,11 @@ class Game {
 
       for (const [username, boardContainers] of Object.entries(board.sides)) {
         const player = multiplayerController.getPlayerNumber(username);
-        if (multiplayerController.user2 == null && player == 2)
+        if (multiplayerController.user2 == null && player == 2) {
           multiplayerController.user2 = new User(username, null);
+          $("#player1-name").innerHTML = multiplayerController.user1.username;
+          $("#player2-name").innerHTML = multiplayerController.user2.username;
+        }
 
         for (const [type, value] of Object.entries(boardContainers)) {
           if (type == "store")
@@ -261,8 +264,7 @@ class Game {
   resetBoard(numSeeds, numHouses) {
     this.boardController.reset(numSeeds, numHouses);
     multiplayerController.reset();
-    this.updateScores(1);
-    this.updateScores(2);
+    this.resetScores();
     this.eventSource?.close();
     hideElem($("#loading"));
   }
@@ -289,5 +291,12 @@ class Game {
     if (this.multiplayer) {
       await multiplayerController.leave();
     } else this.declareWinner(true);
+  };
+
+  resetScores = () => {
+    this.updateScores(1);
+    this.updateScores(2);
+    $("#player1-name").innerHTML = "Player 1";
+    $("#player2-name").innerHTML = "Player 2";
   };
 }
