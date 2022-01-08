@@ -246,9 +246,10 @@ class Game {
   enablePlay() {
     const playerOneHouses = $("#gameboard").lastChild.children;
     for (let i = 0; i < playerOneHouses.length; ++i) {
-      if (playerOneHouses[i].children.length === 0) continue;
-      playerOneHouses[i].onclick = () => this.playerTurn(i);
-      playerOneHouses[i].className = "house onHover";
+      const playerOneHouse = playerOneHouses[i].firstChild;
+      if (playerOneHouse.children.length === 0) continue;
+      playerOneHouse.onclick = () => this.playerTurn(i);
+      playerOneHouse.className = "house onHover";
     }
     this.sendMessage("It's your turn!");
   }
@@ -256,8 +257,9 @@ class Game {
   disablePlay() {
     const playerOneHouses = $("#gameboard").lastChild.children;
     for (let i = 0; i < playerOneHouses.length; ++i) {
-      playerOneHouses[i].onclick = null;
-      playerOneHouses[i].className = "house";
+      const playerOneHouse = playerOneHouses[i].firstChild;
+      playerOneHouse.onclick = null;
+      playerOneHouse.className = "house";
     }
   }
 

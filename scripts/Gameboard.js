@@ -41,17 +41,26 @@ class Gameboard {
     middleBoard.className = "middleBoard";
 
     for (let i = 0; i < this.houseRange; ++i) {
-      const house = document.createElement("div");
-      house.className = "house";
-
-      for (let j = 0; j < this.seedRange; ++j)
-        house.appendChild(this.createSeed());
-
-      house.appendChild(this.createHouseScore(this.seedRange));
-      middleBoard.appendChild(house);
+      const houseContainer = this.createHouseContainer(this.seedRange);
+      middleBoard.appendChild(houseContainer);
     }
 
     return middleBoard;
+  }
+
+  createHouseContainer(seedRange) {
+    const houseContainer = document.createElement("div");
+    houseContainer.className = "houseContainer";
+
+    const house = document.createElement("div");
+    house.className = "house";
+
+    for (let j = 0; j < seedRange; ++j) house.appendChild(this.createSeed());
+
+    house.appendChild(this.createHouseScore(seedRange));
+
+    houseContainer.appendChild(house);
+    return houseContainer;
   }
 
   /**
@@ -99,7 +108,7 @@ class Gameboard {
     // Second player (top row)
     const fstMiddle = containers[1].children;
     for (let i = 1; i <= fstMiddle.length; i++) {
-      const house = fstMiddle[fstMiddle.length - i]; // reverse order in HTML
+      const house = fstMiddle[fstMiddle.length - i].firstChild; // reverse order in HTML
       this.updateCellSeeds(
         house,
         oldBoard[i + this.houseRange],
@@ -117,7 +126,7 @@ class Gameboard {
     // First player (bottom row)
     const sndMiddle = containers[3].children;
     for (let i = 0; i < sndMiddle.length; i++) {
-      const house = sndMiddle[i]; // reverse order in HTML
+      const house = sndMiddle[i].firstChild; // reverse order in HTML
       this.updateCellSeeds(house, oldBoard[i], this.board[i]);
     }
   }

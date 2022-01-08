@@ -162,19 +162,28 @@ input[type=password] {
 .storage {
     border-radius: 100em;
     background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent 80%), url('../img/darkwood.jpg');
-    margin: 1em;
+    margin: 0.5em;
+}
+
+.houseContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 0.5em
 }
 
 .house {
     position: relative;
     display: flex;
     flex: 1;
-    padding: 0.5em;
+    height: 100%;
     max-width: 18em;
 }
 
 .house.onHover:hover {
-    cursor: pointer
+    cursor: pointer;
 }
 
 .houseScore {
