@@ -98,11 +98,11 @@ input[type=password] {
 #gameboard {
     display: grid;
     flex: 8;
-    height: 60vh;
+    height: 55vh;
     grid-template-columns: 1fr 5fr 1fr;
     grid-template-rows: 1fr 1fr;
     margin: auto;
-    background-image: linear-gradient(to bottom right, rgb(35, 0, 0), rgb(0, 0, 35));
+    background-image: linear-gradient(to bottom right, #00001C, #00001C);
 }
 
 .middleBoard {
@@ -128,7 +128,9 @@ input[type=password] {
 }
 
 .house.onHover:hover {
-    cursor: pointer
+    cursor: pointer;
+    box-shadow: 0 0 8px #21b8f3, 0 0 30px #21b8f3, 0 0 60px #21b8f3;
+    transition-delay: 0s;
 }
 
 .houseScore {
@@ -155,26 +157,39 @@ input[type=password] {
 
 .playerInfoContainer {
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: center;
     color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: consolas;
     font-size: large;
     /*  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px rgb(199, 58, 255), 0 0 82px rgb(199, 58, 255), 0 0 92px rgb(199, 58, 255), 0 0 102px rgb(199, 58, 255), 0 0 151px rgb(199, 58, 255); */
     /* background: url('../img/wood.jpg'); */
 }
 
 .playerInfoContainer.left {
-    border-top-left-radius: 10em;
-    border-bottom-left-radius: 10em;
-    background-image: linear-gradient(to bottom left, var(--player2Secondary), var(--player2Tertiary));
+    border-top-left-radius: 1em;
+    border-bottom-left-radius: 1em;
+    background-color: #00001C;
+    /* background-image: linear-gradient(to bottom left, var(--player2Secondary), var(--player2Tertiary)); */
 }
 
 .playerInfoContainer.right {
-    border-top-right-radius: 10em;
-    border-bottom-right-radius: 10em;
-    background-image: linear-gradient(to top right, var(--player1Secondary), var(--player1Tertiary));
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+    background-color: #00001C;
+    /* background-image: linear-gradient(to top right, var(--player1Secondary), var(--player1Tertiary)); */
 }
+
+
+/* .playerInfoContainer.left .divider {
+    position: absolute;
+    right: 1em;
+    width: 2px;
+    margin-top: 50%;
+    height: 50%;
+    background-color: white;
+} */
 
 .playerInfoContainer .scoreName {
     margin-top: 100%;
