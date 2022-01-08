@@ -1,6 +1,6 @@
 body {
     font-family: 'Courier New', Courier, monospace;
-    background-color: moccasin;
+    background-color: var(--primary);
 }
 
 section {
@@ -119,6 +119,7 @@ input[type=password] {
 
 .playerInfoContainer .scoreName {
     margin-right: 1em;
+    margin-left: 1em;
 }
 
 .playerInfoContainer .scorePoints {
@@ -128,7 +129,7 @@ input[type=password] {
     width: 9em;
     height: 50%;
     border-radius: 1em;
-    background-color: rgb(46, 46, 255);
+    background-color: #00ddff;
     font-size: medium;
     color: yellow
 }
