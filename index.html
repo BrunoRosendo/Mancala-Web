@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Mancala</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/AppTheme.css" />
     <link rel="stylesheet" href="css/styles.css" />
     <script type="text/javascript" src="scripts/utils.js"></script>
@@ -122,29 +123,32 @@
     </section>
 
     <section id="game">
-        <h1>Let's play!</h1>
+        <!-- <h1>Let's play!</h1> -->
         <div id="gameContainer" class="flexContainer">
-            <div class="flexElem playerInfoContainer left">
-                <h3 class="scoreName" id="player2-name">Player 2</h3>
-                <div class="flexContainer">
-                    <h3>Score:</h3>
-                    <h3 id="player2-score">0</h3>
+            <div id="playersContainer">
+                <div class="playerInfoContainer left">
+                    <h3 class="scoreName" id="player1-name">Player 1</h3>
+                    <div class="flexContainer scorePoints">
+                        <i class="fas fa-star starIcon"></i>
+                        <span id="player1-score">0</span>
+
+                    </div>
+                </div>
+                <div class="playerInfoContainer right">
+                    <h3 class="scoreName" id="player2-name">Player 2</h3>
+                    <div class="flexContainer scorePoints">
+                        <i class="fas fa-star"></i>
+                        <span id="player2-score">0</span>
+                    </div>
                 </div>
             </div>
             <div id="gameboard"></div>
-            <div class="flexElem playerInfoContainer right">
-                <h3 class="scoreName" id="player1-name">Player 1</h3>
-                <div class="flexContainer">
-                    <h3>Score:</h3>
-                    <h3 id="player1-score">0</h3>
-                </div>
-            </div>
         </div>
 
     </section>
 
     <section id="messages">
-        <h2>Messages</h2>
+        <!-- <h2>Messages</h2> -->
         <div class="messageContainer">
             <div class="currentMsgContainer">
                 <h3 id="currMsg"></h3>

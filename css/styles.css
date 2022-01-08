@@ -95,14 +95,62 @@ input[type=password] {
 
 /* Game board */
 
+#gameContainer {
+    display: flex;
+    flex-direction: column;
+    height: 65vh;
+    position: relative;
+    padding-top: 2em;
+    padding-bottom: 0em;
+}
+
+#playersContainer {
+    display: flex;
+    justify-content: space-around;
+    height: 15%;
+}
+
+.playerInfoContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+
+.playerInfoContainer .scoreName {
+    margin-right: 1em;
+}
+
+.playerInfoContainer .scorePoints {
+    display: flex;
+    align-items: center;
+    padding-left: 1em;
+    width: 9em;
+    height: 50%;
+    border-radius: 1em;
+    background-color: rgb(46, 46, 255);
+    font-size: medium;
+    color: yellow
+}
+
+.playerInfoContainer .scorePoints span {
+    margin-left: 0.5em;
+    font-size: large;
+    color: white;
+    font-weight: bold;
+}
+
 #gameboard {
     display: grid;
     flex: 8;
-    height: 60vh;
+    height: 100%;
+    width: 90%;
     grid-template-columns: 1fr 5fr 1fr;
     grid-template-rows: 1fr 1fr;
-    background: url('img/wood.jpg');
+    background: url('../img/wood.jpg');
     margin: auto;
+    border: 0.5em solid black;
+    border-radius: 2em;
 }
 
 .middleBoard {
@@ -112,18 +160,17 @@ input[type=password] {
 
 .house,
 .storage {
-    border-radius: 7vh;
-    background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent 80%), url('img/darkwood.jpg');
+    border-radius: 100em;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent 80%), url('../img/darkwood.jpg');
     margin: 1em;
 }
 
 .house {
     position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
     flex: 1;
     padding: 0.5em;
+    max-width: 18em;
 }
 
 .house.onHover:hover {
@@ -132,8 +179,8 @@ input[type=password] {
 
 .houseScore {
     position: absolute;
-    right: 1em;
-    bottom: 0.5em;
+    right: 20%;
+    bottom: 1%;
 }
 
 .storage {
@@ -150,13 +197,6 @@ input[type=password] {
     height: 2.2vh;
     border-radius: 50%;
     background: radial-gradient(closest-side, rgba(255, 255, 255, 0.55), transparent), rgb(180, 0, 0);
-}
-
-.playerInfoContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: gray
 }
 
 
