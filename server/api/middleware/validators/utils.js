@@ -10,7 +10,7 @@ const requiredField = (fieldName, place) => (req, res) => {
   :
     req?.params?.[fieldName] || req?.body?.[fieldName];
 
-  if (!field) {
+  if (field == null) {
     res.writeHead(StatusCodes.BAD_REQUEST, { "Content-Type": "application/json" });
     res.write(JSON.stringify({
       error: `${fieldName} field is required`
@@ -23,7 +23,7 @@ const requiredField = (fieldName, place) => (req, res) => {
 
 const isOfType = (fieldName, type) => (req, res) => {
   const field = req?.params?.[fieldName] || req?.body?.[fieldName];
-  if (!field) return true; // Use requiredField() to test if it's required
+  if (field == null) return true; // Use requiredField() to test if it's required
 
   if (typeof field !== type) {
     res.writeHead(StatusCodes.BAD_REQUEST, { "Content-Type": "application/json" });

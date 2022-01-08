@@ -38,6 +38,18 @@ module.exports = Object.freeze({
         middleware.game.existingGame,
         middleware.game.userIsPlaying,
       ]
-    }
+    },
+
+    '/notify': {
+      controller: controllers.notify,
+      middlewares: [
+        validators.notify,
+        middleware.auth.isAuthenticated,
+        middleware.game.existingGame,
+        middleware.game.userIsPlaying,
+        middleware.game.onPlayerTurn,
+        middleware.game.validMove,
+      ]
+    },
   },
 });

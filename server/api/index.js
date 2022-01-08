@@ -25,6 +25,7 @@ module.exports = async (req, res) => {
     if (middlewares && !await asyncEvery(middlewares)(parsedRequest, res))
       return;
 
+    res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
     await controller(parsedRequest, res);
 
   } catch(err) {

@@ -114,7 +114,12 @@ const updateRanking = async (nick, win, db) => {
   ]);
 }
 
+const notify = async (req, res) => {
+
+}
+
 module.exports = {
   join,
   leave,
+  notify,
 }
