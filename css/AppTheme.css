@@ -1,3 +1,9 @@
 :root {
-    --primary: #b6894e
+    --primary: #b6894e;
+    --player1Primary: rgb(0, 144, 180);
+    --player1Secondary: rgb(0, 0, 50);
+    --player1Tertiary: rgb(0, 0, 35);
+    --player2Primary: rgb(175, 0, 0);
+    --player2Secondary: rgb(50, 0, 0);
+    --player2Tertiary: rgb(35, 0, 0);
 }

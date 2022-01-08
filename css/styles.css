@@ -98,7 +98,7 @@ input[type=password] {
 #gameContainer {
     display: flex;
     flex-direction: column;
-    height: 65vh;
+    height: 68vh;
     position: relative;
     padding-top: 2em;
     padding-bottom: 0em;
@@ -158,11 +158,17 @@ input[type=password] {
     flex-direction: row;
 }
 
+.houseContainer,
+.storage {
+    margin: 0.5em;
+    margin-top: 0.8em;
+    margin-bottom: 0.8em;
+}
+
 .house,
 .storage {
     border-radius: 100em;
     background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent 80%), url('../img/darkwood.jpg');
-    margin: 0.5em;
 }
 
 .houseContainer {
@@ -184,6 +190,8 @@ input[type=password] {
 
 .house.onHover:hover {
     cursor: pointer;
+    box-shadow: 0 0 8px #70543B, 0 0 30px #70543B, 0 0 60px #70543B;
+    transition-delay: 0s;
 }
 
 .houseScore {
@@ -218,8 +226,18 @@ input[type=password] {
 
 /* Configuration */
 
-#configuration form {
+#configuration {
+    position: relative;
     padding-top: 5vh;
+}
+
+#configIcon {
+    display: block;
+    position: absolute;
+    top: 1vh;
+    left: 4em;
+    font-size: xx-large;
+    color: #966F3C;
 }
 
 #configuration .formRow {
