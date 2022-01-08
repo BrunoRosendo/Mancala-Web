@@ -1,6 +1,8 @@
 body {
     font-family: 'Courier New', Courier, monospace;
     background-color: var(--primary);
+    font-weight: bold;
+    margin: 0
 }
 
 section {
@@ -15,13 +17,13 @@ p {
 
 button,
 .button {
-    color: rgb(180, 0, 0);
+    color: var(--redAccent);
     font: 1.5em 'Courier New', Courier, monospace;
-    font-weight: bold;
+    font-weight: bolder;
     text-shadow: 0 1px 2px moccasin;
-    background-color: #b6894e;
+    background-color: var(--darkPrimary);
     box-shadow: inset 0 1px 0 moccasin;
-    border: 0.1em solid rgb(180, 0, 0);
+    border: 0.1em solid var(--redAccent);
     border-radius: 0.6em;
     padding: 0.4em;
     margin: 0 1em 0 1em;
@@ -47,7 +49,8 @@ header {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: #966F3C;
+    background-color: var(--darkPrimary);
+    /*     background: linear-gradient(to bottom, var(--darkPrimary), 100%, moccasin); */
     padding: 0.5em;
     margin-bottom: 2em;
 }
@@ -129,7 +132,7 @@ input[type=password] {
     width: 9em;
     height: 50%;
     border-radius: 1em;
-    background-color: #00ddff;
+    background-color: var(--greenAccent);
     font-size: medium;
     color: yellow
 }
@@ -247,6 +250,16 @@ input[type=password] {
     padding-bottom: 5vh;
 }
 
+.rangeInputs {
+    display: flex;
+    align-items: center;
+}
+
+.rangeInputs input[type=range] {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
 
 /* The slider switch */
 
@@ -288,7 +301,7 @@ input[type=password] {
 }
 
 input:checked+.slider {
-    background-color: #b6894e;
+    background-color: var(--darkPrimary);
 }
 
 input:checked+.slider:before {
@@ -326,7 +339,7 @@ input:checked+.slider:before {
 }
 
 #scoreboard thead {
-    background-color: #b6894e;
+    background-color: var(--darkPrimary);
     font-weight: bold;
 }
 
