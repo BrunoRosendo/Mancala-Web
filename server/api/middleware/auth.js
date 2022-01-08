@@ -19,7 +19,7 @@ const isAuthenticated = async (req, res) => {
   const db = await require("../../loaders/db");
 
   if (!await canLogin(req, db)) {
-    res.writeHead(StatusCodes.BAD_REQUEST, { "Content-Type": "application/json" });
+    res.writeHead(StatusCodes.UNAUTHORIZED, { "Content-Type": "application/json" });
     res.write(JSON.stringify({
       error: "The credentials provided are incorrect"
     }));

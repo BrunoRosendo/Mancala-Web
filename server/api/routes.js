@@ -1,5 +1,5 @@
 const controllers = require("./controllers");
-const middlewares = require("./middleware");
+const middleware = require("./middleware");
 const validators = require("./middleware/validators");
 
 module.exports = Object.freeze({
@@ -14,7 +14,7 @@ module.exports = Object.freeze({
       controller: controllers.register,
       middlewares: [
         validators.register,
-        middlewares.auth.canRegisterOrLogin
+        middleware.auth.canRegisterOrLogin
       ]
     },
 
@@ -26,16 +26,18 @@ module.exports = Object.freeze({
       controller: controllers.join,
       middlewares: [
         validators.join,
-        middlewares.auth.isAuthenticated
+        middleware.auth.isAuthenticated
       ]
     },
+
+    '/leave': {
+      controller: controllers.leave,
+      middlewares: [
+        validators.leave,
+        middleware.auth.isAuthenticated,
+        middleware.game.existingGame,
+        middleware.game.userIsPlaying,
+      ]
+    }
   },
-
-  PUT: {
-
-  },
-
-  DELETE: {
-
-  }
 });

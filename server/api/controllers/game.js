@@ -66,6 +66,55 @@ const generatePlayerSide = (numPits, initialSeeds) => {
   };
 }
 
+// TODO: Leave after timeout of 2 minutes
+const leave = async (req, res) => {
+  const db = await require("../../loaders/db");
+  const { game, nick } = req?.body;
+
+  const getSql = "SELECT * FROM game WHERE id = ?";
+  const curGame = await db.get(getSql, [game]);
+  const winner = curGame.isPending ? null :
+    nick === curGame.playerOne ? curGame.playerTwo : curGame.playerOne;
+
+  const deleteSql = "DELETE FROM game WHERE id = ?";
+  await db.run(deleteSql, [game]);
+
+  if (winner) {
+    const loser = curGame.playerOne === winner ?
+    curGame.playerTwo : curGame.playerOne;
+
+    await updateRanking(winner, true, db);
+    await updateRanking(loser, false, db);
+  }
+
+  res.write(JSON.stringify({}));
+  //TODO: Update player(s) of the winner
+}
+
+const updateRanking = async (nick, win, db) => {
+  const rankSql = "SELECT * FROM ranking WHERE nick = ?";
+  const currentRank = await db.get(rankSql, [nick]);
+  const victoryIncrement = win ? 1 : 0
+
+  if (!currentRank) {
+    const createSql = `INSERT INTO ranking VALUES (?, ?, 1)`;
+    await db.run(createSql, [nick, victoryIncrement]);
+    return;
+  }
+
+  const updateSql = `UPDATE ranking SET
+    victories = ?,
+    games = ?
+    WHERE nick = ?`;
+
+  await db.run(updateSql, [
+    currentRank.victories + victoryIncrement,
+    currentRank.games + 1,
+    nick
+  ]);
+}
+
 module.exports = {
   join,
+  leave,
 }
