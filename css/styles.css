@@ -179,7 +179,7 @@ input[type=password] {
     display: flex;
     flex: 1;
     height: 100%;
-    max-width: 18em;
+    max-width: 17em;
 }
 
 .house.onHover:hover {
