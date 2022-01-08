@@ -19,7 +19,7 @@ button,
     font: 1.5em 'Courier New', Courier, monospace;
     font-weight: bold;
     text-shadow: 0 1px 2px moccasin;
-    background-color: #b6894e;
+    background-color: var(--primary);
     box-shadow: inset 0 1px 0 moccasin;
     border: 0.1em solid rgb(180, 0, 0);
     border-radius: 0.6em;
@@ -101,8 +101,8 @@ input[type=password] {
     height: 60vh;
     grid-template-columns: 1fr 5fr 1fr;
     grid-template-rows: 1fr 1fr;
-    background: url('img/wood.jpg');
     margin: auto;
+    background-image: linear-gradient(to bottom right, rgb(35, 0, 0), rgb(0, 0, 35));
 }
 
 .middleBoard {
@@ -112,9 +112,10 @@ input[type=password] {
 
 .house,
 .storage {
-    border-radius: 7vh;
-    background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent 80%), url('img/darkwood.jpg');
+    border-radius: 10em;
+    background: radial-gradient(closest-side, rgba(167, 76, 175, 0.2), transparent 80%), url('../img/black.jpg');
     margin: 1em;
+    border: 0.2em solid purple;
 }
 
 .house {
@@ -149,14 +150,49 @@ input[type=password] {
     width: 3.2vh;
     height: 2.2vh;
     border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(255, 255, 255, 0.55), transparent), rgb(180, 0, 0);
+    background: radial-gradient(closest-side, rgba(0, 0, 0, 0.4), transparent), #FF00CC;
 }
 
 .playerInfoContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: gray
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
+    /*  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px rgb(199, 58, 255), 0 0 82px rgb(199, 58, 255), 0 0 92px rgb(199, 58, 255), 0 0 102px rgb(199, 58, 255), 0 0 151px rgb(199, 58, 255); */
+    /* background: url('../img/wood.jpg'); */
+}
+
+.playerInfoContainer.left {
+    border-top-left-radius: 10em;
+    border-bottom-left-radius: 10em;
+    background-image: linear-gradient(to bottom left, var(--player2Secondary), var(--player2Tertiary));
+}
+
+.playerInfoContainer.right {
+    border-top-right-radius: 10em;
+    border-bottom-right-radius: 10em;
+    background-image: linear-gradient(to top right, var(--player1Secondary), var(--player1Tertiary));
+}
+
+.playerInfoContainer .scoreName {
+    margin-top: 100%;
+}
+
+.playerInfoContainer .flexContainer {
+    animation: pulsate 2.5s infinite alternate;
+}
+
+@keyframes pulsate {
+    100% {
+        /* Larger blur radius */
+        text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px rgb(220, 43, 255), 0 0 80px rgb(220, 43, 255), 0 0 90px rgb(220, 43, 255), 0 0 100px rgb(220, 43, 255), 0 0 150px rgb(220, 43, 255);
+    }
+    0% {
+        /* Smaller blur radius */
+        text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #fff, 0 0 10px rgb(220, 43, 255), 0 0 45px rgb(220, 43, 255), 0 0 55px rgb(220, 43, 255), 0 0 70px rgb(220, 43, 255), 0 0 80px rgb(220, 43, 255);
+    }
 }
 
 
