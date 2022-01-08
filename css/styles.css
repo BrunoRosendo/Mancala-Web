@@ -305,6 +305,10 @@ input:checked+.slider:before {
 
 /* Scoreboard */
 
+#scoreboard {
+    margin-top: 2em;
+}
+
 #scoreboard table,
 #scoreboard td,
 #scoreboard th {
