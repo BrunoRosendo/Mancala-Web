@@ -37,7 +37,11 @@ const notify = async (req, res) => {
     .concat(playerTwoSide.pits)
     .concat([playerTwoSide.store]);
 
-  const playAgain = turn(move, nick === curGame.playerOne ? 1 : 2, board, curGame.numPits);
+  const playerNum = nick === curGame.playerOne ? 1 : 2;
+  const opponentNum = playerNum === 1 ? 2 : 1;
+
+  const playAgain = turn(move, playerNum, board, curGame.numPits);
+  const gameOver = checkGameEnd(playAgain ? playerNum : opponentNum, board, curGame.numPits);
 
   const newSideOne = JSON.stringify({
     store: board[curGame.numPits],
@@ -49,8 +53,8 @@ const notify = async (req, res) => {
     pits: board.slice(curGame.numPits + 1, board.length - 1)
   });
 
-  const opponent = nick === curGame.playerOne ?
-    curGame.playerTwo : curGame.playerOne;
+  const opponent = opponentNum === 1 ?
+    curGame.playerOne : curGame.playerTwo;
 
   const updateSql = `UPDATE game SET
     turn = ?,
@@ -65,8 +69,22 @@ const notify = async (req, res) => {
     game
   ]);
 
+  // TODO: Update players
+
+  if (gameOver) {
+    const winner = closeGame(
+      curGame.playerOne,
+      curGame.playerTwo,
+      newSideOne.store,
+      newSideTwo.store,
+      game,
+      db
+    );
+
+    // TODO: Add winner to update object
+  }
+
   res.write(JSON.stringify({}));
-  // TODO: Check game end and update (winner as well)
 }
 
 const turn = (idx, player, board, numPits) => {
@@ -106,6 +124,41 @@ const turn = (idx, player, board, numPits) => {
     board[idx] = 0;
 
     return false;
+}
+
+const checkGameEnd = (player, board, numPits) => {
+  let offset = player === 1 ? 0 : numPits + 1;
+
+  for (let i = offset; i < offset + numPits; ++i)
+      if (board[i] > 0) return false;
+
+  const storage = player === 1 ? board.length - 1 : numPits;
+  offset = player === 1 ? numPits + 1 : 0;
+
+  for (let i = offset; i < offset + numPits; ++i) {
+    board[storage] += board[i];
+    board[i] = 0;
+  }
+
+  return true;
+}
+
+const closeGame = async (playerOne, playerTwo, scoreOne, scoreTwo, game, db) => {
+  const deleteSql = "DELETE FROM game WHERE id = ?";
+  await db.run(deleteSql, [game]);
+
+  if (scoreOne === scoreTwo) {
+    await updateRanking(playerOne, false, db);
+    await updateRanking(playerTwo, false, db);
+    return null;
+  }
+
+  const [winner, loser] = scoreOne > scoreTwo ?
+    [playerOne, playerTwo] : [playerTwo, playerOne];
+
+  await updateRanking(winner, true, db);
+  await updateRanking(loser, false, db);
+  return winner;
 }
 
 const onPlayerHouse = (idx, player, numPits, board) => {
