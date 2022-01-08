@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Mancala</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/AppTheme.css" />
+    <link rel="stylesheet" href="css/styles.css" />
     <script type="text/javascript" src="scripts/utils.js"></script>
     <script type="text/javascript" src="scripts/Gameboard.js"></script>
     <script type="text/javascript" src="scripts/Bot.js"></script>
@@ -122,17 +123,17 @@
 
     <section id="game">
         <h1>Let's play!</h1>
-        <div class="flexContainer">
-            <div class="flexElem playerInfoContainer">
-                <h3 id="player2-name">Player 2</h3>
+        <div id="gameContainer" class="flexContainer">
+            <div class="flexElem playerInfoContainer left">
+                <h3 class="scoreName" id="player2-name">Player 2</h3>
                 <div class="flexContainer">
                     <h3>Score:</h3>
                     <h3 id="player2-score">0</h3>
                 </div>
             </div>
             <div id="gameboard"></div>
-            <div class="flexElem playerInfoContainer">
-                <h3 id="player1-name">Player 1</h3>
+            <div class="flexElem playerInfoContainer right">
+                <h3 class="scoreName" id="player1-name">Player 1</h3>
                 <div class="flexContainer">
                     <h3>Score:</h3>
                     <h3 id="player1-score">0</h3>
