@@ -132,7 +132,7 @@ input[type=password] {
     width: 9em;
     height: 50%;
     border-radius: 1em;
-    background-color: var(--greenAccent);
+    background-color: var(--purpleAccent);
     font-size: medium;
     color: yellow
 }
@@ -153,7 +153,7 @@ input[type=password] {
     grid-template-rows: 1fr 1fr;
     background: url('../img/wood.jpg');
     margin: auto;
-    border: 0.5em solid black;
+    border: 0.5em solid var(--brownAccent);
     border-radius: 2em;
 }
 
@@ -194,7 +194,7 @@ input[type=password] {
 
 .house.onHover:hover {
     cursor: pointer;
-    box-shadow: 0 0 8px #70543B, 0 0 30px #70543B, 0 0 60px #70543B;
+    box-shadow: 0 0 8px var(--purpleAccent), 0 0 30px var(--purpleAccent), 0 0 60px var(--purpleAccent);
     transition-delay: 0s;
 }
 
@@ -348,7 +348,7 @@ input:checked+.slider:before {
 }
 
 #scoreboard .singleplayerRow {
-    background-color: lightblue;
+    background-color: var(--greenAccent);
 }
 
 
@@ -387,6 +387,11 @@ input:checked+.slider:before {
 
 .flexElem {
     flex: 1;
+}
+
+.flexCentered {
+    justify-content: center;
+    align-content: center;
 }
 
 
