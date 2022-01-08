@@ -103,7 +103,7 @@ input[type=password] {
     flex-direction: column;
     height: 68vh;
     position: relative;
-    padding-top: 2em;
+    padding-top: 0.5em;
     padding-bottom: 0em;
 }
 
@@ -355,19 +355,30 @@ input:checked+.slider:before {
 /* Messages  */
 
 .messageContainer {
-    height: 16vh;
+    height: 18vh;
     width: 90%;
     margin: auto;
-    border-radius: 5vh;
-    background-color: lightblue;
+    border-radius: 7vh;
+    background-color: var(--purpleAccent);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.currentMsgContainer {
+#currentMsgContainer {
     display: flex;
+    justify-content: center;
+    border-radius: 100em;
+    width: 85%;
+    background-color: #91A6CC;
+}
+
+#prevMsgContainer {
+    display: flex;
+    justify-content: center;
+    border-radius: 100em;
+    width: 85%;
 }
 
 #prevMsg {
@@ -378,7 +389,17 @@ input:checked+.slider:before {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     /* background-color: gray; */
-    opacity: 0.3;
+    opacity: 0.4;
+}
+
+#endGameButton {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+#currentMsgContainer .animation {
+    -webkit-animation: translateDown 1s linear 0s;
+    animation: translateDown 1s linear 0s;
 }
 
 .flexContainer {

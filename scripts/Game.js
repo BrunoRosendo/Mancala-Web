@@ -203,7 +203,7 @@ class Game {
    * @param {*} conceded Whether the local user has conceded
    */
   declareWinner(conceded = false) {
-    let scoreIncrement = 0;
+    let rankingScoreIncrement = 0;
     if (conceded) {
       this.collectRemainingSeeds(2);
       this.sendMessage("Player 2 won!");
@@ -215,16 +215,21 @@ class Game {
 
       if (playerOneScore > playerTwoScore) {
         this.sendMessage("Player 1 won!");
-        scoreIncrement = 1;
+        rankingScoreIncrement = 1;
       } else if (playerTwoScore > playerOneScore)
         this.sendMessage("Player 2 won!");
       else this.sendMessage("It's a tie!");
     }
 
-    updateLocalRank(scoreIncrement);
+    updateLocalRank(rankingScoreIncrement);
 
-    toggleBlockElem($("button[id=endGameButton]"));
+    showBlockElem($("button[id=endGameButton]"));
     hideElem($("button[id=concedeButton]"));
+    $("#messages").scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
   }
 
   declareMultiplayerWinner = (player, collectingPlayer) => {
@@ -247,7 +252,7 @@ class Game {
     const playerOneHouses = $("#gameboard").lastChild.children;
     for (let i = 0; i < playerOneHouses.length; ++i) {
       const playerOneHouse = playerOneHouses[i].firstChild;
-      if (playerOneHouse.children.length === 0) continue;
+      if (playerOneHouse.children.length === 1) continue;
       playerOneHouse.onclick = () => this.playerTurn(i);
       playerOneHouse.className = "house onHover";
     }
@@ -287,6 +292,10 @@ class Game {
   sendMessage = (text) => {
     $("#prevMsg").innerHTML = $("#currMsg").innerHTML;
     $("#currMsg").innerHTML = text;
+    $("#currMsg").classList.toggle("animation");
+    setTimeout(() => {
+      $("#currMsg").classList.toggle("animation");
+    }, 5000);
   };
 
   concede = async () => {
