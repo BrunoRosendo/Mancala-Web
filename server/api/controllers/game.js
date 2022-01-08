@@ -4,6 +4,16 @@ const join = async (req, res) => {
   const db = await require("../../loaders/db");
   const { nick, size, initial } = req?.body;
 
+  const currentSql = `SELECT * from game WHERE
+    playerOne = ? OR
+    playerTwo = ?`;
+
+  const currentGame = await db.get(currentSql, [nick, nick]);
+  if (currentGame) {
+    res.write(JSON.stringify({ game: currentGame.id }));
+    return;
+  }
+
   const hash = crypto
     .createHash('md5')
     .update(Date.now().toString())
@@ -11,23 +21,15 @@ const join = async (req, res) => {
     .update(initial.toString())
     .digest('hex');
 
-  const getSql = `SELECT * from game WHERE
+  const pendingSql = `SELECT * from game WHERE
     numPits= ?
-    AND initialSeeds = ?`;
+    AND initialSeeds = ?
+    AND isPending = 1`;
 
-  let game = await db.get(getSql, [size, initial]);
+  let game = await db.get(pendingSql, [size, initial]);
   const playerSide = generatePlayerSide(size, initial);
 
-  if (!game) {
-    const createSql = `INSERT INTO game 
-      (id, numPits, initialSeeds, playerOne, turn, playerOneSide)
-      VALUES(?, ?, ?, ?, ?, ?)`;
-
-    game = await db.run(createSql, [
-      hash, size, initial, nick, nick, JSON.stringify(playerSide)
-    ]);
-
-  } else if (game.isPending == 1) {
+  if (game) {
     const updateSql = `UPDATE game SET
       isPending = 0,
       playerTwo = ?,
@@ -37,10 +39,21 @@ const join = async (req, res) => {
     await db.run(updateSql, [
       nick, JSON.stringify(playerSide), game.id
     ]);
+
+    res.write(JSON.stringify({ game: game.id }));
+    return;
+
   }
+  const createSql = `INSERT INTO game 
+    (id, numPits, initialSeeds, playerOne, turn, playerOneSide)
+    VALUES(?, ?, ?, ?, ?, ?)`;
+
+  await db.run(createSql, [
+    hash, size, initial, nick, nick, JSON.stringify(playerSide)
+  ]);
 
   res.write(JSON.stringify({
-    game: game.id
+    game: hash
   }));
 
   // TODO: Update players
