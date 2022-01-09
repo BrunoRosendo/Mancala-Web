@@ -1,3 +1,5 @@
+const { sendGameEvent, removeGame } = require("../../utils/sse");
+
 const updateRanking = async (nick, win, db) => {
   const rankSql = "SELECT * FROM ranking WHERE nick = ?";
   const currentRank = await db.get(rankSql, [nick]);
@@ -55,6 +57,7 @@ const notify = async (req, res) => {
 
   const opponent = opponentNum === 1 ?
     curGame.playerOne : curGame.playerTwo;
+  const nextTurn = playAgain ? nick : opponent;
 
   const updateSql = `UPDATE game SET
     turn = ?,
@@ -63,13 +66,18 @@ const notify = async (req, res) => {
     WHERE id = ?`;
 
   await db.run(updateSql, [
-    playAgain ? nick : opponent,
+    nextTurn,
     newSideOne,
     newSideTwo,
     game
   ]);
 
-  // TODO: Update players
+  const updateMsg = { board: {
+    sides: {},
+    turn: nextTurn,
+  }};
+  updateMsg['board']['sides'][board.playerOne] = newSideOne;
+  updateMsg['board']['sides'][board.playerTwo] = newSideTwo;
 
   if (gameOver) {
     const winner = closeGame(
@@ -81,10 +89,13 @@ const notify = async (req, res) => {
       db
     );
 
-    // TODO: Add winner to update object
+    updateMsg.winner = winner;
   }
 
   res.write(JSON.stringify({}));
+
+  sendGameEvent(game.id, JSON.stringify(updateMsg));
+  if (gameOver) removeGame(game.id);
 }
 
 const turn = (idx, player, board, numPits) => {

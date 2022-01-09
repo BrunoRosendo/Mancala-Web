@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const { StatusCodes } = require("http-status-codes");
 const { updateRanking } = require("./game");
-const { addClient, removeGame } = require("../../utils/sse");
+const { addClient, sendGameEvent, removeGame } = require("../../utils/sse");
 
 const join = async (req, res) => {
   const db = await require("../../loaders/db");
@@ -44,9 +44,19 @@ const join = async (req, res) => {
     ]);
 
     res.write(JSON.stringify({ game: game.id }));
-    return;
 
+    const updateMsg = { board: {
+      sides: {
+        nick: playerSide
+      },
+      turn: game.playerOne
+    }};
+    updateMsg["board"]["sides"][game.playerOne] = game.playerOneSide;
+
+    sendGameEvent(game.id, JSON.stringify(updateMsg));
+    return;
   }
+
   const createSql = `INSERT INTO game 
     (id, numPits, initialSeeds, playerOne, turn, playerOneSide)
     VALUES(?, ?, ?, ?, ?, ?)`;
@@ -58,8 +68,6 @@ const join = async (req, res) => {
   res.write(JSON.stringify({
     game: hash
   }));
-
-  // TODO: Update players
 }
 
 const generatePlayerSide = (numPits, initialSeeds) => {
@@ -91,7 +99,8 @@ const leave = async (req, res) => {
   }
 
   res.write(JSON.stringify({}));
-  //TODO: Update player(s) of the winner
+  sendGameEvent(game.id, JSON.stringify({ winner }));
+  removeGame(game.id);
 }
 
 const update = (req, res) => {
