@@ -361,6 +361,7 @@ input:checked+.slider:before {
     border-radius: 7vh;
     background-color: var(--purpleAccent);
     display: flex;
+    position: relative;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -371,7 +372,7 @@ input:checked+.slider:before {
     justify-content: center;
     border-radius: 100em;
     width: 85%;
-    background-color: #91A6CC;
+    /* background-color: #91A6CC; */
 }
 
 #prevMsgContainer {
@@ -397,14 +398,22 @@ input:checked+.slider:before {
     padding-right: 0.5em;
 }
 
-#currentMsgContainer .animation {
-    -webkit-animation: translateDown 1s linear 0s;
-    animation: translateDown 1s linear 0s;
+#currMsg {
+    font-weight: bolder;
+    border-radius: 100em;
+    transform: scale(1);
 }
 
-#prevMsgContainer .animation {
-    -webkit-animation: translateDown 1s linear 0s;
-    animation: translateDown 1s linear 0s;
+#currMsg.animation {
+    animation: pulse 5s infinite;
+}
+
+#msgIcon {
+    position: absolute;
+    top: 0.5em;
+    left: 2em;
+    font-size: xx-large;
+    color: var(--brownAccent)
 }
 
 .flexContainer {

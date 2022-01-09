@@ -259,7 +259,7 @@ class Game {
       const playerOneHouses = $("#gameboard").lastChild.children;
       for (let i = 0; i < playerOneHouses.length; ++i) {
         const playerOneHouse = playerOneHouses[i].firstChild;
-        if (playerOneHouse.children.length === 0) continue;
+        if (playerOneHouse.children.length <= 1) continue; // Only has score child
         playerOneHouse.onclick = () => this.playerTurn(i);
         playerOneHouse.className = "house onHover";
       }
@@ -298,7 +298,13 @@ class Game {
    */
   sendMessage = (text) => {
     $("#prevMsg").innerHTML = $("#currMsg").innerHTML;
-    $("#currMsg").innerHTML = text;
+
+    const currMsgElem = $("#currMsg");
+    currMsgElem.innerHTML = text;
+
+    currMsgElem.classList.remove("animation");
+    void currMsgElem.offsetWidth; // Trigger a reflow between removing and adding the animation
+    currMsgElem.classList.add("animation");
   };
 
   concede = async () => {
