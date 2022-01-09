@@ -402,6 +402,11 @@ input:checked+.slider:before {
     animation: translateDown 1s linear 0s;
 }
 
+#prevMsgContainer .animation {
+    -webkit-animation: translateDown 1s linear 0s;
+    animation: translateDown 1s linear 0s;
+}
+
 .flexContainer {
     display: flex;
 }

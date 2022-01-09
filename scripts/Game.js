@@ -43,9 +43,11 @@ class Game {
     const data = JSON.parse(event?.data);
     console.log("data from SSE:", data);
     const board = data.board;
+    let firstUpdate = false;
 
     // 1st update received
     if (!multiplayerController.user2) {
+      firstUpdate = true;
       hideElem($("#loading"));
       $("button[id=concedeButton]").innerText = "Concede";
     }
@@ -90,13 +92,15 @@ class Game {
         multiplayerController.turn
       );
       const scoreDiff = newScore - oldScore;
-      this.sendMessage(
-        `${
-          multiplayerController.turn == 1 ? "You" : "Your Opponent"
-        } scored ${scoreDiff} ${
-          scoreDiff != 1 ? "points" : "point"
-        } this round!`
-      );
+
+      if (!firstUpdate)
+        this.sendMessage(
+          `${
+            multiplayerController.turn == 1 ? "You" : "Your Opponent"
+          } scored ${scoreDiff} ${
+            scoreDiff != 1 ? "points" : "point"
+          } this round!`
+        );
 
       this.updateScores(multiplayerController.turn);
       this.disablePlay();
@@ -249,14 +253,17 @@ class Game {
   };
 
   enablePlay() {
-    const playerOneHouses = $("#gameboard").lastChild.children;
-    for (let i = 0; i < playerOneHouses.length; ++i) {
-      const playerOneHouse = playerOneHouses[i].firstChild;
-      if (playerOneHouse.children.length === 1) continue;
-      playerOneHouse.onclick = () => this.playerTurn(i);
-      playerOneHouse.className = "house onHover";
-    }
-    this.sendMessage("It's your turn!");
+    setTimeout(() => {
+      this.sendMessage("It's your turn!");
+
+      const playerOneHouses = $("#gameboard").lastChild.children;
+      for (let i = 0; i < playerOneHouses.length; ++i) {
+        const playerOneHouse = playerOneHouses[i].firstChild;
+        if (playerOneHouse.children.length === 0) continue;
+        playerOneHouse.onclick = () => this.playerTurn(i);
+        playerOneHouse.className = "house onHover";
+      }
+    }, 1000);
   }
 
   disablePlay() {
@@ -292,10 +299,6 @@ class Game {
   sendMessage = (text) => {
     $("#prevMsg").innerHTML = $("#currMsg").innerHTML;
     $("#currMsg").innerHTML = text;
-    $("#currMsg").classList.toggle("animation");
-    setTimeout(() => {
-      $("#currMsg").classList.toggle("animation");
-    }, 5000);
   };
 
   concede = async () => {
