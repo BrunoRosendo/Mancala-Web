@@ -211,6 +211,8 @@ class Game {
    * @param {*} conceded Whether the local user has conceded
    */
   declareWinner(conceded = false) {
+    if (this.enablePlayTimeout) clearTimeout(this.enablePlayTimeout); // Clears the timeout to enable P1 turn
+
     let rankingScoreIncrement = 0;
     if (conceded) {
       this.collectRemainingSeeds(2);
@@ -241,6 +243,8 @@ class Game {
   }
 
   declareMultiplayerWinner = (player, collectingPlayer) => {
+    if (this.enablePlayTimeout) clearTimeout(this.enablePlayTimeout); // Clears the timeout to enable P1 turn
+
     this.disablePlay();
     this.collectRemainingSeeds(collectingPlayer); // THIS IS NEEDED BECAUSE SERVER DOES NOT RETURN FINISHED BOARD. IN PART 3 WE COULD IMPLEMENT THIS ON SERVER
 
@@ -257,7 +261,7 @@ class Game {
   };
 
   enablePlay() {
-    setTimeout(() => {
+    this.enablePlayTimeout = setTimeout(() => {
       this.sendMessage("It's your turn!");
 
       const playerOneHouses = $("#gameboard").lastChild.children;
