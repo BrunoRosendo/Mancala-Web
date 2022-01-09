@@ -117,9 +117,10 @@ class Game {
     } else if (data.hasOwnProperty("winner")) {
       if (data.winner != null) {
         // Won because opponent conceded
-        this.sendMessage(
-          `${multiplayerController.user2.username} left the game!`
-        );
+        if (data.winner == multiplayerController.user1.username)
+          showSnackbar(
+            `${multiplayerController.user2.username} left the game!`
+          );
         this.declareMultiplayerWinner(data.winner, data.winner);
       } else {
         // Leaving queue
