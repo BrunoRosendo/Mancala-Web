@@ -117,6 +117,9 @@ class Game {
     } else if (data.hasOwnProperty("winner")) {
       if (data.winner != null) {
         // Won because opponent conceded
+        this.sendMessage(
+          `${multiplayerController.user2.username} left the game!`
+        );
         this.declareMultiplayerWinner(data.winner, data.winner);
       } else {
         // Leaving queue
@@ -263,7 +266,7 @@ class Game {
         playerOneHouse.onclick = () => this.playerTurn(i);
         playerOneHouse.className = "house onHover";
       }
-    }, 1000);
+    }, 700);
   }
 
   disablePlay() {
