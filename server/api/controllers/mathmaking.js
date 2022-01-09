@@ -1,5 +1,7 @@
 const crypto = require("crypto");
+const { StatusCodes } = require("http-status-codes");
 const { updateRanking } = require("./game");
+const { addClient, removeGame } = require("../../utils/sse");
 
 const join = async (req, res) => {
   const db = await require("../../loaders/db");
@@ -92,7 +94,19 @@ const leave = async (req, res) => {
   //TODO: Update player(s) of the winner
 }
 
+const update = (req, res) => {
+  addClient(req?.params?.game, req?.params?.nick, res);
+
+  const headers = {
+    'Content-Type': 'text/event-stream',
+    'Connection': 'keep-alive',
+    'Cache-Control': 'no-cache'
+  };
+  res.writeHead(StatusCodes.OK, headers);
+}
+
 module.exports = {
   join,
   leave,
+  update
 }

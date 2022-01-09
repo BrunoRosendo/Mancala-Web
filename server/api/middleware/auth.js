@@ -30,7 +30,7 @@ const isAuthenticated = async (req, res) => {
 }
 
 const canRegister = async (req, db) => {
-  const nick = req.body.nick || req.params.nick;
+  const nick = req?.body?.nick || req?.params?.nick;
   const sql = "SELECT * from player where nick = ?";
 
   const player = await db.get(sql, [nick]);
@@ -38,8 +38,8 @@ const canRegister = async (req, db) => {
 }
 
 const canLogin = async (req, db) => {
-  const nick = req.body.nick || req.params.nick;
-  const password = req.body.password || req.params.password;
+  const nick = req?.body?.nick || req?.params?.nick;
+  const password = req?.body?.password || req?.params?.password;
   const hash = crypto.
     createHash('md5')
     .update(password)

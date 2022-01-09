@@ -4,7 +4,6 @@ const handleRequest = require("./api");
 
 const server = http.createServer(async (req, res) => {
   await handleRequest(req, res);
-  res.end();
 });
 
 server.listen(config.port, () => {

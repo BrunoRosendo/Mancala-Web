@@ -12,6 +12,7 @@ module.exports = async (req, res) => {
       rawRequest: req,
     }
 
+    const eventRequest = parsedRequest.endpoint === '/update';
     const { middlewares, controller } = routes[req.method]?.[parsedRequest.endpoint] || {};
 
     if (!controller) {
@@ -19,14 +20,21 @@ module.exports = async (req, res) => {
       res.write(JSON.stringify({
         error: `Unknown ${res.method} request`
       }));
+      res.end();
       return;
     }
 
-    if (middlewares && !await asyncEvery(middlewares)(parsedRequest, res))
+    if (middlewares && !await asyncEvery(middlewares)(parsedRequest, res)) {
+      res.end();
       return;
+    }
 
-    res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
+    if (!eventRequest)
+      res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
+
     await controller(parsedRequest, res);
+
+    if (!eventRequest) res.end();
 
   } catch(err) {
       console.error("Unexpected error while processing request", err);
@@ -35,5 +43,6 @@ module.exports = async (req, res) => {
       res.write(JSON.stringify({
         error: "Unexpected error"
       }));
+      res.end();
   }
 }

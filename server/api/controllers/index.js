@@ -1,11 +1,12 @@
 const { register, ranking } = require("./players");
 const { notify } = require("./game");
-const { join, leave } = require("./mathmaking");
+const { join, leave, update } = require("./mathmaking");
 
 module.exports = {
   register,
   ranking,
   join,
   leave,
-  notify
+  notify,
+  update
 }
