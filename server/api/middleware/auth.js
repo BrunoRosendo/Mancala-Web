@@ -48,6 +48,7 @@ const canLogin = async (req, db) => {
   const sql = "SELECT * from player where nick = ?";
   const player = await db.get(sql, [nick]);
 
+  if (!player) return false;
   return nick === player.nick && hash === player.password;
 }
 

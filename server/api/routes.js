@@ -5,7 +5,7 @@ const validators = require("./middleware/validators");
 module.exports = Object.freeze({
   GET: {
     '/': {
-      controller: (req, res) => res.write(JSON.stringify("It's alive, friend!")),
+      controller: (req, res) => res.write(JSON.stringify("online")),
     },
 
     '/update': {
