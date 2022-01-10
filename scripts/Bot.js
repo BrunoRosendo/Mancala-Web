@@ -1,8 +1,8 @@
 const INFINITY = Number.MAX_SAFE_INTEGER;
 const MINUS_INFINITY = Number.MIN_SAFE_INTEGER;
 
-const HARD_DEPTH = 2;
-const EXTREME_DEPTH = 6;
+const HARD_DEPTH = 3;
+const EXTREME_DEPTH = 8;
 
 class Bot {
   constructor(level, boardController) {
@@ -120,7 +120,13 @@ class Bot {
         const newBoard = [...board];
         const playAgain = this.boardController.turn(play, 2, newBoard);
 
-        const evaluation = this.minimax(newBoard, playAgain ? depth : depth - 1, playAgain ? 2 : 1).score;
+        const evaluation = this.minimax(
+          newBoard,
+          playAgain ? depth : depth - 1,
+          playAgain ? 2 : 1,
+          alpha,
+          beta).score;
+
         if (evaluation > maxEval) {
           maxEval = evaluation;
           bestPlay = play;
@@ -138,7 +144,12 @@ class Bot {
         const newBoard = [...board];
         const playAgain = this.boardController.turn(play, 1, newBoard);
 
-        const evaluation = this.minimax(newBoard, playAgain ? depth : depth - 1, playAgain ? 1 : 2).score;
+        const evaluation = this.minimax(newBoard,
+          playAgain ? depth : depth - 1,
+          playAgain ? 1 : 2,
+          alpha,
+          beta).score;
+
         if (evaluation < minEval) {
           minEval = evaluation;
           bestPlay = play;
