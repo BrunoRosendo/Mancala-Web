@@ -3,16 +3,123 @@ class Game {
     this.boardController = new Gameboard("#gameboard", seedRange, houseRange);
   }
 
+  /**
+   * Start a game
+   * @param {*} playFirst
+   * @param {*} multiplayer
+   * @param {*} aiLevel
+   */
   play(playFirst, multiplayer, aiLevel) {
     this.currentPlayer = playFirst ? 1 : 2;
     this.multiplayer = multiplayer;
 
-    if (!multiplayer)
-      this.bot = new Bot(aiLevel, this.boardController);
+    if (multiplayer) {
+      multiplayerController
+        .join(game.boardController.houseRange, game.boardController.seedRange)
+        .then((res) => {
+          if (res > 0) {
+            showBlockElem($("#loading"));
 
-    if (playFirst) this.enablePlay();
-    else this.aiTurn();
+            this.eventSource = new EventSource(
+              `http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=${multiplayerController.user1.username}&game=${multiplayerController.game}`
+            );
+            this.eventSource.onmessage = this.updateMultiplayerGame;
+          } else {
+            // SHOW error joining...
+          }
+        });
+    } else {
+      this.bot = new Bot(aiLevel, this.boardController);
+      if (playFirst) this.enablePlay();
+      else this.aiTurn();
+    }
   }
+
+  /**
+   * Updates the game after receiving SSE
+   * @param {*} event
+   */
+  updateMultiplayerGame = (event) => {
+    const data = JSON.parse(event?.data);
+    console.log("data from SSE:", data);
+    const board = data.board;
+
+    // 1st update received
+    if (!multiplayerController.user2) {
+      hideElem($("#loading"));
+      $("button[id=concedeButton]").innerText = "Concede";
+    }
+
+    if (board) {
+      const oldBoard = this.boardController.copy();
+      const oldScore = this.boardController.getScore(
+        multiplayerController.turn
+      );
+      const nextPlayer = multiplayerController.getPlayerNumber(board.turn);
+
+      for (const [username, boardContainers] of Object.entries(board.sides)) {
+        const player = multiplayerController.getPlayerNumber(username);
+        if (multiplayerController.user2 == null && player == 2) {
+          multiplayerController.user2 = new User(username, null);
+          $("#player1-name").innerHTML = multiplayerController.user1.username;
+          $("#player2-name").innerHTML = multiplayerController.user2.username;
+        }
+
+        for (const [type, value] of Object.entries(boardContainers)) {
+          if (type == "store")
+            this.boardController.updateCell(
+              this.boardController.houseRange,
+              player,
+              parseInt(value)
+            );
+          else {
+            for (const [houseIdx, numSeeds] of Object.entries(value)) {
+              this.boardController.updateCell(
+                parseInt(houseIdx),
+                player,
+                parseInt(numSeeds)
+              );
+            }
+          }
+        }
+      }
+
+      this.boardController.updateSeeds(oldBoard);
+
+      const newScore = this.boardController.getScore(
+        multiplayerController.turn
+      );
+      const scoreDiff = newScore - oldScore;
+      this.sendMessage(
+        `${
+          multiplayerController.turn == 1 ? "You" : "Your Opponent"
+        } scored ${scoreDiff} ${
+          scoreDiff != 1 ? "points" : "point"
+        } this round!`
+      );
+
+      this.updateScores(multiplayerController.turn);
+      this.disablePlay();
+
+      if (data.hasOwnProperty("winner")) {
+        this.declareMultiplayerWinner(
+          data.winner,
+          multiplayerController.getPlayerNumber(nextPlayer)
+        );
+      } else {
+        multiplayerController.turn = nextPlayer;
+        if (nextPlayer == 1) this.enablePlay();
+      }
+    } else if (data.hasOwnProperty("winner")) {
+      if (data.winner != null) {
+        // Won because opponent conceded
+        this.declareMultiplayerWinner(data.winner, data.winner);
+      } else {
+        // Leaving queue
+        endGame();
+      }
+    }
+  };
 
   async aiTurn() {
     const oldScore = this.boardController.getScore(2);
@@ -41,57 +148,100 @@ class Game {
   }
 
   playerTurn(houseIdx) {
-    const oldBoard = this.boardController.copy();
-    const oldScore = this.boardController.getScore(1);
+    if (this.multiplayer) {
+      multiplayerController.notify(houseIdx);
+    } else {
+      const oldBoard = this.boardController.copy();
+      const oldScore = this.boardController.getScore(1);
 
-    const playAgain = this.boardController.turn(houseIdx, 1);
-    this.boardController.updateSeeds(oldBoard);
+      const playAgain = this.boardController.turn(houseIdx, 1);
+      this.boardController.updateSeeds(oldBoard);
 
-    const newScore = this.boardController.getScore(1);
-    const scoreDiff = newScore - oldScore;
-    this.sendMessage(
-      `You scored ${scoreDiff} ${
-        scoreDiff != 1 ? "points" : "point"
-      } this round!`
-    );
+      const newScore = this.boardController.getScore(1);
+      const scoreDiff = newScore - oldScore;
+      this.sendMessage(
+        `You scored ${scoreDiff} ${
+          scoreDiff != 1 ? "points" : "point"
+        } this round!`
+      );
 
-    this.updateScores(1);
+      this.updateScores(1);
 
-    this.disablePlay();
+      this.disablePlay();
 
-    if (playAgain) {
+      if (playAgain) {
+        if (this.isGameOver()) this.declareWinner();
+        else this.enablePlay(); // Playable seeds must be updated
+        return;
+      }
+
+      this.currentPlayer = 2;
       if (this.isGameOver()) this.declareWinner();
-      else this.enablePlay(); // Playable seeds must be updated
-      return;
+      else this.aiTurn();
     }
-
-    this.currentPlayer = 2;
-    if (this.isGameOver()) this.declareWinner();
-    else this.aiTurn();
   }
 
   isGameOver() {
     return this.boardController.isPlayerBoardEmpty(this.currentPlayer);
   }
 
-  declareWinner() {
+  /**
+   * This method is needed because the board in the final play does not contain the collected seeds after running out of moves
+   * @param {*} player
+   */
+  collectRemainingSeeds = (player) => {
     const oldBoard = this.boardController.copy();
-    this.boardController.collectAllSeeds(this.currentPlayer === 1 ? 2 : 1);
+    this.boardController.collectAllSeeds(player);
     this.boardController.updateSeeds(oldBoard);
 
     this.updateScores(1);
     this.updateScores(2);
+  };
 
-    const playerOneScore = this.boardController.getScore(1);
-    const playerTwoScore = this.boardController.getScore(2);
+  /**
+   * Declares who won the game
+   * @param {*} conceded Whether the local user has conceded
+   */
+  declareWinner(conceded = false) {
+    let scoreIncrement = 0;
+    if (conceded) {
+      this.collectRemainingSeeds(2);
+      this.sendMessage("Player 2 won!");
+    } else {
+      this.collectRemainingSeeds(this.currentPlayer === 1 ? 2 : 1);
 
-    if (playerOneScore > playerTwoScore) this.sendMessage("Player 1 won!");
-    else if (playerTwoScore > playerOneScore) this.sendMessage("Player 2 won!");
-    else this.sendMessage("It's a tie!");
+      const playerOneScore = this.boardController.getScore(1);
+      const playerTwoScore = this.boardController.getScore(2);
 
-    toggleBlockElem("button[id=endGameButton]");
-    hideElem("button[id=concedeButton]");
+      if (playerOneScore > playerTwoScore) {
+        this.sendMessage("Player 1 won!");
+        scoreIncrement = 1;
+      } else if (playerTwoScore > playerOneScore)
+        this.sendMessage("Player 2 won!");
+      else this.sendMessage("It's a tie!");
+    }
+
+    updateLocalRank(scoreIncrement);
+
+    toggleBlockElem($("button[id=endGameButton]"));
+    hideElem($("button[id=concedeButton]"));
   }
+
+  declareMultiplayerWinner = (player, collectingPlayer) => {
+    this.disablePlay();
+    this.collectRemainingSeeds(collectingPlayer); // THIS IS NEEDED BECAUSE SERVER DOES NOT RETURN FINISHED BOARD. IN PART 3 WE COULD IMPLEMENT THIS ON SERVER
+
+    if (player == null) {
+      this.sendMessage("It's a tie!");
+    } else if (multiplayerController.getPlayerNumber(player) == 1) {
+      this.sendMessage(`You won!`);
+    } else {
+      this.sendMessage(`${multiplayerController.user2.username} won!`);
+    }
+
+    toggleBlockElem($("button[id=endGameButton]"));
+    hideElem($("button[id=concedeButton]"));
+  };
 
   enablePlay() {
     const playerOneHouses = $("#gameboard").lastChild.children;
@@ -113,15 +263,17 @@ class Game {
 
   resetBoard(numSeeds, numHouses) {
     this.boardController.reset(numSeeds, numHouses);
-    this.updateScores(1);
-    this.updateScores(2);
+    multiplayerController.reset();
+    this.resetScores();
+    this.eventSource?.close();
+    hideElem($("#loading"));
   }
 
   /**
    * Updates the Score of a player in the UI
    * @param {*} player 1 or 2
    */
-  updateScores = (player) => {
+  updateScores = (player = 1) => {
     $(`#player${player}-score`).innerHTML =
       this.boardController.getScore(player);
   };
@@ -133,5 +285,18 @@ class Game {
   sendMessage = (text) => {
     $("#prevMsg").innerHTML = $("#currMsg").innerHTML;
     $("#currMsg").innerHTML = text;
+  };
+
+  concede = async () => {
+    if (this.multiplayer) {
+      await multiplayerController.leave();
+    } else this.declareWinner(true);
+  };
+
+  resetScores = () => {
+    this.updateScores(1);
+    this.updateScores(2);
+    $("#player1-name").innerHTML = "Player 1";
+    $("#player2-name").innerHTML = "Player 2";
   };
 }

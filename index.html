@@ -4,24 +4,34 @@
 <head>
     <meta charset="UTF-8" />
     <title>Mancala</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/AppTheme.css" />
+    <link rel="stylesheet" href="css/styles.css" />
     <script type="text/javascript" src="scripts/utils.js"></script>
     <script type="text/javascript" src="scripts/Gameboard.js"></script>
     <script type="text/javascript" src="scripts/Bot.js"></script>
     <script type="text/javascript" src="scripts/Game.js"></script>
+    <script type="text/javascript" src="scripts/Multiplayer.js"></script>
     <script src="scripts/script.js" defer></script>
 </head>
 
 <body>
-    <header>
+    <header id="headerContainer">
         <h1 id="logo">Mancala</h1>
-        <form id="auth">
-            <label for="usernameInput" class="authLabel">Username</label>
-            <input type="text" name="username" id="usernameInput">
-            <label for="passwordInput" class="authLabel">Password</label>
-            <input type="password" name="pass" id="passwordInput">
-            <input type="submit" value="Login" class="submitButton button">
-        </form>
+        <div id="auth">
+            <div id="authForm">
+                <label for="usernameInput" class="authLabel">Username</label>
+                <input type="text" name="username" id="usernameInput">
+                <label for="passwordInput" class="authLabel">Password</label>
+                <input type="password" name="pass" id="passwordInput">
+                <button class="submitButton button" onclick='register()'>Login</button>
+            </div>
+            <div id="userInfo">
+                <div id="userInfoInside">
+                    <h2 id="username">hey</h2>
+                    <button class="submitButton button" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
     </header>
 
     <section id="configuration">
@@ -68,10 +78,10 @@
     </section>
 
     <section id="commands">
-        <button id="startButton" onclick="startGame()"> Start game</button>
+        <button id="startButton" onclick="startGame()">Start game</button>
         <button id="concedeButton" onclick="concede()">Concede</button>
         <button onclick=toggleInstructions()>How to play</button>
-        <button onclick=toggleScoreboard()>Show scoreboard</button>
+        <button onclick=handleScoreboard()>Show scoreboard</button>
     </section>
 
     <section id="instructions">
@@ -91,38 +101,42 @@
 
     <section id="scoreboard">
         <h2>Scoreboard</h2>
-        <table>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Score</th>
-            </tr>
-            <tr>
-                <td>Player</td>
-                <td>123</td>
-            </tr>
-            <tr>
-                <td>Nabo</td>
-                <td>0</td>
-            </tr>
+        <table id="scoreTable">
+            <thead>
+                <tr>
+                    <td scope="col">Name</td>
+                    <td scope="col">Wins</td>
+                    <td scope="col">Games</td>
+                </tr>
+            </thead>
+            <tbody id="scoreBody">
+
+            </tbody>
         </table>
+    </section>
+
+    <section id="loading">
+        <div id="loaderContainer">
+            <div class="loader"></div>
+        </div>
     </section>
 
     <section id="game">
         <h1>Let's play!</h1>
-        <div class="flexContainer">
-            <div class="flexElem playerInfoContainer">
-                <h3>Player 1</h3>
+        <div id="gameContainer" class="flexContainer">
+            <div class="flexElem playerInfoContainer left">
+                <h3 class="scoreName" id="player2-name">Player 2</h3>
                 <div class="flexContainer">
                     <h3>Score:</h3>
-                    <h3 id="player1-score"></h3>
+                    <h3 id="player2-score">0</h3>
                 </div>
             </div>
             <div id="gameboard"></div>
-            <div class="flexElem playerInfoContainer">
-                <h3>Player 2</h3>
+            <div class="flexElem playerInfoContainer right">
+                <h3 class="scoreName" id="player1-name">Player 1</h3>
                 <div class="flexContainer">
                     <h3>Score:</h3>
-                    <h3 id="player2-score"></h3>
+                    <h3 id="player1-score">0</h3>
                 </div>
             </div>
         </div>
@@ -138,6 +152,9 @@
             </div>
             <h3 id="prevMsg"></h3>
         </div>
+    </section>
+
+    <section id="snackbar">
     </section>
 </body>
 

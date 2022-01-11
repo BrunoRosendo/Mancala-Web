@@ -57,14 +57,14 @@ header {
 }
 
 #logo {
-    padding-left: 9em;
+    padding-left: 7em;
     font-size: 2.5em;
     letter-spacing: 0.3em;
     text-shadow: 1px 1px 2px black, 0 5px 10px rgb(180, 0, 0), 0 0 30px white;
 }
 
 #auth {
-    padding-right: 5em;
+    padding-right: 7.5em;
 }
 
 input[type=text],
@@ -242,16 +242,28 @@ input:checked+.slider:before {
 #scoreboard td,
 #scoreboard th {
     border: 1px solid black;
+    padding: 0.7em;
 }
 
 #scoreboard table {
     border-collapse: collapse;
     width: 60%;
-    margin: auto
+    margin: auto;
+    background-color: aliceblue;
+    font-size: large;
+}
+
+#scoreboard thead {
+    background-color: #b6894e;
+    font-weight: bold;
 }
 
 #scoreboard td {
     text-align: center;
+}
+
+#scoreboard .singleplayerRow {
+    background-color: lightblue;
 }
 
 
@@ -290,4 +302,113 @@ input:checked+.slider:before {
 
 .flexElem {
     flex: 1;
+}
+
+
+/* Logged In User */
+
+#userInfoInside {
+    display: flex;
+    align-items: center;
+}
+
+
+/* Loader */
+
+#loaderContainer {
+    display: flex;
+    justify-content: center;
+    padding-top: 2em;
+}
+
+.loader {
+    /* Light grey */
+    border: 0.5em solid #f3f3f3;
+    /* Blue */
+    border-top: 0.5em solid #3498db;
+    border-radius: 50%;
+    width: 5em;
+    height: 5em;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Snackbar */
+
+#snackbar {
+    visibility: hidden;
+    /*hidden */
+    min-width: 20em;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 0.5em;
+    padding: 2em;
+    position: fixed;
+    z-index: 1;
+    left: 10%;
+    top: 2em;
+}
+
+#snackbar.show {
+    visibility: visible;
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar. However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+
+/* Animations to fade the snackbar in and out */
+
+@-webkit-keyframes fadein {
+    from {
+        top: 0;
+        opacity: 0;
+    }
+    to {
+        top: 2em;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        top: 0;
+        opacity: 0;
+    }
+    to {
+        top: 2em;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        top: 2em;
+        opacity: 1;
+    }
+    to {
+        top: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        top: 2em;
+        opacity: 1;
+    }
+    to {
+        top: 0;
+        opacity: 0;
+    }
 }
