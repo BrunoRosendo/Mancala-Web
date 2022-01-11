@@ -1,3 +1,9 @@
+const INFINITY = Number.MAX_SAFE_INTEGER;
+const MINUS_INFINITY = Number.MIN_SAFE_INTEGER;
+
+const HARD_DEPTH = 3;
+const EXTREME_DEPTH = 8;
+
 class Bot {
   constructor(level, boardController) {
     this.level = level;
@@ -17,6 +23,9 @@ class Bot {
         break;
       case 'hard':
         houseIdx = this.hardTurn();
+        break;
+      case 'extreme':
+        houseIdx = this.extremeTurn();
         break;
       default:
         console.log("Invalid AI Level");
@@ -43,37 +52,18 @@ class Bot {
 
   /**
    * Selects a house that lets him play again
-   * If there are none, chooses randomly
-   */
-  mediumTurn() {
-    const possiblePlays = this.boardController.getPossiblePlays(2);
-    const currentBoard = this.boardController.copy();
-
-    for (let play of possiblePlays) {
-      if (this.boardController.turn(play, 2, currentBoard))
-        return play;
-    }
-
-    const randomChoice = Math.floor(
-      Math.random() * possiblePlays.length
-    );
-    return possiblePlays[randomChoice];
-  }
-
-  /**
-   * Selects a house that lets him play again
    * If there are none, chooses the house which gives him the most points
    * Prioritizes a turn which gives no chance of playing to the other player
    */
-  hardTurn() {
+  mediumTurn() {
     const possiblePlays = this.boardController.getPossiblePlays(2);
-    const board = this.boardController.copy();
     const currentScore = this.boardController.getScore(2, board);
 
     let replayable = false;
     let max = 0, chosen = possiblePlays[0];
 
     for (let play of possiblePlays) {
+      const board = this.boardController.copy(); // Reset board
       const playAgain = this.boardController.turn(play, 2, board);
 
       if (this.boardController.isPlayerBoardEmpty(1))
@@ -97,5 +87,86 @@ class Bot {
     }
 
     return chosen;
+  }
+
+  /**
+   * Uses minimax with HARD_DEPTH
+   */
+  hardTurn() {
+    const board = this.boardController.copy();
+    return this.minimax(board, HARD_DEPTH, 2).bestPlay;
+  }
+
+  /**
+   * Uses minimax with EXTREME_DEPTH
+   */
+   extremeTurn() {
+    const board = this.boardController.copy();
+    return this.minimax(board, EXTREME_DEPTH, 2).bestPlay;
+  }
+
+  // Watch this for clarification: https://www.youtube.com/watch?v=l-hh51ncgDI
+  minimax(board, depth, player, alpha = MINUS_INFINITY, beta = INFINITY) {
+    if (depth === 0 || this.boardController.isPlayerBoardEmpty(player, board))
+      return { score: this.minimaxEval(board, player) };
+
+    const possiblePlays = this.boardController.getPossiblePlays(player, board);
+    let bestPlay = null;
+
+    if (player === 2) {
+      let maxEval = MINUS_INFINITY;
+
+      for (let play of possiblePlays) {
+        const newBoard = [...board];
+        const playAgain = this.boardController.turn(play, 2, newBoard);
+
+        const evaluation = this.minimax(
+          newBoard,
+          playAgain ? depth : depth - 1,
+          playAgain ? 2 : 1,
+          alpha,
+          beta).score;
+
+        if (evaluation > maxEval) {
+          maxEval = evaluation;
+          bestPlay = play;
+        }
+
+        alpha = Math.max(alpha, evaluation);
+        if (beta <= alpha) break; // Prune the tree, this branch doesn't have better results
+      }
+      return { score: maxEval, bestPlay };
+
+    } else {
+      let minEval = INFINITY;
+
+      for (let play of possiblePlays) {
+        const newBoard = [...board];
+        const playAgain = this.boardController.turn(play, 1, newBoard);
+
+        const evaluation = this.minimax(newBoard,
+          playAgain ? depth : depth - 1,
+          playAgain ? 1 : 2,
+          alpha,
+          beta).score;
+
+        if (evaluation < minEval) {
+          minEval = evaluation;
+          bestPlay = play;
+        }
+
+        beta = Math.min(beta, evaluation);
+        if (beta <= alpha) break; // Prune the tree, this branch doesn't have better results
+      }
+      return { score: minEval, bestPlay };
+    }
+  }
+
+  minimaxEval(board, player) {
+    // Check end to collect remaining seeds
+    if (this.boardController.isPlayerBoardEmpty(player, board))
+      this.boardController.collectAllSeeds(player === 1 ? 2 : 1, board);
+
+    return this.boardController.getScore(2, board) - this.boardController.getScore(1, board);
   }
 }
