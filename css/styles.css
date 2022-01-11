@@ -102,6 +102,7 @@ input[type=password] {
     display: flex;
     flex-direction: column;
     height: 68vh;
+    min-height: 25rem;
     position: relative;
     padding-top: 0.5em;
     padding-bottom: 0em;
