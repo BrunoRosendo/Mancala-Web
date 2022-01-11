@@ -21,7 +21,6 @@ const updateLocalRank = (winsIncrement) => {
 
     localRank.victories += winsIncrement;
     localRank.games++;
-    console.log("New local Rank:", localRank);
     localStorage.setItem("score", JSON.stringify(localRank));
   }
 };

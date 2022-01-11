@@ -43,9 +43,11 @@ class Game {
     const data = JSON.parse(event?.data);
     console.log("data from SSE:", data);
     const board = data.board;
+    let firstUpdate = false;
 
     // 1st update received
     if (!multiplayerController.user2) {
+      firstUpdate = true;
       hideElem($("#loading"));
       $("button[id=concedeButton]").innerText = "Concede";
     }
@@ -90,13 +92,15 @@ class Game {
         multiplayerController.turn
       );
       const scoreDiff = newScore - oldScore;
-      this.sendMessage(
-        `${
-          multiplayerController.turn == 1 ? "You" : "Your Opponent"
-        } scored ${scoreDiff} ${
-          scoreDiff != 1 ? "points" : "point"
-        } this round!`
-      );
+
+      if (!firstUpdate)
+        this.sendMessage(
+          `${
+            multiplayerController.turn == 1 ? "You" : "Your Opponent"
+          } scored ${scoreDiff} ${
+            scoreDiff != 1 ? "points" : "point"
+          } this round!`
+        );
 
       this.updateScores(multiplayerController.turn);
       this.disablePlay();
@@ -113,6 +117,10 @@ class Game {
     } else if (data.hasOwnProperty("winner")) {
       if (data.winner != null) {
         // Won because opponent conceded
+        if (data.winner == multiplayerController.user1.username)
+          showSnackbar(
+            `${multiplayerController.user2.username} left the game!`
+          );
         this.declareMultiplayerWinner(data.winner, data.winner);
       } else {
         // Leaving queue
@@ -203,7 +211,9 @@ class Game {
    * @param {*} conceded Whether the local user has conceded
    */
   declareWinner(conceded = false) {
-    let scoreIncrement = 0;
+    if (this.enablePlayTimeout) clearTimeout(this.enablePlayTimeout); // Clears the timeout to enable P1 turn
+
+    let rankingScoreIncrement = 0;
     if (conceded) {
       this.collectRemainingSeeds(2);
       this.sendMessage("Player 2 won!");
@@ -215,19 +225,26 @@ class Game {
 
       if (playerOneScore > playerTwoScore) {
         this.sendMessage("Player 1 won!");
-        scoreIncrement = 1;
+        rankingScoreIncrement = 1;
       } else if (playerTwoScore > playerOneScore)
         this.sendMessage("Player 2 won!");
       else this.sendMessage("It's a tie!");
     }
 
-    updateLocalRank(scoreIncrement);
+    updateLocalRank(rankingScoreIncrement);
 
-    toggleBlockElem($("button[id=endGameButton]"));
+    showBlockElem($("button[id=endGameButton]"));
     hideElem($("button[id=concedeButton]"));
+    $("#messages").scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
   }
 
   declareMultiplayerWinner = (player, collectingPlayer) => {
+    if (this.enablePlayTimeout) clearTimeout(this.enablePlayTimeout); // Clears the timeout to enable P1 turn
+
     this.disablePlay();
     this.collectRemainingSeeds(collectingPlayer); // THIS IS NEEDED BECAUSE SERVER DOES NOT RETURN FINISHED BOARD. IN PART 3 WE COULD IMPLEMENT THIS ON SERVER
 
@@ -244,20 +261,25 @@ class Game {
   };
 
   enablePlay() {
-    const playerOneHouses = $("#gameboard").lastChild.children;
-    for (let i = 0; i < playerOneHouses.length; ++i) {
-      if (playerOneHouses[i].children.length === 0) continue;
-      playerOneHouses[i].onclick = () => this.playerTurn(i);
-      playerOneHouses[i].className = "house onHover";
-    }
-    this.sendMessage("It's your turn!");
+    this.enablePlayTimeout = setTimeout(() => {
+      this.sendMessage("It's your turn!");
+
+      const playerOneHouses = $("#gameboard").lastChild.children;
+      for (let i = 0; i < playerOneHouses.length; ++i) {
+        const playerOneHouse = playerOneHouses[i].firstChild;
+        if (playerOneHouse.children.length <= 1) continue; // Only has score child
+        playerOneHouse.onclick = () => this.playerTurn(i);
+        playerOneHouse.className = "house onHover";
+      }
+    }, 700);
   }
 
   disablePlay() {
     const playerOneHouses = $("#gameboard").lastChild.children;
     for (let i = 0; i < playerOneHouses.length; ++i) {
-      playerOneHouses[i].onclick = null;
-      playerOneHouses[i].className = "house";
+      const playerOneHouse = playerOneHouses[i].firstChild;
+      playerOneHouse.onclick = null;
+      playerOneHouse.className = "house";
     }
   }
 
@@ -284,7 +306,13 @@ class Game {
    */
   sendMessage = (text) => {
     $("#prevMsg").innerHTML = $("#currMsg").innerHTML;
-    $("#currMsg").innerHTML = text;
+
+    const currMsgElem = $("#currMsg");
+    currMsgElem.innerHTML = text;
+
+    currMsgElem.classList.remove("animation");
+    void currMsgElem.offsetWidth; // Trigger a reflow between removing and adding the animation
+    currMsgElem.classList.add("animation");
   };
 
   concede = async () => {

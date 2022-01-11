@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Mancala</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/animations.css" />
     <link rel="stylesheet" href="css/AppTheme.css" />
     <link rel="stylesheet" href="css/styles.css" />
     <script type="text/javascript" src="scripts/utils.js"></script>
@@ -35,22 +37,23 @@
     </header>
 
     <section id="configuration">
-        <h2>Configuration</h2>
+        <!-- <h2>Configuration</h2> -->
+        <i id="configIcon" class="fas fa-cogs"></i>
         <form>
             <div class="formRow">
-                <div>
+                <div class="rangeInputs">
                     <label for="numHousesRange">Nº of Houses</label>
                     <input type="range" value="5" min="2" max="10" step="1" id="numHousesRange">
                     <output for="numHousesRange">5</output>
                 </div>
-                <div>
+                <div class="rangeInputs">
                     <label for="numSeedsRange">Nº of Seeds</label>
                     <input type="range" value="6" min="2" max="10" step="1" id="numSeedsRange">
                     <output for="numSeedsRange">6</output>
                 </div>
             </div>
             <div class="formRow">
-                <div style="justify-content: center; align-content: center;">
+                <div>
                     <label for="multiplayer">Multiplayer</label>
                     <label class="switch">
                         <input type="checkbox" id="multiplayer">
@@ -100,7 +103,7 @@
     </section>
 
     <section id="scoreboard">
-        <h2>Scoreboard</h2>
+        <!-- <h2>Scoreboard</h2> -->
         <table id="scoreTable">
             <thead>
                 <tr>
@@ -122,35 +125,41 @@
     </section>
 
     <section id="game">
-        <h1>Let's play!</h1>
+        <!-- <h1>Let's play!</h1> -->
         <div id="gameContainer" class="flexContainer">
-            <div class="flexElem playerInfoContainer left">
-                <h3 class="scoreName" id="player2-name">Player 2</h3>
-                <div class="flexContainer">
-                    <h3>Score:</h3>
-                    <h3 id="player2-score">0</h3>
+            <div id="playersContainer">
+                <div class="playerInfoContainer left">
+                    <h3 class="scoreName" id="player1-name">Player 1</h3>
+                    <div class="flexContainer scorePoints">
+                        <i class="fas fa-star"></i>
+                        <span id="player1-score">0</span>
+
+                    </div>
+                </div>
+                <div class="playerInfoContainer right">
+                    <div class="flexContainer scorePoints">
+                        <i class="fas fa-star"></i>
+                        <span id="player2-score">0</span>
+                    </div>
+                    <h3 class="scoreName" id="player2-name">Player 2</h3>
                 </div>
             </div>
             <div id="gameboard"></div>
-            <div class="flexElem playerInfoContainer right">
-                <h3 class="scoreName" id="player1-name">Player 1</h3>
-                <div class="flexContainer">
-                    <h3>Score:</h3>
-                    <h3 id="player1-score">0</h3>
-                </div>
-            </div>
         </div>
 
     </section>
 
     <section id="messages">
-        <h2>Messages</h2>
+        <!-- <h2>Messages</h2> -->
         <div class="messageContainer">
-            <div class="currentMsgContainer">
+            <i class="far fa-comments" id="msgIcon"></i>
+            <div id="currentMsgContainer" class="msgContainer">
                 <h3 id="currMsg"></h3>
                 <button id="endGameButton" onclick="endGame()">OK</button>
             </div>
-            <h3 id="prevMsg"></h3>
+            <div id="prevMsgContainer" class="msgContainer">
+                <h3 id="prevMsg"></h3>
+            </div>
         </div>
     </section>
 

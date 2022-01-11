@@ -1,6 +1,8 @@
 body {
     font-family: 'Courier New', Courier, monospace;
-    background-color: moccasin;
+    background-color: var(--primary);
+    font-weight: bold;
+    margin: 0
 }
 
 section {
@@ -15,13 +17,13 @@ p {
 
 button,
 .button {
-    color: rgb(180, 0, 0);
+    color: var(--redAccent);
     font: 1.5em 'Courier New', Courier, monospace;
-    font-weight: bold;
+    font-weight: bolder;
     text-shadow: 0 1px 2px moccasin;
-    background-color: #b6894e;
+    background-color: var(--darkPrimary);
     box-shadow: inset 0 1px 0 moccasin;
-    border: 0.1em solid rgb(180, 0, 0);
+    border: 0.1em solid var(--redAccent);
     border-radius: 0.6em;
     padding: 0.4em;
     margin: 0 1em 0 1em;
@@ -47,7 +49,8 @@ header {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: #966F3C;
+    background-color: var(--darkPrimary);
+    /*     background: linear-gradient(to bottom, var(--darkPrimary), 100%, moccasin); */
     padding: 0.5em;
     margin-bottom: 2em;
 }
@@ -95,14 +98,63 @@ input[type=password] {
 
 /* Game board */
 
+#gameContainer {
+    display: flex;
+    flex-direction: column;
+    height: 68vh;
+    position: relative;
+    padding-top: 0.5em;
+    padding-bottom: 0em;
+}
+
+#playersContainer {
+    display: flex;
+    justify-content: space-around;
+    height: 15%;
+}
+
+.playerInfoContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+
+.playerInfoContainer .scoreName {
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+.playerInfoContainer .scorePoints {
+    display: flex;
+    align-items: center;
+    padding-left: 1em;
+    width: 9em;
+    height: 50%;
+    border-radius: 1em;
+    background-color: var(--purpleAccent);
+    font-size: medium;
+    color: yellow
+}
+
+.playerInfoContainer .scorePoints span {
+    margin-left: 0.5em;
+    font-size: large;
+    color: white;
+    font-weight: bold;
+}
+
 #gameboard {
     display: grid;
     flex: 8;
-    height: 60vh;
+    height: 100%;
+    width: 90%;
     grid-template-columns: 1fr 5fr 1fr;
     grid-template-rows: 1fr 1fr;
-    background: url('img/wood.jpg');
+    background: url('../img/wood.jpg');
     margin: auto;
+    border: 0.5em solid var(--brownAccent);
+    border-radius: 2em;
 }
 
 .middleBoard {
@@ -110,30 +162,47 @@ input[type=password] {
     flex-direction: row;
 }
 
+.houseContainer,
+.storage {
+    margin: 0.5em;
+    margin-top: 0.8em;
+    margin-bottom: 0.8em;
+}
+
 .house,
 .storage {
-    border-radius: 7vh;
-    background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent 80%), url('img/darkwood.jpg');
-    margin: 1em;
+    border-radius: 100em;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, 0.7), transparent 80%), url('../img/darkwood.jpg');
+    box-shadow: inset 0 0 10px #000000;
+}
+
+.houseContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 0.5em
 }
 
 .house {
     position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
     flex: 1;
-    padding: 0.5em;
+    height: 100%;
+    max-width: 17em;
 }
 
 .house.onHover:hover {
-    cursor: pointer
+    cursor: pointer;
+    box-shadow: 0 0 8px var(--purpleAccent), 0 0 30px var(--purpleAccent), 0 0 60px var(--purpleAccent);
+    transition-delay: 0s;
 }
 
 .houseScore {
     position: absolute;
-    right: 1em;
-    bottom: 0.5em;
+    right: 20%;
+    bottom: 1%;
 }
 
 .storage {
@@ -149,14 +218,7 @@ input[type=password] {
     width: 3.2vh;
     height: 2.2vh;
     border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(255, 255, 255, 0.55), transparent), rgb(180, 0, 0);
-}
-
-.playerInfoContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: gray
+    background: radial-gradient(closest-side, rgba(255, 255, 255, 0.4), transparent), var(--sportRed);
 }
 
 
@@ -169,14 +231,34 @@ input[type=password] {
 
 /* Configuration */
 
-#configuration form {
+#configuration {
+    position: relative;
     padding-top: 5vh;
+}
+
+#configIcon {
+    display: block;
+    position: absolute;
+    top: 1vh;
+    left: 4em;
+    font-size: xx-large;
+    color: #966F3C;
 }
 
 #configuration .formRow {
     display: flex;
     justify-content: space-evenly;
     padding-bottom: 5vh;
+}
+
+.rangeInputs {
+    display: flex;
+    align-items: center;
+}
+
+.rangeInputs input[type=range] {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 
 
@@ -220,7 +302,7 @@ input[type=password] {
 }
 
 input:checked+.slider {
-    background-color: #b6894e;
+    background-color: var(--darkPrimary);
 }
 
 input:checked+.slider:before {
@@ -238,6 +320,10 @@ input:checked+.slider:before {
 
 /* Scoreboard */
 
+#scoreboard {
+    margin-top: 2em;
+}
+
 #scoreboard table,
 #scoreboard td,
 #scoreboard th {
@@ -254,7 +340,7 @@ input:checked+.slider:before {
 }
 
 #scoreboard thead {
-    background-color: #b6894e;
+    background-color: var(--darkPrimary);
     font-weight: bold;
 }
 
@@ -263,26 +349,41 @@ input:checked+.slider:before {
 }
 
 #scoreboard .singleplayerRow {
-    background-color: lightblue;
+    background-color: var(--greenAccent);
 }
 
 
 /* Messages  */
 
 .messageContainer {
-    height: 16vh;
+    height: 18vh;
     width: 90%;
-    margin: auto;
-    border-radius: 5vh;
-    background-color: lightblue;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 7vh;
+    background-color: var(--purpleAccent);
     display: flex;
+    position: relative;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
-.currentMsgContainer {
+.msgContainer {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100em;
+    width: 85%;
+    text-align: center;
+}
+
+#currentMsgContainer {
+    height: 60%
+    /* background-color: #91A6CC; */
+}
+
+#prevMsgContainer {
+    height: 40%
 }
 
 #prevMsg {
@@ -293,7 +394,33 @@ input:checked+.slider:before {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     /* background-color: gray; */
-    opacity: 0.3;
+    opacity: 0.4;
+}
+
+#endGameButton {
+    display: none;
+    font-size: large;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    height: 65%;
+}
+
+#currMsg {
+    font-weight: bolder;
+    border-radius: 100em;
+    transform: scale(1);
+}
+
+#currMsg.animation {
+    animation: pulse 5s infinite;
+}
+
+#msgIcon {
+    position: absolute;
+    top: 0.5em;
+    left: 2em;
+    font-size: xx-large;
+    color: var(--brownAccent)
 }
 
 .flexContainer {
@@ -302,6 +429,11 @@ input:checked+.slider:before {
 
 .flexElem {
     flex: 1;
+}
+
+.flexCentered {
+    justify-content: center;
+    align-content: center;
 }
 
 

@@ -1,0 +1,20 @@
+@keyframes pulse {
+    0% {
+        font-size: 1.3em;
+    }
+    60% {
+        font-size: 1.3em;
+    }
+    70% {
+        font-size: 1.75em;
+    }
+    80% {
+        font-size: 1.3em;
+    }
+    90% {
+        font-size: 1.75em;
+    }
+    100% {
+        font-size: 1.3em;
+    }
+}
