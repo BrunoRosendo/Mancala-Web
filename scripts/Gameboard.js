@@ -156,18 +156,17 @@ class Gameboard {
   /**
    * @returns True if the player can play again. False otherwise
    */
-  turn(houseIdx, player, board = this.board) {
-    if (player === 2) houseIdx += this.houseRange + 1;
-    let numSeeds = board[houseIdx];
+  turn(idx, player, board = this.board) {
+    if (player === 2) idx += this.houseRange + 1;
+    let numSeeds = board[idx];
 
     const [ownStorage, enemyStorage] =
       player === 1
         ? [this.houseRange, board.length - 1]
         : [board.length - 1, this.houseRange];
 
-    board[houseIdx] = 0;
+    board[idx] = 0;
 
-    let idx = houseIdx;
     for (; numSeeds > 0; --numSeeds) {
       idx = ++idx % board.length;
       if (idx === enemyStorage) {
