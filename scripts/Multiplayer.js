@@ -1,4 +1,6 @@
 const defaultGroup = 69420;
+const HOST = "http://twserver.alunos.dcc.fc.up.pt";
+const PORT = 8008;
 
 class Multiplayer {
   constructor() {
@@ -15,7 +17,7 @@ class Multiplayer {
    */
   register = async (username, pass) => {
     const res = await fetch(
-      "http://twserver.alunos.dcc.fc.up.pt:8008/register",
+      `${HOST}:${PORT}/register`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -45,7 +47,7 @@ class Multiplayer {
    * @returns
    */
   join = async (size, initial) => {
-    const res = await fetch("http://twserver.alunos.dcc.fc.up.pt:8008/join", {
+    const res = await fetch(`${HOST}:${PORT}/join`, {
       method: "POST",
       body: JSON.stringify({
         group: defaultGroup,
@@ -71,7 +73,7 @@ class Multiplayer {
   };
 
   notify = (move) => {
-    fetch("http://twserver.alunos.dcc.fc.up.pt:8008/notify", {
+    fetch(`${HOST}:${PORT}/notify`, {
       method: "POST",
       body: JSON.stringify({
         nick: this.user1.username,
@@ -92,7 +94,7 @@ class Multiplayer {
   };
 
   leave = async () => {
-    await fetch("http://twserver.alunos.dcc.fc.up.pt:8008/leave", {
+    await fetch(`${HOST}:${PORT}/leave`, {
       method: "POST",
       body: JSON.stringify({
         nick: this.user1.username,
@@ -112,7 +114,7 @@ class Multiplayer {
 
   ranking = async () => {
     const result = await fetch(
-      "http://twserver.alunos.dcc.fc.up.pt:8008/ranking",
+      `${HOST}:${PORT}/ranking`,
       {
         method: "POST",
         body: JSON.stringify({}),

@@ -21,7 +21,7 @@ class Game {
             showBlockElem($("#loading"));
 
             this.eventSource = new EventSource(
-              `http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=${multiplayerController.user1.username}&game=${multiplayerController.game}`
+              `${HOST}:${PORT}/update?nick=${multiplayerController.user1.username}&game=${multiplayerController.game}`
             );
             this.eventSource.onmessage = this.updateMultiplayerGame;
           } else {
