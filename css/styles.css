@@ -374,6 +374,7 @@ input:checked+.slider:before {
     align-items: center;
     border-radius: 100em;
     width: 85%;
+    text-align: center;
 }
 
 #currentMsgContainer {
