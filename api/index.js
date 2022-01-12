@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const routes = require("./routes");
+const router = require("./router");
 const { getRequestBody, getUrlParams, getEndpoint } = require("../utils/parser");
 const { asyncEvery } = require("../utils/algebra");
 
@@ -12,8 +12,7 @@ module.exports = async (req, res) => {
       rawRequest: req,
     }
 
-    const eventRequest = parsedRequest.endpoint === '/update';
-    const { middlewares, controller } = routes[req.method]?.[parsedRequest.endpoint] || {};
+    const { middlewares, controller, eventRequest } = router(req.method, parsedRequest.endpoint);
 
     if (!controller) {
       res.writeHead(StatusCodes.NOT_FOUND, { "Content-Type": "application/json" });
