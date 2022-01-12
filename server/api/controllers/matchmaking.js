@@ -46,12 +46,11 @@ const join = async (req, res) => {
     res.write(JSON.stringify({ game: game.id }));
 
     const updateMsg = { board: {
-      sides: {
-        nick: playerSide
-      },
+      sides: {},
       turn: game.playerOne
     }};
     updateMsg["board"]["sides"][game.playerOne] = game.playerOneSide;
+    updateMsg["board"]["sides"][nick] = playerSide;
 
     sendGameEvent(game.id, JSON.stringify(updateMsg));
     return;
@@ -99,19 +98,19 @@ const leave = async (req, res) => {
   }
 
   res.write(JSON.stringify({}));
-  sendGameEvent(game.id, JSON.stringify({ winner }));
-  removeGame(game.id);
+  sendGameEvent(curGame.id, JSON.stringify({ winner }));
+  removeGame(curGame.id);
 }
 
 const update = (req, res) => {
-  addClient(req?.params?.game, req?.params?.nick, res);
-
   const headers = {
     'Content-Type': 'text/event-stream',
     'Connection': 'keep-alive',
     'Cache-Control': 'no-cache'
   };
   res.writeHead(StatusCodes.OK, headers);
+
+  addClient(req?.params?.game, req?.params?.nick, res);
 }
 
 module.exports = {

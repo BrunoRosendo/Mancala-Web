@@ -6,16 +6,16 @@ const addClient = (game, player, res) => {
 }
 
 const removeGame = (game) => {
-  clients[game].forEach((p, res) => {
-    res.end();
+  clients[game].forEach(c => {
+    c.res.end();
   });
 
   delete clients[game];
 }
 
 const sendGameEvent = (game, data) => {
-  clients[game].forEach((p, res) => {
-    sendEvent(res, data);
+  clients[game].forEach(c => {
+    sendEvent(c.res, data);
   });
 }
 
