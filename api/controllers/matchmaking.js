@@ -4,6 +4,8 @@ const { updateRanking } = require("./game");
 const { addClient, sendGameEvent, removeGame } = require("../../utils/sse");
 
 const join = async (req, res) => {
+  res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
+
   const db = await require("../../loaders/db");
   const { nick, size, initial } = req?.body;
 
@@ -14,6 +16,7 @@ const join = async (req, res) => {
   const currentGame = await db.get(currentSql, [nick, nick]);
   if (currentGame) {
     res.write(JSON.stringify({ game: currentGame.id }));
+    res.end();
     return;
   }
 
@@ -44,6 +47,7 @@ const join = async (req, res) => {
     ]);
 
     res.write(JSON.stringify({ game: game.id }));
+    res.end();
 
     const updateMsg = { board: {
       sides: {},
@@ -67,6 +71,7 @@ const join = async (req, res) => {
   res.write(JSON.stringify({
     game: hash
   }));
+  res.end();
 }
 
 const generatePlayerSide = (numPits, initialSeeds) => {
@@ -97,7 +102,10 @@ const leave = async (req, res) => {
     await updateRanking(loser, false, db);
   }
 
+  res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
   res.write(JSON.stringify({}));
+  res.end();
+
   sendGameEvent(curGame.id, JSON.stringify({ winner }));
   removeGame(curGame.id);
 }

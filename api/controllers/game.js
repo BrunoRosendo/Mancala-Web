@@ -1,3 +1,4 @@
+const { StatusCodes } = require("http-status-codes");
 const { sendGameEvent, removeGame } = require("../../utils/sse");
 
 const updateRanking = async (nick, win, db) => {
@@ -92,7 +93,9 @@ const notify = async (req, res) => {
     updateMsg.winner = winner;
   }
 
+  res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
   res.write(JSON.stringify({}));
+  res.end();
 
   sendGameEvent(game.id, JSON.stringify(updateMsg));
   if (gameOver) removeGame(game.id);

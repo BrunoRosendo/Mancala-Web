@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
       rawRequest: req,
     }
 
-    const { middlewares, controller, eventRequest } = router(req.method, parsedRequest.endpoint);
+    const { middlewares, controller } = router(req.method, parsedRequest.endpoint);
 
     if (!controller) {
       res.writeHead(StatusCodes.NOT_FOUND, { "Content-Type": "application/json" });
@@ -28,12 +28,8 @@ module.exports = async (req, res) => {
       return;
     }
 
-    if (!eventRequest)
-      res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
-
     await controller(parsedRequest, res);
-
-    if (!eventRequest) res.end();
+    // res is closed on the controller
 
   } catch(err) {
       console.error("Unexpected error while processing request", err);

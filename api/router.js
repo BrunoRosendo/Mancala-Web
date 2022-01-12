@@ -6,7 +6,7 @@ module.exports = (method, endpoint) => {
   const route = routes[method]?.[endpoint];
   if (!route) {
     if (method !== 'GET') return {};
-    return { controller: controllers.sendStaticResource(endpoint) };
+    return { controller: controllers.sendStaticResource };
   }
 
   return route;
@@ -20,8 +20,7 @@ const routes = Object.freeze({
         validators.update,
         middleware.game.existingGame,
         middleware.game.userIsPlaying,
-      ],
-      eventRequest: true
+      ]
     }
   },
 

@@ -1,6 +1,9 @@
 const crypto = require("crypto");
+const { StatusCodes } = require("http-status-codes");
 
 const register = async (req, res) => {
+  res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
+
   const db = await require("../../loaders/db");
 
   const nick = req.body.nick || req.params.nick;
@@ -9,6 +12,7 @@ const register = async (req, res) => {
 
   if (player) {
     res.write(JSON.stringify({}));
+    res.end();
     return;
   }
 
@@ -20,7 +24,9 @@ const register = async (req, res) => {
 
   const insertSql = "INSERT INTO player VALUES (?, ?)";
   await db.run(insertSql, [nick, hash]);
+
   res.write(JSON.stringify({}));
+  res.end();
 }
 
 const ranking = async (req, res) => {
@@ -33,9 +39,11 @@ const ranking = async (req, res) => {
 
   const table = await db.all(sql);
 
+  res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
   res.write(JSON.stringify({
     "ranking": table
   }));
+  res.end();
 }
 
 module.exports = {
