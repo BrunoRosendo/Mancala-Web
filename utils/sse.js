@@ -34,7 +34,7 @@ const sendGameEvent = (game, data) => {
 }
 
 const sendEvent = (res, data) => {
-  res.write(`data: ${JSON.stringify(data)}\n\n`);
+  res.write(`data: ${data}\n\n`);
 }
 
 module.exports = {

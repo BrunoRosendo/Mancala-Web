@@ -77,8 +77,8 @@ const notify = async (req, res) => {
     sides: {},
     turn: nextTurn,
   }};
-  updateMsg['board']['sides'][board.playerOne] = newSideOne;
-  updateMsg['board']['sides'][board.playerTwo] = newSideTwo;
+  updateMsg.board.sides[board.playerOne] = newSideOne;
+  updateMsg.board.sides[board.playerTwo] = newSideTwo;
 
   if (gameOver) {
     const winner = closeGame(

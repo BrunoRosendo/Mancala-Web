@@ -53,8 +53,8 @@ const join = async (req, res) => {
       sides: {},
       turn: game.playerOne
     }};
-    updateMsg["board"]["sides"][game.playerOne] = JSON.parse(game.playerOneSide);
-    updateMsg["board"]["sides"][nick] = playerSide;
+    updateMsg.board.sides[game.playerOne] = JSON.parse(game.playerOneSide);
+    updateMsg.board.sides[nick] = playerSide;
 
     sendGameEvent(game.id, JSON.stringify(updateMsg));
     return;
