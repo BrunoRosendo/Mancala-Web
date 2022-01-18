@@ -504,7 +504,8 @@ input:checked+.slider:before {
 #snackbar {
     visibility: hidden;
     /*hidden */
-    min-width: 20em;
+    min-width: 17em;
+    max-width: 20em;
     background-color: #333;
     color: #fff;
     text-align: center;

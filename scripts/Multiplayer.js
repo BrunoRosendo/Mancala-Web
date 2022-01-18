@@ -29,7 +29,8 @@ class Multiplayer {
       .then((data) => data.json())
       .then((res) => {
         if (res?.error) {
-          console.log("Couldn't Log in!");
+          console.log("Couldn't Log in!", res.error);
+          showSnackbar(res.error);
           return -1;
         } else {
           console.log("Logged in!");
@@ -61,6 +62,7 @@ class Multiplayer {
       .then((res) => {
         if (res?.error) {
           console.log("Error Joining game.", res.error);
+          showSnackbar(res.error);
           return -1;
         } else {
           console.log("Joined group lobby...", res);
@@ -106,6 +108,7 @@ class Multiplayer {
       .then((res) => {
         if (res?.error) {
           console.log("Error leaving game.", res.error);
+          showSnackbar(res.error);
         } else {
           console.log("Left the game successfully.");
         }
@@ -124,6 +127,7 @@ class Multiplayer {
       .then((res) => {
         if (res?.error) {
           console.log("Error retrieving scoreboard.", res.error);
+          showSnackbar(res.error);
         } else {
           console.log("Successfully retrieved scoreboard.");
           return res;

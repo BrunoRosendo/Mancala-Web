@@ -117,8 +117,6 @@ const register = () => {
       toggleFlexElem($("#auth #authForm"));
       toggleBlockElem($("#auth #userInfo"));
       $("#auth #userInfo #username").innerHTML = username;
-    } else {
-      showSnackbar("Incorrect Password!");
     }
   });
 };
