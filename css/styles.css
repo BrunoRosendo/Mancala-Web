@@ -334,6 +334,12 @@ input:checked+.slider:before {
     transform: translateX(1.5em);
 }
 
+#aiLevel {
+    padding: 0.5em;
+    border-radius: 1em;
+    background-color: var(--purpleAccent);
+}
+
 
 /* Commands */
 
