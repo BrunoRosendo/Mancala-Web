@@ -7,6 +7,7 @@ const addClient = (game, player, res) => {
 
   if (queue[game] && clients[game].length > 1) {
     queue[game].forEach(data => sendGameEvent(game, data));
+    delete queue[game];
   }
 }
 

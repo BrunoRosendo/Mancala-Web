@@ -81,7 +81,7 @@ const notify = async (req, res) => {
   updateMsg.board.sides[curGame.playerTwo] = newSideTwo;
 
   if (gameOver) {
-    const winner = closeGame(
+    const winner = await closeGame(
       curGame.playerOne,
       curGame.playerTwo,
       newSideOne.store,
@@ -97,8 +97,8 @@ const notify = async (req, res) => {
   res.write(JSON.stringify({}));
   res.end();
 
-  sendGameEvent(game.id, JSON.stringify(updateMsg));
-  if (gameOver) removeGame(game.id);
+  sendGameEvent(game, JSON.stringify(updateMsg));
+  if (gameOver) removeGame(game);
 }
 
 const turn = (idx, player, board, numPits) => {
