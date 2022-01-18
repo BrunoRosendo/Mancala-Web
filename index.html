@@ -21,10 +21,14 @@
         <h1 id="logo">Mancala</h1>
         <div id="auth">
             <div id="authForm">
-                <label for="usernameInput" class="authLabel">Username</label>
-                <input type="text" name="username" id="usernameInput">
-                <label for="passwordInput" class="authLabel">Password</label>
-                <input type="password" name="pass" id="passwordInput">
+                <div class="loginInputs">
+                    <label for="usernameInput" class="authLabel">Username</label>
+                    <input type="text" name="username" id="usernameInput">
+                </div>
+                <div class="loginInputs">
+                    <label for="passwordInput" class="authLabel">Password</label>
+                    <input type="password" name="pass" id="passwordInput">
+                </div>
                 <button class="submitButton button" onclick='register()'>Login</button>
             </div>
             <div id="userInfo">
