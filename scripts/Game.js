@@ -21,7 +21,7 @@ class Game {
             showBlockElem($("#loading"));
 
             this.eventSource = new EventSource(
-              `${HOST}:${PORT}/update?nick=${multiplayerController.user1.username}&game=${multiplayerController.game}`
+              `${HOST_URL}/update?nick=${multiplayerController.user1.username}&game=${multiplayerController.game}`
             );
             this.eventSource.onmessage = this.updateMultiplayerGame;
           } else {

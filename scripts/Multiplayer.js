@@ -1,6 +1,7 @@
-const defaultGroup = 69420;
-const HOST = "http://twserver.alunos.dcc.fc.up.pt";
-const PORT = 8008;
+const defaultGroup = 14;
+const HOST = "http://localhost";
+const PORT = 8000;
+const HOST_URL = `${HOST}:${PORT}`;
 
 class Multiplayer {
   constructor() {
@@ -16,16 +17,13 @@ class Multiplayer {
    * @returns -1 if fails, 1 otherwise
    */
   register = async (username, pass) => {
-    const res = await fetch(
-      `${HOST}:${PORT}/register`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          nick: username,
-          password: pass,
-        }),
-      }
-    )
+    const res = await fetch(`${HOST_URL}/register`, {
+      method: "POST",
+      body: JSON.stringify({
+        nick: username,
+        password: pass,
+      }),
+    })
       .then((data) => data.json())
       .then((res) => {
         if (res?.error) {
@@ -48,7 +46,7 @@ class Multiplayer {
    * @returns
    */
   join = async (size, initial) => {
-    const res = await fetch(`${HOST}:${PORT}/join`, {
+    const res = await fetch(`${HOST_URL}/join`, {
       method: "POST",
       body: JSON.stringify({
         group: defaultGroup,
@@ -75,7 +73,7 @@ class Multiplayer {
   };
 
   notify = (move) => {
-    fetch(`${HOST}:${PORT}/notify`, {
+    fetch(`${HOST_URL}/notify`, {
       method: "POST",
       body: JSON.stringify({
         nick: this.user1.username,
@@ -96,7 +94,7 @@ class Multiplayer {
   };
 
   leave = async () => {
-    await fetch(`${HOST}:${PORT}/leave`, {
+    await fetch(`${HOST_URL}/leave`, {
       method: "POST",
       body: JSON.stringify({
         nick: this.user1.username,
@@ -116,13 +114,10 @@ class Multiplayer {
   };
 
   ranking = async () => {
-    const result = await fetch(
-      `${HOST}:${PORT}/ranking`,
-      {
-        method: "POST",
-        body: JSON.stringify({}),
-      }
-    )
+    const result = await fetch(`${HOST_URL}/ranking`, {
+      method: "POST",
+      body: JSON.stringify({}),
+    })
       .then((data) => data.json())
       .then((res) => {
         if (res?.error) {
