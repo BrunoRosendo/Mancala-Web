@@ -22,8 +22,10 @@ const requiredField = (fieldName, place) => (req, res) => {
 }
 
 const isOfType = (fieldName, type) => (req, res) => {
-  const field = req?.params?.[fieldName] || req?.body?.[fieldName];
+  let field = req?.params?.[fieldName] || req?.body?.[fieldName];
+
   if (field == null) return true; // Use requiredField() to test if it's required
+  if (type === "number") field = parseInt(field);
 
   if (typeof field !== type) {
     res.writeHead(StatusCodes.BAD_REQUEST, { "Content-Type": "application/json" });
