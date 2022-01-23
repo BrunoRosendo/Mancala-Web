@@ -17,20 +17,18 @@ class Multiplayer {
    * @returns -1 if fails, 1 otherwise
    */
   register = async (username, pass) => {
-    const res = await fetch(
-      `${HOST_URL}/register`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          nick: username,
-          password: pass,
-        }),
-      }
-    )
+    const res = await fetch(`${HOST_URL}/register`, {
+      method: "POST",
+      body: JSON.stringify({
+        nick: username,
+        password: pass,
+      }),
+    })
       .then((data) => data.json())
       .then((res) => {
         if (res?.error) {
-          console.log("Couldn't Log in!");
+          console.log("Couldn't Log in!", res.error);
+          showSnackbar(res.error);
           return -1;
         } else {
           console.log("Logged in!");
@@ -62,6 +60,7 @@ class Multiplayer {
       .then((res) => {
         if (res?.error) {
           console.log("Error Joining game.", res.error);
+          showSnackbar(res.error);
           return -1;
         } else {
           console.log("Joined group lobby...", res);
@@ -107,6 +106,7 @@ class Multiplayer {
       .then((res) => {
         if (res?.error) {
           console.log("Error leaving game.", res.error);
+          showSnackbar(res.error);
         } else {
           console.log("Left the game successfully.");
         }
@@ -114,17 +114,15 @@ class Multiplayer {
   };
 
   ranking = async () => {
-    const result = await fetch(
-      `${HOST_URL}/ranking`,
-      {
-        method: "POST",
-        body: JSON.stringify({}),
-      }
-    )
+    const result = await fetch(`${HOST_URL}/ranking`, {
+      method: "POST",
+      body: JSON.stringify({}),
+    })
       .then((data) => data.json())
       .then((res) => {
         if (res?.error) {
           console.log("Error retrieving scoreboard.", res.error);
+          showSnackbar(res.error);
         } else {
           console.log("Successfully retrieved scoreboard.");
           return res;

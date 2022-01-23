@@ -60,14 +60,14 @@ header {
 }
 
 #logo {
-    padding-left: 7em;
+    padding-left: 4em;
     font-size: 2.5em;
     letter-spacing: 0.3em;
     text-shadow: 1px 1px 2px black, 0 5px 10px rgb(180, 0, 0), 0 0 30px white;
 }
 
 #auth {
-    padding-right: 7.5em;
+    padding-right: 0em;
 }
 
 input[type=text],
@@ -76,6 +76,7 @@ input[type=password] {
     border: 1px solid black;
     border-radius: 1em;
     background-color: rgb(253, 214, 146);
+    padding-left: 0.5em;
 }
 
 #auth label {
@@ -93,6 +94,29 @@ input[type=password] {
     border-color: black;
     padding: 0.2em 0.6em 0.2em 0.6em;
     margin-left: 1em;
+    max-width: 8em;
+}
+
+#authForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#authForm .loginInputs {
+    margin-bottom: 0.5em;
+}
+
+@media screen and (min-width: 1200px) {
+    #authForm {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    #authForm .loginInputs {
+        margin-bottom: 0;
+    }
 }
 
 
@@ -102,6 +126,7 @@ input[type=password] {
     display: flex;
     flex-direction: column;
     height: 68vh;
+    min-height: 25rem;
     position: relative;
     padding-top: 0.5em;
     padding-bottom: 0em;
@@ -215,8 +240,8 @@ input[type=password] {
 .seed {
     position: absolute;
     top: 0;
-    width: 3.2vh;
-    height: 2.2vh;
+    width: 1.6vw;
+    height: 1.1vw;
     border-radius: 50%;
     background: radial-gradient(closest-side, rgba(255, 255, 255, 0.4), transparent), var(--sportRed);
 }
@@ -307,6 +332,12 @@ input:checked+.slider {
 
 input:checked+.slider:before {
     transform: translateX(1.5em);
+}
+
+#aiLevel {
+    padding: 0.5em;
+    border-radius: 1em;
+    background-color: var(--purpleAccent);
 }
 
 
@@ -479,7 +510,8 @@ input:checked+.slider:before {
 #snackbar {
     visibility: hidden;
     /*hidden */
-    min-width: 20em;
+    min-width: 17em;
+    max-width: 20em;
     background-color: #333;
     color: #fff;
     text-align: center;

@@ -10,6 +10,13 @@ const toggleBlockElem = (elem) => {
   else hideElem(elem);
 };
 
+const toggleFlexElem = (elem) => {
+  prevDisplay = elem.style.display;
+
+  if (prevDisplay === "none") elem.style.display = "flex";
+  else hideElem(elem);
+};
+
 hideElem($("#instructions"));
 hideElem($("#scoreboard"));
 hideElem($("#concedeButton"));
@@ -107,11 +114,9 @@ const register = () => {
 
   multiplayerController.register(username, pass).then((res) => {
     if (res > 0) {
-      toggleBlockElem($("#auth #authForm"));
+      toggleFlexElem($("#auth #authForm"));
       toggleBlockElem($("#auth #userInfo"));
       $("#auth #userInfo #username").innerHTML = username;
-    } else {
-      showSnackbar("Incorrect Password!");
     }
   });
 };
@@ -140,7 +145,7 @@ const logout = async () => {
   multiplayerController.logout();
   console.log("Logged out.");
 
-  toggleBlockElem($("#auth #authForm"));
+  toggleFlexElem($("#auth #authForm"));
   toggleBlockElem($("#auth #userInfo"));
   $("#auth #userInfo #username").innerHTML = "";
 };

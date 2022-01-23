@@ -93,7 +93,7 @@ class Game {
       );
       const scoreDiff = newScore - oldScore;
 
-      if (!firstUpdate)
+      if (!firstUpdate) {
         this.sendMessage(
           `${
             multiplayerController.turn == 1 ? "You" : "Your Opponent"
@@ -101,6 +101,9 @@ class Game {
             scoreDiff != 1 ? "points" : "point"
           } this round!`
         );
+      } else if (nextPlayer == 2) {
+        this.sendMessage("Your opponent starts first!");
+      }
 
       this.updateScores(multiplayerController.turn);
       this.disablePlay();
