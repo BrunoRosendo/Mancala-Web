@@ -443,7 +443,7 @@ input:checked+.slider:before {
 }
 
 #currMsg.animation {
-    animation: pulse 5s infinite;
+    animation: pulseText 5s infinite;
 }
 
 #msgIcon {
