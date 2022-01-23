@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const { StatusCodes } = require("http-status-codes");
 const { updateRanking } = require("./game");
 const { addClient, sendGameEvent, removeGame } = require("../../utils/sse");
+const { clearGameTimeout } = require("../../utils/timeout");
 
 const join = async (req, res) => {
   res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
@@ -108,7 +109,7 @@ const leave = async (req, res) => {
   res.write(JSON.stringify({}));
   res.end();
 
-  sendGameEvent(curGame.id, JSON.stringify({ winner }));
+  sendGameEvent(curGame.id, JSON.stringify({ winner }), true);
   removeGame(curGame.id);
 }
 
