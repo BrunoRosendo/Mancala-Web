@@ -15,6 +15,8 @@ const getRequestBody = (req) => {
         }
       });
 
+      req.on("error", () => console.log(err.message));
+
     } catch (err) {
       reject(err);
     }

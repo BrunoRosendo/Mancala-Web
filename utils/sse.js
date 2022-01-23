@@ -12,10 +12,6 @@ const addClient = (game, player, res) => {
 }
 
 const removeGame = (game) => {
-  clients[game].forEach(c => {
-    c.res.end();
-  });
-
   delete clients[game];
   delete queue[game];
 }
