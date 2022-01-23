@@ -1,3 +1,4 @@
+const { StatusCodes } = require("http-status-codes");
 const { sendGameEvent, removeGame } = require("../../utils/sse");
 
 const updateRanking = async (nick, win, db) => {
@@ -45,15 +46,15 @@ const notify = async (req, res) => {
   const playAgain = turn(move, playerNum, board, curGame.numPits);
   const gameOver = checkGameEnd(playAgain ? playerNum : opponentNum, board, curGame.numPits);
 
-  const newSideOne = JSON.stringify({
+  const newSideOne = {
     store: board[curGame.numPits],
     pits: board.slice(0, curGame.numPits)
-  });
+  };
 
-  const newSideTwo = JSON.stringify({
+  const newSideTwo = {
     store: board[board.length - 1],
     pits: board.slice(curGame.numPits + 1, board.length - 1)
-  });
+  };
 
   const opponent = opponentNum === 1 ?
     curGame.playerOne : curGame.playerTwo;
@@ -67,8 +68,8 @@ const notify = async (req, res) => {
 
   await db.run(updateSql, [
     nextTurn,
-    newSideOne,
-    newSideTwo,
+    JSON.stringify(newSideOne),
+    JSON.stringify(newSideTwo),
     game
   ]);
 
@@ -76,11 +77,11 @@ const notify = async (req, res) => {
     sides: {},
     turn: nextTurn,
   }};
-  updateMsg['board']['sides'][board.playerOne] = newSideOne;
-  updateMsg['board']['sides'][board.playerTwo] = newSideTwo;
+  updateMsg.board.sides[curGame.playerOne] = newSideOne;
+  updateMsg.board.sides[curGame.playerTwo] = newSideTwo;
 
   if (gameOver) {
-    const winner = closeGame(
+    const winner = await closeGame(
       curGame.playerOne,
       curGame.playerTwo,
       newSideOne.store,
@@ -92,10 +93,12 @@ const notify = async (req, res) => {
     updateMsg.winner = winner;
   }
 
+  res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
   res.write(JSON.stringify({}));
+  res.end();
 
-  sendGameEvent(game.id, JSON.stringify(updateMsg));
-  if (gameOver) removeGame(game.id);
+  sendGameEvent(game, JSON.stringify(updateMsg));
+  if (gameOver) removeGame(game);
 }
 
 const turn = (idx, player, board, numPits) => {

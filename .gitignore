@@ -1,1 +1,3 @@
-valorizacoes.md
+node_modules/
+*.db
+valorizacoes.txt

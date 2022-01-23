@@ -2,12 +2,18 @@ const controllers = require("./controllers");
 const middleware = require("./middleware");
 const validators = require("./middleware/validators");
 
-module.exports = Object.freeze({
-  GET: {
-    '/': {
-      controller: (req, res) => res.write(JSON.stringify("online")),
-    },
+module.exports = (method, endpoint) => {
+  const route = routes[method]?.[endpoint];
+  if (!route) {
+    if (method !== 'GET') return {};
+    return { controller: controllers.sendStaticResource };
+  }
 
+  return route;
+}
+
+const routes = Object.freeze({
+  GET: {
     '/update': {
       controller: controllers.update,
       middlewares: [

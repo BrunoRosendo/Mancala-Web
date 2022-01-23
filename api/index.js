@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const routes = require("./routes");
+const router = require("./router");
 const { getRequestBody, getUrlParams, getEndpoint } = require("../utils/parser");
 const { asyncEvery } = require("../utils/algebra");
 
@@ -12,8 +12,7 @@ module.exports = async (req, res) => {
       rawRequest: req,
     }
 
-    const eventRequest = parsedRequest.endpoint === '/update';
-    const { middlewares, controller } = routes[req.method]?.[parsedRequest.endpoint] || {};
+    const { middlewares, controller } = router(req.method, parsedRequest.endpoint);
 
     if (!controller) {
       res.writeHead(StatusCodes.NOT_FOUND, { "Content-Type": "application/json" });
@@ -29,12 +28,8 @@ module.exports = async (req, res) => {
       return;
     }
 
-    if (!eventRequest)
-      res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
-
     await controller(parsedRequest, res);
-
-    if (!eventRequest) res.end();
+    // res is closed on the controller
 
   } catch(err) {
       console.error("Unexpected error while processing request", err);
