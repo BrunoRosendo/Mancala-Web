@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const { sendGameEvent, removeGame } = require("../../utils/sse");
+const { setGameTimeout, clearGameTimeout } = require("../../utils/timeout");
 
 const updateRanking = async (nick, win, db) => {
   const rankSql = "SELECT * FROM ranking WHERE nick = ?";
@@ -27,6 +28,9 @@ const updateRanking = async (nick, win, db) => {
 const notify = async (req, res) => {
   const db = await require("../../loaders/db");
   const { nick, move, game } = req?.body;
+
+  // Clear last turn's timeout
+  clearGameTimeout(game);
 
   const getSql = "SELECT * FROM game WHERE id = ?";
   const curGame = await db.get(getSql, [game]);
@@ -98,7 +102,13 @@ const notify = async (req, res) => {
   res.end();
 
   sendGameEvent(game, JSON.stringify(updateMsg));
-  if (gameOver) removeGame(game);
+  if (gameOver) {
+    removeGame(game);
+    return;
+  }
+
+  // Set timeout for next player
+  setGameTimeout(game, () => leaveOnTimeout(game, nick, opponent, db));
 }
 
 const turn = (idx, player, board, numPits) => {
@@ -179,6 +189,17 @@ const onPlayerHouse = (idx, player, numPits, board) => {
   return player === 1
     ? idx >= 0 && idx < numPits
     : idx > numPits && idx < board.length - 1;
+}
+
+const leaveOnTimeout = async (game, winner, loser, db) => {
+  const deleteSql = "DELETE FROM game WHERE id = ?";
+  await db.run(deleteSql, [game]);
+
+  await updateRanking(winner, true, db);
+  await updateRanking(loser, false, db);
+
+  sendGameEvent(game, JSON.stringify({ winner }));
+  removeGame(game);
 }
 
 module.exports = {
