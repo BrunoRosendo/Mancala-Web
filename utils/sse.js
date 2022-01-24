@@ -16,10 +16,10 @@ const removeGame = (game) => {
   delete queue[game];
 }
 
-const sendGameEvent = (game, data) => {
+const sendGameEvent = (game, data, force = false) => {
 
   // Queue event
-  if (!clients[game] || clients[game].length < 2) {
+  if (!clients[game] || (clients[game].length < 2 && !force)) {
     queue[game] = queue[game] || [];
     queue[game].push(data);
     return;

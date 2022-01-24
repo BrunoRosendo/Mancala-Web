@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const { StatusCodes } = require("http-status-codes");
 const { updateRanking } = require("./game");
 const { addClient, sendGameEvent, removeGame } = require("../../utils/sse");
+const { clearGameTimeout } = require("../../utils/timeout");
 
 const join = async (req, res) => {
   res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
@@ -81,7 +82,6 @@ const generatePlayerSide = (numPits, initialSeeds) => {
   };
 }
 
-// TODO: Leave after timeout of 2 minutes
 const leave = async (req, res) => {
   const db = await require("../../loaders/db");
   const { game, nick } = req?.body;
@@ -100,13 +100,16 @@ const leave = async (req, res) => {
 
     await updateRanking(winner, true, db);
     await updateRanking(loser, false, db);
+
+    // Clear last turn's timeout
+    clearGameTimeout(game);
   }
 
   res.writeHead(StatusCodes.OK, { "Content-Type": "application/json" });
   res.write(JSON.stringify({}));
   res.end();
 
-  sendGameEvent(curGame.id, JSON.stringify({ winner }));
+  sendGameEvent(curGame.id, JSON.stringify({ winner }), true);
   removeGame(curGame.id);
 }
 
