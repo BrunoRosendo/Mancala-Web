@@ -134,7 +134,6 @@ const logout = async () => {
 
   // If there's an active multiplayer game
   if (multiplayerController.isPlaying()) {
-    console.log("Leaving Multiplayer Game...");
     await concede();
     $("#game").scrollIntoView({
       behavior: "smooth",
@@ -142,12 +141,10 @@ const logout = async () => {
       inline: "nearest",
     });
   } else if (multiplayerController.isSearching()) {
-    console.log("Leaving Queue...");
     await concede();
   }
 
   multiplayerController.logout();
-  console.log("Logged out.");
 
   toggleFlexElem($("#auth #authForm"));
   toggleBlockElem($("#auth #userInfo"));
@@ -164,7 +161,6 @@ handleScoreboard = async () => {
     localRank = JSON.parse(localStorage.getItem("score"));
   }
 
-  // console.log("rankingData:", rankingData);
   const table = $("#scoreBody");
   destroyChildren(table);
 
@@ -180,7 +176,6 @@ handleScoreboard = async () => {
   }
 
   for (const rank of rankingData.ranking) {
-    // console.log(rank);
     const row = table.insertRow();
     const nameCell = row.insertCell();
     const victoriesCell = row.insertCell();

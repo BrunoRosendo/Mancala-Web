@@ -179,7 +179,7 @@ input[type=password] {
 
 #gameboard {
     display: grid;
-    height: 27vw;
+    height: 53vh;
     min-height: 20rem;
     width: 90%;
     grid-template-columns: 1fr 5fr 1fr;

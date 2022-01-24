@@ -1,7 +1,7 @@
 const defaultGroup = 14;
 const HOST =
-  "http://twserver.alunos.dcc.fc.up.pt"; /* http://localhost / http://twserver.alunos.dcc.fc.up.pt */
-const PORT = 8008; /*  8000 / 8008 */
+  "http://localhost"; /* http://localhost / http://twserver.alunos.dcc.fc.up.pt */
+const PORT = 8000; /*  8000 / 8008 */
 const HOST_URL = `${HOST}:${PORT}`;
 
 class Multiplayer {
@@ -32,7 +32,6 @@ class Multiplayer {
           showSnackbar(res.error);
           return -1;
         } else {
-          console.log("Logged in!");
           this.user1 = new User(username, pass);
           return 1;
         }
@@ -64,7 +63,6 @@ class Multiplayer {
           showSnackbar(res.error);
           return -1;
         } else {
-          console.log("Joined group lobby...", res);
           this.game = res.game;
           return 1;
         }
@@ -88,8 +86,6 @@ class Multiplayer {
         if (res?.error) {
           console.log("Error notifying player's move.", res.error);
           showSnackbar(res.error);
-        } else {
-          console.log("Notification Successful!");
         }
       });
   };
@@ -108,8 +104,6 @@ class Multiplayer {
         if (res?.error) {
           console.log("Error leaving game.", res.error);
           showSnackbar(res.error);
-        } else {
-          console.log("Left the game successfully.");
         }
       });
   };
@@ -125,7 +119,6 @@ class Multiplayer {
           console.log("Error retrieving scoreboard.", res.error);
           showSnackbar(res.error);
         } else {
-          console.log("Successfully retrieved scoreboard.");
           return res;
         }
       });

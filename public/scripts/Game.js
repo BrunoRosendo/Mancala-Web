@@ -41,7 +41,7 @@ class Game {
    */
   updateMultiplayerGame = (event) => {
     const data = JSON.parse(event?.data);
-    console.log("data from SSE:", data);
+
     const board = data.board;
     let firstUpdate = false;
 
@@ -269,6 +269,8 @@ class Game {
   };
 
   enablePlay() {
+    if (this.multiplayer) this.countdown = new Timer("canvasContainer", 120);
+
     this.enablePlayTimeout = setTimeout(() => {
       this.sendMessage("It's your turn!");
 
@@ -279,8 +281,6 @@ class Game {
         playerOneHouse.onclick = () => this.playerTurn(i);
         playerOneHouse.className = "house onHover";
       }
-
-      if (this.multiplayer) this.countdown = new Timer("canvasContainer", 120);
     }, 700);
   }
 
