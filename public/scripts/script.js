@@ -71,6 +71,10 @@ const startGame = () => {
 
 const endGame = () => {
   game.resetBoard();
+
+  game.countdown?.destroy();
+  game.countdown = null;
+
   toggleBlockElem($("button[id=startButton]"));
 
   const concedeButton = $("button[id=concedeButton]");

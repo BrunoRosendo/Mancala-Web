@@ -161,6 +161,8 @@ class Game {
   playerTurn(houseIdx) {
     if (this.multiplayer) {
       multiplayerController.notify(houseIdx);
+      this.countdown?.destroy();
+      this.countdown = null;
     } else {
       const oldBoard = this.boardController.copy();
       const oldScore = this.boardController.getScore(1);
@@ -248,6 +250,9 @@ class Game {
   declareMultiplayerWinner = (player, collectingPlayer) => {
     if (this.enablePlayTimeout) clearTimeout(this.enablePlayTimeout); // Clears the timeout to enable P1 turn
 
+    this.countdown?.destroy();
+    this.countdown = null;
+
     this.disablePlay();
     this.collectRemainingSeeds(collectingPlayer); // THIS IS NEEDED BECAUSE SERVER DOES NOT RETURN FINISHED BOARD. IN PART 3 WE COULD IMPLEMENT THIS ON SERVER
 
@@ -274,6 +279,8 @@ class Game {
         playerOneHouse.onclick = () => this.playerTurn(i);
         playerOneHouse.className = "house onHover";
       }
+
+      if (this.multiplayer) this.countdown = new Timer("canvasContainer", 120);
     }, 700);
   }
 

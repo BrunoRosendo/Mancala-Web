@@ -1,6 +1,7 @@
 const defaultGroup = 14;
-const HOST = "http://localhost";
-const PORT = 8000;
+const HOST =
+  "http://twserver.alunos.dcc.fc.up.pt"; /* http://localhost / http://twserver.alunos.dcc.fc.up.pt */
+const PORT = 8008; /*  8000 / 8008 */
 const HOST_URL = `${HOST}:${PORT}`;
 
 class Multiplayer {
